@@ -9,29 +9,58 @@ import {
   Card,
   CardContent,
   IconButton,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from '@mui/material';
-import { Email, LinkedIn, GitHub, Twitter, WhatsApp, Phone } from '@mui/icons-material';
 import { motion } from 'framer-motion';
+import { Icon } from '@iconify/react';
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '', method: 'WhatsApp' });
 
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleWhatsAppMessage = () => {
-    const { name, message } = formData;
+    const { name, message, email } = formData;
     const phoneNumber = '+1234567890'; // Replace with your phone number
-    const text = `Hello, my name is ${name}.\n\n${message}`;
+    const text = `Hello, my name is ${name}.\n\n${message}\n\nEmail: ${email}`;
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
   };
 
+  const handleEmailMessage = () => {
+    const { name, email, message } = formData;
+    const subject = `Message from ${name}`;
+    const body = `${message}\n\nFrom: ${name} (${email})`;
+    const mailtoLink = `mailto:your-email@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailtoLink, '_blank');
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (formData.method === 'WhatsApp') {
+      handleWhatsAppMessage();
+    } else {
+      handleEmailMessage();
+    }
+  };
+
+  const socialLinks = [
+    { platform: 'Email', icon: 'mdi:email-outline', link: 'mailto:your-email@example.com', username: 'your-email@example.com', color: '#D44638' },
+    { platform: 'LinkedIn', icon: 'mdi:linkedin', link: 'https://www.linkedin.com/in/yourprofile/', username: 'yourprofile', color: '#0077B5' },
+    { platform: 'GitHub', icon: 'mdi:github', link: 'https://github.com/yourusername', username: 'yourusername', color: '#000000' },
+    { platform: 'X', icon: 'devicon:twitter', link: 'https://twitter.com/yourusername', username: 'yourusername', color: '#1DA1F2' },
+    { platform: 'Instagram', icon: 'mdi:instagram', link: 'https://instagram.com/yourusername', username: 'yourusername', color: '#E4405F' },
+    { platform: 'WhatsApp', icon: 'mdi:whatsapp', link: 'https://wa.me/+1234567890', username: '+1234567890', color: '#25D366' },
+  ];
+
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      {/* Page Heading */}
       <Typography
         variant="h3"
         component={motion.h1}
@@ -44,151 +73,59 @@ const ContactPage = () => {
         Contact Me
       </Typography>
 
-      {/* Social Media Links */}
- 
-
-      <Grid container spacing={3} justifyContent="center">
-        <Grid item xs={6} sm={3}>
-          <Card
-            sx={{ textAlign: 'center', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', borderRadius: '10px' }}
-            component={motion.div}
-            whileHover={{ scale: 1.05 }}
-          >
-            <CardContent>
-              <IconButton
-                href="mailto:your-email@example.com"
-                target="_blank"
-                color="success"
+      <Grid container spacing={2} justifyContent="center">
+        {socialLinks.map((item, index) => (
+          <Grid item xs={6} sm={4} key={index}>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <Card
+                sx={{
+                  textAlign: 'center',
+                  p: 2,
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                  '&:hover': {
+                    boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)',
+                  },
+                }}
               >
-                <Email fontSize="large" />
-              </IconButton>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                Email
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={6} sm={3}>
-          <Card
-            sx={{ textAlign: 'center', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', borderRadius: '10px' }}
-            component={motion.div}
-            whileHover={{ scale: 1.05 }}
-          >
-            <CardContent>
-              <IconButton
-                href="https://www.linkedin.com/in/your-linkedin"
-                target="_blank"
-                color="primary"
-              >
-                <LinkedIn fontSize="large" />
-              </IconButton>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                LinkedIn
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={6} sm={3}>
-          <Card
-            sx={{ textAlign: 'center', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', borderRadius: '10px' }}
-            component={motion.div}
-            whileHover={{ scale: 1.05 }}
-          >
-            <CardContent>
-              <IconButton
-                href="https://github.com/your-github"
-                target="_blank"
-                color="default"
-              >
-                <GitHub fontSize="large" />
-              </IconButton>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                GitHub
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={6} sm={3}>
-          <Card
-            sx={{ textAlign: 'center', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', borderRadius: '10px' }}
-            component={motion.div}
-            whileHover={{ scale: 1.05 }}
-          >
-            <CardContent>
-              <IconButton
-                href="https://twitter.com/your-twitter"
-                target="_blank"
-                color="info"
-              >
-                <Twitter fontSize="large" />
-              </IconButton>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                Twitter
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={6} sm={3}>
-          <Card
-            sx={{ textAlign: 'center', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', borderRadius: '10px' }}
-            component={motion.div}
-            whileHover={{ scale: 1.05 }}
-          >
-            <CardContent>
-              <IconButton
-                href="https://wa.me/1234567890"
-                target="_blank"
-                color="success"
-              >
-                <WhatsApp fontSize="large" />
-              </IconButton>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                WhatsApp
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid item xs={6} sm={3}>
-          <Card
-            sx={{ textAlign: 'center', boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', borderRadius: '10px' }}
-            component={motion.div}
-            whileHover={{ scale: 1.05 }}
-          >
-            <CardContent>
-              <IconButton
-                href="tel:+1234567890"
-                target="_blank"
-                color="secondary"
-              >
-                <Phone fontSize="large" />
-              </IconButton>
-              <Typography variant="body1" sx={{ mt: 1 }}>
-                Phone
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+                <CardContent>
+                  <Icon
+                    icon={item.icon}
+                    fontSize={40}
+                    style={{ marginBottom: '8px', color: item.color }}
+                  />
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                    {item.platform}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: item.color, cursor: 'pointer' }}
+                    onClick={() => window.open(item.link, '_blank')}
+                  >
+                    {item.username}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Grid>
+        ))}
       </Grid>
+
       <Typography
-        variant="h5"
-        sx={{ fontWeight: 'bold', color: '#32CD32', mt: 6, mb: 3, textAlign: 'center' }}
+        variant="h4"
+        sx={{ fontWeight: 'bold', mt: 6, mb: 3, textAlign: 'center' }}
       >
         Connect with Me
       </Typography>
 
-      <Typography
-        variant="body1"
-        sx={{ mb: 4, textAlign: 'center' }}
-      >
+      <Typography variant="body1" sx={{ mb: 4, textAlign: 'center' }}>
         Feel free to reach out using the form below. I’ll get back to you as soon as possible.
       </Typography>
 
-      {/* Contact Form */}
       <Box
         component="form"
         sx={{
@@ -197,12 +134,9 @@ const ContactPage = () => {
           gap: 3,
           padding: 4,
           borderRadius: '15px',
-   
+          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
         }}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleWhatsAppMessage();
-        }}
+        onSubmit={handleSubmit}
       >
         <TextField
           fullWidth
@@ -237,12 +171,25 @@ const ContactPage = () => {
           required
         />
 
+        <FormControl fullWidth>
+          <InputLabel>Contact Method</InputLabel>
+          <Select
+            name="method"
+            value={formData.method}
+            onChange={handleInputChange}
+            label="Contact Method"
+          >
+            <MenuItem value="WhatsApp">WhatsApp</MenuItem>
+            <MenuItem value="Email">Email</MenuItem>
+          </Select>
+        </FormControl>
+
         <Button
           type="submit"
           variant="contained"
           color="success"
           size="large"
-          sx={{ alignSelf: 'flex-start' }}
+          sx={{ alignSelf: 'flex-start', transition: 'all 0.3s', '&:hover': { transform: 'translateY(-2px)' } }}
         >
           Send Message
         </Button>

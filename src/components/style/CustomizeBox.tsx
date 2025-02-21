@@ -11,8 +11,8 @@ export const CustomizeBox = styled(Box)(({ theme }) => ({
   position: "relative",
   overflow: "hidden",
   "&:hover": {
-    borderColor: theme.palette.secondary.main,
+    borderColor: theme.palette.primary.main,
     transform: "rotate(2deg) scale(1.07)",
-    boxShadow: `0px 4px 15px ${theme.palette.secondary.main}, 0px 0px 10px ${theme.palette.primary.main}`,
+    boxShadow: `0px 4px 15px ${theme.palette.primary.main}, 0px 0px 10px ${theme.palette.primary.main}`,
   },
 }));

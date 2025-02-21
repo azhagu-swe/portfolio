@@ -13,6 +13,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Icon } from "@iconify/react";
 import { CSSObject } from "@emotion/react";
+import { color } from "framer-motion";
+import { BorderColor } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -26,6 +28,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
+
   position: "absolute",
   top: "50%",
   right: "-15px",
@@ -34,6 +37,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   boxShadow: theme.shadows[3],
   "&:hover": {
     backgroundColor: theme.palette.action.hover,
+    color:theme.palette.primary.main,
   },
 }));
 
@@ -110,12 +114,20 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
       link: "/skills",
     },
     {
+      text: "Projects",
+      icon: (
+        <Icon icon="ix:product-management" width={iconSize} height={iconSize} />
+      ),
+      link: "/contact",
+    },
+    {
       text: "Contact",
       icon: (
         <Icon icon="fluent:mail-24-regular" width={iconSize} height={iconSize} />
       ),
       link: "/contact",
     },
+
   ];
   
   const bottomItems = [
@@ -142,11 +154,15 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader>
-        <StyledIconButton onClick={handleDrawerClose}>
+        <StyledIconButton sx={{ backgroundColor: theme.palette.primary.main }} onClick={handleDrawerClose}>
           {open ? (
-            <ChevronLeftIcon sx={{ color: theme.palette.primary.main }} />
+            <ChevronLeftIcon sx={{color:'white', "&:hover": {
+              color:theme.palette.primary.main,
+            },}}   />
           ) : (
-            <ChevronRightIcon sx={{ color: theme.palette.primary.main }} />
+            <ChevronRightIcon sx={{color:'white', "&:hover": {
+              color:theme.palette.primary.main,
+            },}} />
           )}
         </StyledIconButton>
       </DrawerHeader>

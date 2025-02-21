@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 const AboutSection: React.FC = () => {
   return (
     <Box sx={{ padding: '40px 0', textAlign: 'center' }}>
-      <Typography variant="h4" component="h3" gutterBottom>
+      <Typography variant="h3" component="h3" gutterBottom>
         About Me
       </Typography>
       <Typography paragraph>

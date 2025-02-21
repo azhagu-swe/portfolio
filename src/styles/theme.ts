@@ -15,25 +15,44 @@ const goldenYellow = {
 };
 
 const typography = {
-  fontFamily: ['Poppins', 'Roboto', 'Arial', 'sans-serif'].join(','),
-  fontSize: 14,
+  fontFamily: 'Poppins, Arial, sans-serif', // Default font for body
   h1: {
+    fontFamily: 'Orbitron, Arial, sans-serif', // Orbitron for headers
     fontSize: '2.5rem',
     fontWeight: 700,
   },
   h2: {
+    fontFamily: 'Orbitron, Arial, sans-serif',
     fontSize: '2rem',
     fontWeight: 600,
   },
+  h3: {
+    fontFamily: 'Orbitron, Arial, sans-serif',
+    fontSize: '1.75rem',
+    fontWeight: 500,
+  },
+  h4: {
+    fontFamily: 'Orbitron, Arial, sans-serif',
+    fontSize: '1.75rem',
+    fontWeight: 500,
+  },
+  // h5: {
+  //   fontFamily: 'Orbitron, Arial, sans-serif',
+  //   fontSize: '1.75rem',
+  //   fontWeight: 500,
+  // },
   body1: {
+    fontFamily: 'Poppins, Arial, sans-serif', // Poppins for body
     fontSize: '1rem',
     lineHeight: 1.6,
   },
   body2: {
+    fontFamily: 'Poppins, Arial, sans-serif',
     fontSize: '0.875rem',
     lineHeight: 1.5,
   },
 };
+
 
 const components = {
   MuiButton: {
@@ -52,13 +71,13 @@ const components = {
       },
     },
   },
-  MuiAppBar: {
-    styleOverrides: {
-      colorPrimary: {
-        backgroundColor: neonGreen.main,
-      },
-    },
-  },
+  // MuiAppBar: {
+  //   styleOverrides: {
+  //     colorPrimary: {
+  //       backgroundColor: neonGreen.main,
+  //     },
+  //   },
+  // },
   MuiCard: {
     styleOverrides: {
       root: {
