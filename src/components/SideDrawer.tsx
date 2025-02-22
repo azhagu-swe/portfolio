@@ -15,6 +15,8 @@ import { Icon } from "@iconify/react";
 import { CSSObject } from "@emotion/react";
 import { color } from "framer-motion";
 import { BorderColor } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
+import CustomizeTooltip from "./style/CustomizeTooltip";
 
 const drawerWidth = 240;
 
@@ -28,7 +30,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
-
   position: "absolute",
   top: "50%",
   right: "-15px",
@@ -37,7 +38,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   boxShadow: theme.shadows[3],
   "&:hover": {
     backgroundColor: theme.palette.action.hover,
-    color:theme.palette.primary.main,
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -94,48 +95,66 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
   const menuItems = [
     {
       text: "Home",
-      icon: <Icon icon="ic:round-home" width={iconSize} height={iconSize} />,
-      link: "/",
-    },
-    {
-      text: "About",
       icon: (
         <Icon
-          icon="tabler:user-code"
+          icon="material-symbols:home-outline-rounded"
           width={iconSize}
           height={iconSize}
         />
       ),
+      link: "/",
+    },
+    {
+      text: "About",
+      icon: <Icon icon="tabler:user-code" width={iconSize} height={iconSize} />,
       link: "/about",
     },
     {
+      text: "Experience",
+      icon: <Icon icon="pajamas:work" width={iconSize} height={iconSize} />,
+      link: "/experience",
+    },
+    {
       text: "Skills",
-      icon: <Icon icon="hugeicons:knowledge-02" width={iconSize} height={iconSize} />,
+      icon: (
+        <Icon
+          icon="hugeicons:knowledge-02"
+          width={iconSize}
+          height={iconSize}
+        />
+      ),
       link: "/skills",
     },
     {
       text: "Projects",
       icon: (
-        <Icon icon="fluent-mdl2:product-list" width={iconSize} height={iconSize} />
+        <Icon
+          icon="eos-icons:application-outlined"
+          width={iconSize}
+          height={iconSize}
+        />
       ),
-      link: "/contact",
+      link: "/projects",
     },
     {
       text: "Contact",
       icon: (
-        <Icon icon="fluent:mail-24-regular" width={iconSize} height={iconSize} />
+        <Icon
+          icon="fluent:mail-24-regular"
+          width={iconSize}
+          height={iconSize}
+        />
       ),
       link: "/contact",
     },
-
   ];
-  
+
   const bottomItems = [
     {
       text: "Tutorial",
       icon: (
         <Icon
-         icon="hugeicons:laptop-programming"
+          icon="hugeicons:laptop-programming"
           width={iconSize}
           height={iconSize}
         />
@@ -145,7 +164,11 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
     {
       text: "Blog",
       icon: (
-        <Icon icon="material-symbols:menu-book-outline" width={iconSize} height={iconSize} />
+        <Icon
+          icon="material-symbols:menu-book-outline"
+          width={iconSize}
+          height={iconSize}
+        />
       ),
       link: "/blog",
     },
@@ -154,15 +177,27 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader>
-        <StyledIconButton sx={{ backgroundColor: theme.palette.primary.main }} onClick={handleDrawerClose}>
+        <StyledIconButton
+          sx={{ backgroundColor: theme.palette.primary.main }}
+          onClick={handleDrawerClose}>
           {open ? (
-            <ChevronLeftIcon sx={{color:'white', "&:hover": {
-              color:theme.palette.primary.main,
-            },}}   />
+            <ChevronLeftIcon
+              sx={{
+                color: "white",
+                "&:hover": {
+                  color: theme.palette.primary.main,
+                },
+              }}
+            />
           ) : (
-            <ChevronRightIcon sx={{color:'white', "&:hover": {
-              color:theme.palette.primary.main,
-            },}} />
+            <ChevronRightIcon
+              sx={{
+                color: "white",
+                "&:hover": {
+                  color: theme.palette.primary.main,
+                },
+              }}
+            />
           )}
         </StyledIconButton>
       </DrawerHeader>
@@ -170,35 +205,40 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              component={Link}
-              href={item.link}
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-                "&:hover .MuiListItemIcon-root": {
-                  color: theme.palette.secondary.main, // Change color on hover
-                  transform: 'scale(1.2)', 
-                },
-                transition: 'color 0.3s, transform 0.3s',  // Smooth hover effect
-              }}>
-              <ListItemIcon
-                className="MuiListItemIcon-root"
+            <CustomizeTooltip
+              title={!open ? item.text : ""}
+              placement="right"
+              arrow>
+              <ListItemButton
+                component={Link}
+                href={item.link}
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: theme.palette.primary.main, // Default color
-                  transition: 'color 0.3s, transform 0.3s', 
-                   }}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={item.text}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                  "&:hover .MuiListItemIcon-root": {
+                    color: theme.palette.secondary.main, // Change color on hover
+                    transform: "scale(1.2)",
+                  },
+                  transition: "color 0.3s, transform 0.3s", // Smooth hover effect
+                }}>
+                <ListItemIcon
+                  className="MuiListItemIcon-root"
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                    color: theme.palette.primary.main, // Default color
+                    transition: "color 0.3s, transform 0.3s",
+                  }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </CustomizeTooltip>
           </ListItem>
         ))}
       </List>
@@ -206,35 +246,40 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
       <List sx={{ marginTop: "auto" }}>
         {bottomItems.map((item) => (
           <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              component={Link}
-              href={item.link}
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-                "&:hover .MuiListItemIcon-root": {
-                  color: theme.palette.secondary.main, // Change color on hover
-                  transform: 'scale(1.2)', 
-                },
-                transition: 'color 0.3s, transform 0.3s',  // Smooth hover effect
-              }}>
-              <ListItemIcon
-                className="MuiListItemIcon-root"
+            <CustomizeTooltip
+              title={!open ? item.text : ""}
+              placement="right"
+              arrow>
+              <ListItemButton
+                component={Link}
+                href={item.link}
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: theme.palette.primary.main, // Default color
-                  transition: 'color 0.3s, transform 0.3s', // Smooth color transition
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                  "&:hover .MuiListItemIcon-root": {
+                    color: theme.palette.secondary.main, // Change color on hover
+                    transform: "scale(1.2)",
+                  },
+                  transition: "color 0.3s, transform 0.3s", // Smooth hover effect
                 }}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={item.text}
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
+                <ListItemIcon
+                  className="MuiListItemIcon-root"
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                    color: theme.palette.primary.main, // Default color
+                    transition: "color 0.3s, transform 0.3s", // Smooth color transition
+                  }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </CustomizeTooltip>
           </ListItem>
         ))}
       </List>
