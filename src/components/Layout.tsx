@@ -43,7 +43,7 @@ const ContentBox = styled(Box, {
 })<AppBarProps>(({ theme, open }) => ({
   margin: `${theme.spacing(5)} ${theme.spacing(2)} ${theme.spacing(3)} ${theme.spacing(7)}`,
   padding: theme.spacing(2),
-  backgroundColor: theme.palette.mode === 'light' ? theme.palette.background.paper : theme.palette.grey[800], // Branding green for light mode, semi-dark for dark mode
+  backgroundColor:  theme.palette.background.paper , // Branding green for light mode, semi-dark for dark mode
  
   ...(open && {
     marginLeft: drawerWidth - 30,

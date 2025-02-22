@@ -116,7 +116,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
     {
       text: "Projects",
       icon: (
-        <Icon icon="ix:product-management" width={iconSize} height={iconSize} />
+        <Icon icon="fluent-mdl2:product-list" width={iconSize} height={iconSize} />
       ),
       link: "/contact",
     },
