@@ -29,7 +29,7 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/azhagu-swe/my-portfolio.git
+   git clone https://github.com/azhagu-swe/portfolio.git
    cd my-portfolio
    ```
 
