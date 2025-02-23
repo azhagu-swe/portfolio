@@ -262,7 +262,7 @@ const AboutMe: React.FC = () => {
             sx={{ mt: 2 }}
             key={index}
             component={motion.div}
-            whileHover={{ scale: 1.1 }}>
+            whileHover={{ scale: 1 }}>
             {achievement.description}
           </Typography>
         ))}

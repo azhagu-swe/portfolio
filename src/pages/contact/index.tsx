@@ -167,7 +167,7 @@ Email: ${email}`;
                   <Typography
                     variant="body2"
                     sx={{
-                      color: item.color,
+                      // color: item.color,
                       cursor: "pointer",
                       wordWrap: "break-word",
                       overflow: "hidden",

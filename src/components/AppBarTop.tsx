@@ -56,7 +56,7 @@ const AppBarTop: React.FC<CustomAppBarProps> = ({
   return (
     <AppBar position="fixed" open={open}>
       <Toolbar>
-        <IconButton
+        {/* <IconButton
           color="inherit"
           aria-label="open drawer"
           onClick={handleDrawerOpen}
@@ -66,7 +66,7 @@ const AppBarTop: React.FC<CustomAppBarProps> = ({
             ...(open && { display: "none" }),
           }}>
           <MenuIcon />
-        </IconButton>
+        </IconButton> */}
         <Typography align="center" variant="h6" noWrap component="div">
           Portfolio
         </Typography>

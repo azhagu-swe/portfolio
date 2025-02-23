@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
 const neonGreen = {
   light: "#76FF7A", // Slightly softer green
@@ -33,7 +33,7 @@ const typography = {
   },
   h4: {
     fontFamily: "Orbitron, Arial, sans-serif",
-    fontSize: "1.75rem",
+    fontSize: "1.5rem",
     fontWeight: 500,
   },
   // h5: {
@@ -70,13 +70,6 @@ const components = {
       },
     },
   },
-  // MuiAppBar: {
-  //   styleOverrides: {
-  //     colorPrimary: {
-  //       backgroundColor: neonGreen.main,
-  //     },
-  //   },
-  // },
   MuiCard: {
     styleOverrides: {
       root: {
@@ -103,36 +96,40 @@ const baseTheme = {
   components,
 };
 
-export const lightTheme = createTheme({
-  ...baseTheme,
-  palette: {
-    mode: "light",
-    primary: neonGreen,
-    secondary: goldenYellow,
-    background: {
-      default: "#F0F2F5", // Softer light grey
-      paper: "#FFFFFF",
+export const lightTheme = responsiveFontSizes(
+  createTheme({
+    ...baseTheme,
+    palette: {
+      mode: "light",
+      primary: neonGreen,
+      secondary: goldenYellow,
+      background: {
+        default: "#F0F2F5", // Softer light grey
+        paper: "#FFFFFF",
+      },
+      text: {
+        primary: "#2B2D42", // Main text color
+        secondary: "#6C757D", // Muted text color
+      },
     },
-    text: {
-      primary: "#2B2D42", // Main text color
-      secondary: "#6C757D", // Muted text color
-    },
-  },
-});
+  })
+);
 
-export const darkTheme = createTheme({
-  ...baseTheme,
-  palette: {
-    mode: "dark",
-    primary: neonGreen,
-    secondary: goldenYellow,
-    background: {
-      default: "#121212", // Dark theme background
-      paper: "#1E1E1E", // Slightly lighter than default
+export const darkTheme = responsiveFontSizes(
+  createTheme({
+    ...baseTheme,
+    palette: {
+      mode: "dark",
+      primary: neonGreen,
+      secondary: goldenYellow,
+      background: {
+        default: "#121212", // Dark theme background
+        paper: "#1E1E1E", // Slightly lighter than default
+      },
+      text: {
+        primary: "#E5E5E5", // Main text color for dark theme
+        secondary: "#9CA3AF", // Muted text color
+      },
     },
-    text: {
-      primary: "#E5E5E5", // Main text color for dark theme
-      secondary: "#9CA3AF", // Muted text color
-    },
-  },
-});
+  })
+);
