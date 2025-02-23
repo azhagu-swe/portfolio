@@ -7,7 +7,8 @@ export const CustomizeBox = styled(Box)(({ theme }) => ({
   borderRadius: "12px",
   textAlign: "center",
   border: `2px solid ${theme.palette.primary.main}`,
-  transition: "border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease",
+  transition:
+    "border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease",
   position: "relative",
   overflow: "hidden",
   "&:hover": {

@@ -77,7 +77,7 @@ const AppBarTop: React.FC<CustomAppBarProps> = ({
           <Icon
             icon={isDarkMode ? "mdi:white-balance-sunny" : "mdi:weather-night"}
             fontSize="1.5rem"
-            color={isDarkMode ?  "#ffffff": "#000000" }
+            color={isDarkMode ? "#ffffff" : "#000000"}
           />
         </IconButton>
       </Toolbar>

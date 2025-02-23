@@ -11,8 +11,7 @@ const Maintenance = () => {
         height: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: 
-        "center",
+        justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
         color: theme.palette.text.primary,

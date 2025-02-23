@@ -59,7 +59,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
 const ProjectPage = () => {
   const [filter, setFilter] = React.useState("All");
 
-  const handleFilterChange = (event:any, newValue:any) => {
+  const handleFilterChange = (event: any, newValue: any) => {
     setFilter(newValue);
   };
 

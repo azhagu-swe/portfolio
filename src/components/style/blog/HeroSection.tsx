@@ -48,7 +48,7 @@ const HeroSection = () => {
               backgroundColor: theme.palette.secondary.main,
               borderRadius: "50%",
               transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
-              transition: "transform 0.2s ease-out",
+              transitionA: "transform 0.2s ease-out",
               animation: `float ${Math.random() * 3 + 1}s ease-in-out infinite`,
             }}
           />
