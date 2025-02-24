@@ -75,7 +75,7 @@ const AppBarTop: React.FC<CustomAppBarProps> = ({
           onClick={toggleTheme}
           sx={{ marginLeft: "auto" }}>
           <Icon
-            icon={isDarkMode ? "mdi:white-balance-sunny" : "mdi:weather-night"}
+            icon={isDarkMode ? "mdi:weather-night" : "mdi:white-balance-sunny"}
             fontSize="1.5rem"
             color={isDarkMode ? "#ffffff" : "#000000"}
           />
