@@ -17,6 +17,7 @@ import { color } from "framer-motion";
 import { BorderColor } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 import CustomizeTooltip from "./style/CustomizeTooltip";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
@@ -89,6 +90,7 @@ interface SideDrawerProps {
 
 const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
   const theme = useTheme();
+  const router = useRouter();
 
   const iconSize = 28; // Adjust size as needed
 
@@ -223,14 +225,16 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
                   transition: "color 0.3s, transform 0.3s", // Smooth hover effect
                 }}>
                 <ListItemIcon
-                  className="MuiListItemIcon-root"
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: theme.palette.primary.main, // Default color
-                    transition: "color 0.3s, transform 0.3s",
-                  }}>
+                className="MuiListItemIcon-root"
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                  color: router.pathname === item.link
+                    ? theme.palette.secondary.main // Change color if the link is active
+                    : theme.palette.primary.main, // Default color
+                  transition: "color 0.3s, transform 0.3s",
+                }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText
@@ -264,14 +268,16 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
                   transition: "color 0.3s, transform 0.3s", // Smooth hover effect
                 }}>
                 <ListItemIcon
-                  className="MuiListItemIcon-root"
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: theme.palette.primary.main, // Default color
-                    transition: "color 0.3s, transform 0.3s", // Smooth color transition
-                  }}>
+                 className="MuiListItemIcon-root"
+                 sx={{
+                   minWidth: 0,
+                   mr: open ? 3 : "auto",
+                   justifyContent: "center",
+                   color: router.pathname === item.link
+                     ? theme.palette.secondary.main // Change color if the link is active
+                     : theme.palette.primary.main, // Default color
+                   transition: "color 0.3s, transform 0.3s",
+                 }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText

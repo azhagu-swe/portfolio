@@ -72,7 +72,7 @@ Email: ${email}`;
       platform: "LinkedIn",
       icon: "mdi:linkedin",
       link: "https://www.linkedin.com/in/azhagu-swe/",
-      username: "azhagu-swe",
+      username: "@azhagu-swe",
       color: "#0077B5",
     },
     {
@@ -113,7 +113,6 @@ Email: ${email}`;
         gutterBottom
         sx={{
           fontWeight: "bold",
-          color: "#32CD32",
           textAlign: "center",
           mb: 2,
         }}

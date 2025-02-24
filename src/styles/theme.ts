@@ -1,48 +1,49 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
+// Define colors
 const neonGreen = {
-  light: "#76FF7A", // Slightly softer green
-  main: "#32CD32", // LimeGreen shade for primary color
-  dark: "#228B22", // ForestGreen for contrast
+  light: "#76FF7A",
+  main: "#32CD32",
+  dark: "#228B22",
   contrastText: "#FFFFFF",
 };
 
 const goldenYellow = {
-  light: "#FFECB3", // Softer light yellow
-  main: "#FFC107", // Keep the original for brand consistency
-  dark: "#FFA000", // Slightly darker yellow for contrast
+  light: "#FFECB3",
+  main: "#FFC107",
+  dark: "#FFA000",
   contrastText: "#000000",
 };
 
+// Define typography
 const typography = {
-  fontFamily: "Poppins, Arial, sans-serif", // Default font for body
+  fontFamily: "Poppins, Arial, sans-serif",
   h1: {
-    fontFamily: "Orbitron, Arial, sans-serif", // Orbitron for headers
+    fontFamily: "Orbitron, Arial, sans-serif",
     fontSize: "2.5rem",
     fontWeight: 700,
+    color: neonGreen.main,
   },
   h2: {
     fontFamily: "Orbitron, Arial, sans-serif",
     fontSize: "2rem",
     fontWeight: 600,
+    color: neonGreen.main,
   },
   h3: {
     fontFamily: "Orbitron, Arial, sans-serif",
     fontSize: "1.75rem",
     fontWeight: 500,
+    color: neonGreen.main,
   },
   h4: {
     fontFamily: "Orbitron, Arial, sans-serif",
     fontSize: "1.5rem",
     fontWeight: 500,
+    color: neonGreen.main,
   },
-  // h5: {
-  //   fontFamily: 'Orbitron, Arial, sans-serif',
-  //   fontSize: '1.75rem',
-  //   fontWeight: 500,
-  // },
   body1: {
-    fontFamily: "Poppins, Arial, sans-serif", // Poppins for body
+    fontFamily: "Poppins, Arial, sans-serif",
     fontSize: "1rem",
     lineHeight: 1.6,
   },
@@ -53,6 +54,7 @@ const typography = {
   },
 };
 
+// Define components
 const components = {
   MuiButton: {
     styleOverrides: {
@@ -75,7 +77,7 @@ const components = {
       root: {
         borderRadius: "12px",
         boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-        padding: "16px", // Ensure consistent padding inside cards
+        padding: "16px",
       },
     },
   },
@@ -91,11 +93,22 @@ const components = {
   },
 };
 
+// Define base theme
 const baseTheme = {
   typography,
   components,
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
 };
 
+// Create light theme
 export const lightTheme = responsiveFontSizes(
   createTheme({
     ...baseTheme,
@@ -104,17 +117,18 @@ export const lightTheme = responsiveFontSizes(
       primary: neonGreen,
       secondary: goldenYellow,
       background: {
-        default: "#F0F2F5", // Softer light grey
+        default: "#F0F2F5",
         paper: "#FFFFFF",
       },
       text: {
-        primary: "#2B2D42", // Main text color
-        secondary: "#6C757D", // Muted text color
+        primary: "#2B2D42",
+        secondary: "#6C757D",
       },
     },
   })
 );
 
+// Create dark theme
 export const darkTheme = responsiveFontSizes(
   createTheme({
     ...baseTheme,
@@ -123,13 +137,31 @@ export const darkTheme = responsiveFontSizes(
       primary: neonGreen,
       secondary: goldenYellow,
       background: {
-        default: "#121212", // Dark theme background
-        paper: "#1E1E1E", // Slightly lighter than default
+        default: "#121212",
+        paper: "#1E1E1E",
       },
       text: {
-        primary: "#E5E5E5", // Main text color for dark theme
-        secondary: "#9CA3AF", // Muted text color
+        primary: "#E5E5E5",
+        secondary: "#9CA3AF",
       },
     },
   })
 );
+
+// Add global styles
+export const globalStyles = {
+  body: {
+    margin: 0,
+    padding: 0,
+    fontFamily: "Poppins, Arial, sans-serif",
+    backgroundColor: lightTheme.palette.background.default,
+    color: lightTheme.palette.text.primary,
+  },
+  a: {
+    color: neonGreen.main,
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
+};
