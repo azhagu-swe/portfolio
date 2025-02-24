@@ -31,8 +31,8 @@ const ContactPage = () => {
 
   const handleWhatsAppMessage = () => {
     const { name, message, email } = formData;
-    const phoneNumber = "+1234567890"; // Replace with your phone number
-    const text = `Hello, my name is ${name}.
+    const phoneNumber = "+917502005724"; // Replace with your phone number
+    const text = `${name}.
 
 ${message}
 
