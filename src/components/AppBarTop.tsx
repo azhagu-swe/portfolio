@@ -1,12 +1,8 @@
 // AppBarTop.js
 import * as React from "react";
 import { Toolbar, IconButton, Typography, styled } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { th } from "framer-motion/client";
 
 interface CustomAppBarProps {
   open: boolean;

@@ -11,6 +11,13 @@ import { Icon } from "@iconify/react";
 import SideDrawer from "./SideDrawer";
 import AppBarTop from "./AppBarTop";
 import Footer from "./Footer";
+import { BottomNavigationAction, useMediaQuery } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import WorkIcon from "@mui/icons-material/Work";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import MailIcon from "@mui/icons-material/Mail";
+import Link from "next/link";
+import BottomNavigation from "@mui/material/BottomNavigation";
 
 const drawerWidth = 240;
 
@@ -40,6 +47,8 @@ const Layout: React.FC<{
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [showScrollButton, setShowScrollButton] = React.useState(false);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check for mobile view
+  const [value, setValue] = React.useState(0);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -81,22 +90,67 @@ const Layout: React.FC<{
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
       />
-      <SideDrawer open={open} handleDrawerClose={handleDrawerClose} />
+      {!isMobile && (
+        <>
+          <SideDrawer open={open} handleDrawerClose={handleDrawerClose} />
+        </>
+      )}
       <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, overflow: "auto", position: "relative" }}>
-        <ContentBox open={open}>{children}</ContentBox>
-        <Fab
-          color="primary"
-          aria-label="scroll"
-          onClick={showScrollButton ? scrollToTop : scrollToBottom}
-          sx={{ position: "fixed", bottom: 16, right: 16 }}>
-          {showScrollButton ? (
-            <KeyboardArrowUpIcon />
-          ) : (
-            <KeyboardArrowDownIcon />
-          )}
-        </Fab>
+        <ContentBox open={!isMobile && open}>{children}</ContentBox>
+        {!isMobile && (
+          <Fab
+            color="primary"
+            aria-label="scroll"
+            onClick={showScrollButton ? scrollToTop : scrollToBottom}
+            sx={{ position: "fixed", bottom: 16, right: 16 }}>
+            {showScrollButton ? (
+              <KeyboardArrowUpIcon />
+            ) : (
+              <KeyboardArrowDownIcon />
+            )}
+          </Fab>
+        )}
+        {isMobile && (
+          <BottomNavigation
+            sx={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              boxShadow: theme.shadows[4],
+            }}
+            value={value}
+            onChange={(event: any, newValue: any) => {
+              setValue(newValue);
+            }}>
+            <BottomNavigationAction
+              label="Home"
+              icon={<HomeIcon />}
+              component={Link}
+              href="/"
+            />
+            <BottomNavigationAction
+              label="Experience"
+              icon={<WorkIcon />}
+              component={Link}
+              href="/experience"
+            />
+            <BottomNavigationAction
+              label="Projects"
+              icon={<AccountTreeIcon />}
+              component={Link}
+              href="/projects"
+            />
+            <BottomNavigationAction
+              label="Contact"
+              icon={<MailIcon />}
+              component={Link}
+              href="/contact"
+            />
+          </BottomNavigation>
+        )}
       </Box>
       <Footer />
     </Box>
