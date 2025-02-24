@@ -28,14 +28,12 @@ interface AppBarProps extends MuiAppBarProps {
 const ContentBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
-  margin: `${theme.spacing(5)} ${theme.spacing(2)} ${theme.spacing(
-    3
-  )} ${theme.spacing(7)}`,
+  margin: `${theme.spacing(5)} auto ${theme.spacing(1)} ${theme.spacing(7)}`,
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.paper, // Branding green for light mode, semi-dark for dark mode
 
   ...(open && {
-    marginLeft: drawerWidth - 30,
+    marginLeft: drawerWidth - 40,
   }),
 }));
 

@@ -11,7 +11,7 @@ interface CustomAppBarProps {
   isDarkMode: boolean;
 }
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -20,8 +20,8 @@ const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  marginRight: 40, // Add a small margin on the right side
-  width: `calc(100% - ${120}px )`, // Adjust width for margin
+  marginRight: 25, // Add a small margin on the right side
+  width: `calc(100% - ${105}px )`, // Adjust width for margin
   backgroundColor: theme.palette.primary.main, // Use secondary color when open
   transition: theme.transitions.create(
     ["width", "margin", "background-color"],
@@ -32,7 +32,7 @@ const AppBar = styled(MuiAppBar, {
   ),
   ...(open && {
     marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px - 35px)`,
+    width: `calc(100% - ${drawerWidth}px )`,
     transition: theme.transitions.create(
       ["width", "margin", "background-color"],
       {

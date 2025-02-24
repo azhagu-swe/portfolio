@@ -165,3 +165,5 @@ export const globalStyles = {
     },
   },
 };
+export const drawerWidth = 240;
+
