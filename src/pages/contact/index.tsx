@@ -82,18 +82,18 @@ Email: ${email}`;
       username: "@azhagu-swe",
       color: "#000000",
     },
-    // {
-    //   platform: "X",
-    //   icon: "pajamas:twitter",
-    //   link: "https://twitter.com/yourusername",
-    //   username: "yourusername",
-    //   color: "black",
-    // },
+    {
+      platform: "X",
+      icon: "pajamas:twitter",
+      link: "https://twitter.com/azhagu_swe",
+      username: "yourusername",
+      color: "black",
+    },
     {
       platform: "Instagram",
       icon: "mdi:instagram",
-      link: "https://instagram.com/yourusername",
-      username: "@azhagu.dev",
+      link: "https://instagram.com/azhagu.swe",
+      username: "@azhagu.swe",
       color: "#E4405F",
     },
     {
