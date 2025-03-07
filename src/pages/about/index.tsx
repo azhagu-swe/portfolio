@@ -208,6 +208,9 @@ const AboutMe: React.FC = () => {
                   boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
                   borderRadius: "12px",
                   overflow: "hidden",
+                  position: "relative",
+                  width: "100%",
+                  height: "200px", // Set height for the container
                 }}>
               <Image
                 src={cert.img}
