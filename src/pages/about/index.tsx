@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { CheckCircle } from "@mui/icons-material";
+import Image from "next/image";
 
 const AboutMe: React.FC = () => {
   const theme = useTheme();
@@ -136,16 +137,16 @@ const AboutMe: React.FC = () => {
         </Typography>
         {[
           {
-            degree: "Master's in Computer Applications",
+            degree: "Master's in Computer Science",
             institution: "H.H. The Rajah's College, Bharathidasan University",
             year: "2020",
-            grade: "CGPA: 7.73",
+            grade: "Percentage: 74%",
           },
           {
             degree: "Bachelor's in Computer Science",
             institution: "H.H. The Rajah's College, Bharathidasan University",
             year: "2018",
-            grade: "CGPA: 6.96",
+            grade: "Percentage: 71%",
           },
         ].map((edu, index) => (
           <Box
@@ -183,24 +184,16 @@ const AboutMe: React.FC = () => {
         <Grid container spacing={3}>
           {[
             {
-              name: "Front End Development HTML",
-              img: "/path/to/html-certificate.jpg",
+              name: "FullStack Java Development ",
+              img: "/image/Java-Full-Stack-skillup.png",
             },
             {
-              name: "Front End Development CSS",
-              img: "/path/to/css-certificate.jpg",
+              name: "Java Certificate Course",
+              img: "/image/java-certificate.jpg",
             },
             {
-              name: "Front End Development JavaScript",
-              img: "/path/to/javascript-certificate.jpg",
-            },
-            {
-              name: "Front End Development React",
-              img: "/path/to/react-certificate.jpg",
-            },
-            {
-              name: "CSS (Basic) Certification",
-              img: "/path/to/css-basic-certificate.jpg",
+              name: "Advanced C++",
+              img: "/image/c++ certificate.jpg",
             },
           ].map((cert, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
@@ -216,15 +209,18 @@ const AboutMe: React.FC = () => {
                   borderRadius: "12px",
                   overflow: "hidden",
                 }}>
-                <img
-                  src={cert.img}
-                  alt={cert.name}
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    display: "block",
-                  }}
-                />
+              <Image
+                src={cert.img}
+                alt={cert.name}
+                layout="responsive"
+                width={300} 
+                height={200}
+                style={{
+                  objectFit: "cover", // Crop or scale images to fill the area
+                  borderRadius: "8px",
+                }}
+              
+              />
                 <Typography
                   variant="body1"
                   sx={{
