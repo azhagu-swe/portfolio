@@ -11,9 +11,12 @@ import {
 import { motion } from "framer-motion";
 import { CheckCircle } from "@mui/icons-material";
 import Image from "next/image";
+import { useRouter } from "next/router";
+
 
 const AboutMe: React.FC = () => {
   const theme = useTheme();
+  const { basePath } = useRouter();
 
   // Animations Variants
   const cardVariants = {
@@ -185,15 +188,15 @@ const AboutMe: React.FC = () => {
           {[
             {
               name: "FullStack Java Development ",
-              img: "/image/Java-Full-Stack-skillup.png",
+              img:`${basePath}/image/Java-Full-Stack-skillup.png`,
             },
             {
               name: "Java Certificate Course",
-              img: "/image/java-certificate.jpg",
+              img: `${basePath}/image/java-certificate.jpg`,
             },
             {
               name: "Advanced C++",
-              img: "/image/c++ certificate.jpg",
+              img: `${basePath}/image/c++ certificate.jpg`,
             },
           ].map((cert, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
@@ -210,7 +213,7 @@ const AboutMe: React.FC = () => {
                   overflow: "hidden",
                   position: "relative",
                   width: "100%",
-                  height: "200px", // Set height for the container
+                  // height: "200px", // Set height for the container
                 }}>
               <Image
                 src={cert.img}
