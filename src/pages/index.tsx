@@ -8,8 +8,8 @@ export default function HomePage() {
   return (
     <Container maxWidth="lg">
       <HeroSection />
-      <AboutSection />
-      <ProjectsSection />
+      {/* <AboutSection /> */}
+      {/* <ProjectsSection /> */}
     </Container>
   );
 }

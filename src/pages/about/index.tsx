@@ -10,50 +10,18 @@ import {
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import CustomizeCard from "@/components/style/about/CustomizeCard";
+import SkillCard from "@/components/style/about/SkillCard";
+import {
+  PROFILE,
+  SKILLS_DATA,
+  CERTIFICATIONS_DATA,
+  ACHIEVEMENTS_DATA,
+  PARTICIPATIONS_DATA,
+} from "@/utils/aboutData";
 
 const AboutMe: React.FC = () => {
   const theme = useTheme();
   const { basePath } = useRouter();
-
-  // Common Motion Variants
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 },
-  };
-
-  const hoverEffect = {
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 12px 30px rgba(50, 205, 50, 0.5)",
-      transition: { duration: 0.3 },
-    },
-  };
-
-  // Reusable Skill Card Component
-  const SkillCard = ({ title, skills }: { title: string; skills: string }) => (
-    <Box
-      sx={{
-        padding: "20px",
-        borderRadius: "12px",
-        textAlign: "center",
-        border: `2px solid ${theme.palette.primary.main}`,
-        position: "relative",
-        overflow: "hidden",
-        transition: "all 0.4s ease",
-        "&:hover": {
-          borderColor: "#FFD700",
-          transform: "translateY(-10px)",
-        },
-      }}
-      component={motion.div}
-      whileHover="hover"
-      variants={hoverEffect}>
-      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-        {title}
-      </Typography>
-      <Typography variant="body2">{skills}</Typography>
-    </Box>
-  );
 
   return (
     <Box
@@ -71,8 +39,8 @@ const AboutMe: React.FC = () => {
       {/* Introduction Section */}
       <Box sx={{ textAlign: "center", mb: 4 }}>
         <Avatar
-          src="/path/to/profile-photo.jpg"
-          alt="Alagappan"
+          src={PROFILE.avatar}
+          alt={PROFILE.name}
           sx={{
             width: 120,
             height: 120,
@@ -85,16 +53,13 @@ const AboutMe: React.FC = () => {
           transition={{ duration: 0.4 }}
         />
         <Typography variant="h4" sx={{ fontWeight: "bold", color: "#32CD32" }}>
-          Hi, I&apos;m Alagappan ☕
+          Hi, I&apos;m {PROFILE.name} ☕
         </Typography>
         <Typography variant="h6" sx={{ fontStyle: "italic", mt: 1 }}>
-          Java Specialist | Full Stack Developer
+          {PROFILE.role}
         </Typography>
         <Typography variant="body1" sx={{ mt: 2 }}>
-          👋 With 2.5 years of experience as a Software Engineer, I specialize
-          in building scalable, secure, and responsive applications. 🎯 Holding
-          a Master&apos;s degree in Computer Applications, I thrive on solving
-          complex problems and creating impactful digital solutions. 🚀
+          {PROFILE.intro}
         </Typography>
       </Box>
 
@@ -104,20 +69,14 @@ const AboutMe: React.FC = () => {
       <Box sx={{ mb: 4 }}>
         <Typography
           variant="h4"
-          color={theme.palette.primary.main}
+          color="primary"
           sx={{ fontWeight: "bold", mb: 2 }}>
-          My Skills
+          Technical Skills
         </Typography>
         <Grid container spacing={3}>
-          {[
-            { title: "Frontend", skills: "React, Redux, Next.js, TypeScript" },
-            { title: "Backend", skills: "Java, Spring Boot, RESTful APIs" },
-            { title: "Database", skills: "PostgreSQL, MySQL" },
-            { title: "Version Control", skills: "Git, GitHub" },
-            { title: "Deployment", skills: "Netlify, Render" },
-          ].map((skill, index) => (
+          {SKILLS_DATA.map((skill, index) => (
             <Grid item xs={12} md={6} key={index}>
-              <SkillCard {...skill} />
+              <SkillCard title={skill.title} skills={skill.skills} />
             </Grid>
           ))}
         </Grid>
@@ -129,25 +88,12 @@ const AboutMe: React.FC = () => {
       <Box sx={{ mb: 4 }}>
         <Typography
           variant="h4"
-          color={theme.palette.primary.main}
+          color="primary"
           sx={{ fontWeight: "bold", mb: 2 }}>
           Certifications
         </Typography>
         <Grid container spacing={3}>
-          {[
-            {
-              description: "FullStack Java Development",
-              img: `${basePath}/image/Java-Full-Stack-skillup.png`,
-            },
-            {
-              description: "Java Certificate Course",
-              img: `${basePath}/image/java-certificate.jpg`,
-            },
-            {
-              description: "Advanced C++",
-              img: `${basePath}/image/c++ certificate.jpg`,
-            },
-          ].map((cert, index) => (
+          {CERTIFICATIONS_DATA(basePath).map((cert, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <CustomizeCard {...cert} />
             </Grid>
@@ -161,18 +107,31 @@ const AboutMe: React.FC = () => {
       <Box>
         <Typography
           variant="h4"
-          color={theme.palette.primary.main}
+          color="primary"
           sx={{ fontWeight: "bold", mb: 2 }}>
           Achievements
         </Typography>
         <Grid container spacing={3}>
-          {[
-            {
-              description:
-                "🏆 2nd Prize in Debugging Competition - Exceptional debugging in a competitive contest.",
-              img: `${basePath}/image/Debuggin-2nd-Prize.jpg`,
-            },
-          ].map((achievement, index) => (
+          {ACHIEVEMENTS_DATA(basePath).map((achievement, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <CustomizeCard {...achievement} />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      <Divider sx={{ my: 4 }} />
+
+      {/* Participation Section */}
+      <Box>
+        <Typography
+          variant="h4"
+          color="primary"
+          sx={{ fontWeight: "bold", mb: 2 }}>
+          Participation
+        </Typography>
+        <Grid container spacing={3}>
+          {PARTICIPATIONS_DATA(basePath).map((achievement, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <CustomizeCard {...achievement} />
             </Grid>
