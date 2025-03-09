@@ -3,9 +3,9 @@ export const HERO_DATA = {
   title: "Software Engineer | Full Stack Developer",
   roles: [
     "Java Specialist ☕",
+    "Full Stack Developer 🛠️",
     "Spring Boot Developer 🌱",
-    "Web Architect 🌐",
-    "System Optimizer 🚀",
+    "Web Developer 🌐",
   ],
   description:
     "Full-stack developer with 2.5+ years experience building high-performance applications. Masters-educated technical specialist combining Java expertise with modern web development skills to deliver secure, scalable solutions.",
