@@ -22,6 +22,7 @@ import {
 const AboutMe: React.FC = () => {
   const theme = useTheme();
   const { basePath } = useRouter();
+  const profile = PROFILE(basePath); // Call the function once to avoid repeated calls
 
   return (
     <Box
@@ -37,10 +38,10 @@ const AboutMe: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}>
       {/* Introduction Section */}
-      <Box sx={{ textAlign: "center", mb: 4 }}>
+      <Box textAlign="center">
         <Avatar
-          src={PROFILE.avatar}
-          alt={PROFILE.name}
+          src={profile.avatar}
+          alt={profile.name}
           sx={{
             width: 120,
             height: 120,
@@ -53,13 +54,13 @@ const AboutMe: React.FC = () => {
           transition={{ duration: 0.4 }}
         />
         <Typography variant="h4" sx={{ fontWeight: "bold", color: "#32CD32" }}>
-          Hi, I&apos;m {PROFILE.name} ☕
+          Hi, I&apos;m {profile.name} ☕
         </Typography>
         <Typography variant="h6" sx={{ fontStyle: "italic", mt: 1 }}>
-          {PROFILE.role}
+          {profile.role}
         </Typography>
         <Typography variant="body1" sx={{ mt: 2 }}>
-          {PROFILE.intro}
+          {profile.intro}
         </Typography>
       </Box>
 

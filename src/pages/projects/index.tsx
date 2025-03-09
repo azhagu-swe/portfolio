@@ -15,67 +15,51 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-
-// Mock project data
-const projects = [
-  {
-    title: "Portfolio Website",
-    description:
-      "A responsive personal portfolio showcasing skills, projects, and branding with a modern design.",
-    technologies: ["Next.js", "TypeScript", "Material-UI"],
-    thumbnail: "https://via.placeholder.com/400x200",
-    liveDemo: "https://portfolio.example.com",
-    github: "https://github.com/user/portfolio",
-  },
-  {
-    title: "E-Commerce Application",
-    description:
-      "A feature-rich e-commerce platform simplifying online shopping with a seamless user experience.",
-    technologies: ["React.js", "Redux", "Node.js", "MongoDB"],
-    thumbnail: "https://via.placeholder.com/400x200",
-    liveDemo: "https://ecommerce.example.com",
-    github: "https://github.com/user/ecommerce",
-  },
-  {
-    title: "Proximity Hash Algorithm",
-    description:
-      "An innovative proximity-based hashing system for efficient spatial data storage and retrieval.",
-    technologies: ["Java", "Geohash"],
-    thumbnail: "https://via.placeholder.com/400x200",
-    liveDemo: "https://proximityhash.example.com",
-    github: "https://github.com/user/proximity-hash",
-  },
-];
+import { PROJECTS_DATA } from "@/utils/projectData";
 
 // Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
   transition: "transform 0.3s ease",
   boxShadow: theme.shadows[4],
+  height: "100%", // Ensure all cards have the same height
+  display: "flex",
+  flexDirection: "column",
   ":hover": {
     transform: "scale(1.03)",
   },
 }));
 
+const CardContentWrapper = styled(CardContent)(({ theme }) => ({
+  flexGrow: 1, // Allow content to grow and fill the card
+  display: "flex",
+  flexDirection: "column",
+}));
+
 const ProjectPage = () => {
   const [filter, setFilter] = React.useState("All");
 
-  const handleFilterChange = (event: any, newValue: any) => {
+  const handleFilterChange = (
+    event: React.SyntheticEvent,
+    newValue: string
+  ) => {
     setFilter(newValue);
   };
 
   const filteredProjects =
     filter === "All"
-      ? projects
-      : projects.filter((project) => project.technologies.includes(filter));
+      ? PROJECTS_DATA.projects
+      : PROJECTS_DATA.projects.filter((project) =>
+          project.technologies.includes(filter)
+        );
 
   return (
     <Box sx={{ padding: 4 }}>
       {/* Header Section */}
       <Typography variant="h4" align="center" gutterBottom>
-        My Projects
+        {PROJECTS_DATA.header.title}
       </Typography>
       <Typography variant="subtitle1" align="center" sx={{ marginBottom: 4 }}>
-        A showcase of innovation, creativity, and technical expertise.
+        {PROJECTS_DATA.header.subtitle}
       </Typography>
 
       {/* Search and Filter Section */}
@@ -100,9 +84,10 @@ const ProjectPage = () => {
           onChange={handleFilterChange}
           aria-label="Project filter tabs">
           <Tab label="All" value="All" />
+          <Tab label="Java" value="Java" />
           <Tab label="Next.js" value="Next.js" />
           <Tab label="React.js" value="React.js" />
-          <Tab label="Java" value="Java" />
+          <Tab label="PostgreSQL" value="PostgreSQL" />
         </Tabs>
       </Box>
 
@@ -116,12 +101,17 @@ const ProjectPage = () => {
                 height="140"
                 image={project.thumbnail}
                 alt={project.title}
+                sx={{ objectFit: "cover" }} // Ensure images are uniformly sized
               />
-              <CardContent>
+              <CardContentWrapper>
                 <Typography variant="h6" gutterBottom>
                   {project.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ flexGrow: 1 }} // Allow description to grow and fill space
+                >
                   {project.description}
                 </Typography>
                 <Stack
@@ -134,6 +124,7 @@ const ProjectPage = () => {
                       label={tech}
                       color="primary"
                       variant="outlined"
+                      size="small"
                     />
                   ))}
                 </Stack>
@@ -157,7 +148,7 @@ const ProjectPage = () => {
                     GitHub
                   </Button>
                 </Stack>
-              </CardContent>
+              </CardContentWrapper>
             </StyledCard>
           </Grid>
         ))}

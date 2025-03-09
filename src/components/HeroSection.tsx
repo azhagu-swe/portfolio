@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/router";
 import { HERO_DATA, ANIMATION_CONFIG } from "@/utils/heroData";
+import Image from "next/image";
 
 const HeroSection: React.FC = () => {
   const theme = useTheme();
@@ -86,11 +87,12 @@ const HeroSection: React.FC = () => {
 
       {/* Profile Image */}
       <motion.div {...ANIMATION_CONFIG.image} style={{ marginLeft: "40px" }}>
-        <img
+        <Image
           src={`${basePath}${HERO_DATA.images.profile}`}
           alt={HERO_DATA.name}
+          width={280}
+          height={280}
           style={{
-            width: "280px",
             borderRadius: "50%",
             boxShadow: theme.shadows[6],
             border: `4px solid ${theme.palette.primary.main}`,
