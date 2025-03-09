@@ -16,6 +16,7 @@ import {
 import { styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { PROJECTS_DATA } from "@/utils/projectData";
+import { useRouter } from "next/router";
 
 // Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -37,6 +38,8 @@ const CardContentWrapper = styled(CardContent)(({ theme }) => ({
 
 const ProjectPage = () => {
   const [filter, setFilter] = React.useState("All");
+    const { basePath } = useRouter();
+  
 
   const handleFilterChange = (
     event: React.SyntheticEvent,
@@ -99,7 +102,7 @@ const ProjectPage = () => {
               <CardMedia
                 component="img"
                 height="140"
-                image={project.thumbnail}
+                image={`${basePath}/`+project.thumbnail}
                 alt={project.title}
                 sx={{ objectFit: "cover" }} // Ensure images are uniformly sized
               />
