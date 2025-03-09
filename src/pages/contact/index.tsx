@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
+import { CONTACT_DATA } from "@/utils/contactData";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -60,51 +61,6 @@ Email: ${email}`;
     }
   };
 
-  const socialLinks = [
-    {
-      platform: "Email",
-      icon: "mdi:email-outline",
-      link: "mailto:azhagu.swe@gmail.com",
-      username: "azhagu.swe@gmail.com",
-      color: "#D44638",
-    },
-    {
-      platform: "LinkedIn",
-      icon: "mdi:linkedin",
-      link: "https://www.linkedin.com/in/azhagu-swe/",
-      username: "@azhagu-swe",
-      color: "#0077B5",
-    },
-    {
-      platform: "GitHub",
-      icon: "mdi:github",
-      link: "https://github.com/azhagu-swe",
-      username: "@azhagu-swe",
-      color: "#000000",
-    },
-    {
-      platform: "X",
-      icon: "pajamas:twitter",
-      link: "https://twitter.com/azhagu_swe",
-      username: "yourusername",
-      color: "black",
-    },
-    {
-      platform: "Instagram",
-      icon: "mdi:instagram",
-      link: "https://instagram.com/azhagu.swe",
-      username: "@azhagu.swe",
-      color: "#E4405F",
-    },
-    {
-      platform: "WhatsApp",
-      icon: "mdi:whatsapp",
-      link: "https://wa.me/+917502005724",
-      username: "+917502005724",
-      color: "#25D366",
-    },
-  ];
-
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
       <Typography
@@ -119,10 +75,11 @@ Email: ${email}`;
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}>
-        Contact Me
+        {CONTACT_DATA.title}
       </Typography>
+
       <Grid container spacing={2} justifyContent="center">
-        {socialLinks.map((item, index) => (
+        {CONTACT_DATA.socialLinks.map((item, index) => (
           <Grid item xs={6} sm={6} md={4} lg={4} key={index}>
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -134,10 +91,10 @@ Email: ${email}`;
                   p: 2,
                   borderRadius: "10px",
                   boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
-                  height: "220px", // Set a consistent height
+                  height: "220px",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between", // Ensures consistent spacing
+                  justifyContent: "space-between",
                   "&:hover": {
                     boxShadow: "0 5px 10px rgba(0, 0, 0, 0.2)",
                   },
@@ -166,12 +123,10 @@ Email: ${email}`;
                   <Typography
                     variant="body2"
                     sx={{
-                      // color: item.color,
                       cursor: "pointer",
                       wordWrap: "break-word",
                       overflow: "hidden",
-                      textOverflow: "ellipsis", // Ensure long text doesn't overflow
-                      // whiteSpace: "nowrap", // Add ellipsis for a single line
+                      textOverflow: "ellipsis",
                     }}>
                     {item.username}
                   </Typography>
@@ -185,12 +140,11 @@ Email: ${email}`;
       <Typography
         variant="h4"
         sx={{ fontWeight: "bold", mt: 6, mb: 3, textAlign: "center" }}>
-        Connect with Me
+        {CONTACT_DATA.subtitle}
       </Typography>
 
       <Typography variant="body1" sx={{ mb: 4, textAlign: "center" }}>
-        Feel free to reach out using the form below. I’ll get back to you as
-        soon as possible.
+        {CONTACT_DATA.description}
       </Typography>
 
       <Box
@@ -209,7 +163,7 @@ Email: ${email}`;
         onSubmit={handleSubmit}>
         <TextField
           fullWidth
-          label="Your Name"
+          label={CONTACT_DATA.form.nameLabel}
           variant="outlined"
           name="name"
           value={formData.name}
@@ -228,7 +182,7 @@ Email: ${email}`;
 
         <TextField
           fullWidth
-          label="Your Email"
+          label={CONTACT_DATA.form.emailLabel}
           type="email"
           variant="outlined"
           name="email"
@@ -248,7 +202,7 @@ Email: ${email}`;
 
         <TextField
           fullWidth
-          label="Your Message"
+          label={CONTACT_DATA.form.messageLabel}
           multiline
           rows={4}
           variant="outlined"
@@ -268,14 +222,17 @@ Email: ${email}`;
         />
 
         <FormControl fullWidth>
-          <InputLabel>Contact Method</InputLabel>
+          <InputLabel>{CONTACT_DATA.form.methodLabel}</InputLabel>
           <Select
             name="method"
             value={formData.method}
             onChange={handleInputChange}
-            label="Contact Method">
-            <MenuItem value="WhatsApp">WhatsApp</MenuItem>
-            <MenuItem value="Email">Email</MenuItem>
+            label={CONTACT_DATA.form.methodLabel}>
+            {CONTACT_DATA.form.methods.map((method) => (
+              <MenuItem key={method.value} value={method.value}>
+                {method.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
@@ -289,7 +246,7 @@ Email: ${email}`;
             transition: "all 0.3s",
             "&:hover": { transform: "translateY(-2px)" },
           }}>
-          Send Message
+          {CONTACT_DATA.form.submitText}
         </Button>
       </Box>
     </Container>
