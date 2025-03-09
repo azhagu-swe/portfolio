@@ -132,7 +132,7 @@ const ProjectPage = () => {
                   ))}
                 </Stack>
                 <Stack direction="row" spacing={2}>
-                  <Button
+                  {project.liveDemo&&<Button
                     size="small"
                     variant="contained"
                     color="primary"
@@ -140,7 +140,7 @@ const ProjectPage = () => {
                     target="_blank"
                     rel="noopener noreferrer">
                     Live Demo
-                  </Button>
+                  </Button>}
                   <Button
                     size="small"
                     variant="outlined"
