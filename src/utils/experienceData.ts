@@ -1,0 +1,71 @@
+export const EXPERIENCE_DATA = {
+  header: {
+    title: "Professional Experience",
+    subtitle:
+      "2+ years of expertise in Java, Spring Boot, and full-stack development.",
+  },
+  roles: [
+    {
+      title: "Junior Software Developer",
+      company: "Memob Plus Pvt Ltd",
+      duration: "Apr 2023 – Present",
+      location: "Chennai, Tamil Nadu",
+      responsibilities: [
+        "Modernized legacy DSP platform using <strong>Java</strong>, <strong>Spring Boot</strong>, and <strong>Next.js</strong>, improving UI responsiveness by <strong>50%</strong>.",
+        "Developed <strong>RESTful APIs</strong> handling <strong>10K+ RPM</strong>, reducing latency by <strong>40%</strong> through <strong>Redis</strong> caching.",
+        "Optimized <strong>PostgreSQL</strong> queries using indexing, achieving <strong>30% faster</strong> execution.",
+        "Integrated <strong>RabbitMQ</strong> for async processing of <strong>1M+ daily events</strong>.",
+        "Designed interactive UIs with <strong>Next.js</strong>, <strong>React.js</strong>, and <strong>MUI</strong>.",
+      ],
+      techStack: [
+        "Java",
+        "Spring Boot",
+        "Redis",
+        "RabbitMQ",
+        "Next.js",
+        "PostgreSQL",
+        "React.js",
+        "Redux",
+        "MUI",
+      ],
+    },
+    {
+      title: "Software Developer Intern",
+      company: "Memob Plus Pvt Ltd",
+      duration: "Aug 2022 – Mar 2023",
+      location: "Chennai, Tamil Nadu",
+      responsibilities: [
+        "Developed <strong>proximity hash algorithm</strong> in Java, improving geospatial targeting accuracy by <strong>15%</strong>.",
+        "Visualized <strong>50K+ geospatial data points</strong> using <strong>React.js</strong> and <strong>Mapbox</strong>.",
+        "Optimized <strong>PostgreSQL</strong> queries, reducing data fetch time by <strong>25%</strong>.",
+        "Implemented <strong>Redis</strong> caching to reduce database load by <strong>40%</strong> during peak traffic.",
+      ],
+      techStack: [
+        "Java",
+        "Spring Boot",
+        "React.js",
+        "Mapbox",
+        "PostgreSQL",
+        "Redis",
+      ],
+    },
+  ],
+  achievements: [
+    "Reduced API latency by <strong>40%</strong> through <strong>Redis</strong> caching strategies.",
+    "Improved database query speed by <strong>30%</strong> using <strong>PostgreSQL</strong> indexing.",
+    "Developed geospatial targeting system with <strong>10-meter accuracy</strong>.",
+    "Modernized legacy DSP platform, improving UI responsiveness by <strong>50%</strong>.",
+  ],
+  skills: [
+    "Java",
+    "Spring Boot",
+    "Redis",
+    "RabbitMQ",
+    "PostgreSQL",
+    "Next.js",
+    "React.js",
+    "Mapbox",
+    "RESTful APIs",
+    "System Optimization",
+  ],
+};

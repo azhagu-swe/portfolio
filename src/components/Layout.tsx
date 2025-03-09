@@ -43,7 +43,7 @@ const Layout: React.FC<{
   isDarkMode: boolean;
 }> = ({ children, toggleTheme, isDarkMode }) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [showScrollButton, setShowScrollButton] = React.useState(false);
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check for mobile view
   const [value, setValue] = React.useState(0);

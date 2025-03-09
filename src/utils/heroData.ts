@@ -14,9 +14,9 @@ export const HERO_DATA = {
     resume: "Download Resume",
   },
   images: {
-    profile: "/path/to/photo.jpg",
+    profile: "/image/profile.jpg",
     background: "/path/to/background.jpg",
-    resume: "/path/to/resume.pdf",
+    resume: "/pdf/azhagu-resume.pdf",
   },
 };
 

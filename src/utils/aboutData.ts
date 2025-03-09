@@ -1,11 +1,11 @@
 // aboutData.ts
-export const PROFILE = {
+export const PROFILE =(basePath: string) =>( {
   name: "Alagappan",
   role: "Java Specialist | Full Stack Developer",
   intro:
     "Full Stack Developer with 2.5 years of professional experience. My expertise lies in crafting scalable, secure, and user-friendly applications. 🎯 Armed with a Master's degree in Computer Applications, I thrive on tackling complex challenges and delivering innovative tech solutions. 🚀 Let's build something remarkable together!",
-  avatar: "/path/to/profile-photo.jpg",
-};
+  avatar:  `${basePath}/image/profile.jpg`,
+});
 
 export const SKILLS_DATA = [
   {
