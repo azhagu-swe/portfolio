@@ -15,7 +15,7 @@ export const HERO_DATA = {
   },
   images: {
     profile: "/image/profile.jpg",
-    background: "/path/to/background.jpg",
+    // background: "/path/to/background.jpg",
     resume: "/pdf/azhagu-resume.pdf",
   },
 };

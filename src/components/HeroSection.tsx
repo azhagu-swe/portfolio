@@ -20,7 +20,7 @@ const HeroSection: React.FC = () => {
         justifyContent: "space-between",
         minHeight: "90vh",
         padding: "20px",
-        backgroundImage: `url(${basePath}${HERO_DATA.images.background})`,
+        // backgroundImage: `url(${basePath}${HERO_DATA.images.background})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         textAlign: { xs: "center", md: "left" },
