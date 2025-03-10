@@ -23,18 +23,22 @@ const drawerWidth = 240;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
+  isMobile?: boolean;
 }
 
 const ContentBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-  margin: `${theme.spacing(5)} auto ${theme.spacing(1)} ${theme.spacing(7)}`,
+})<AppBarProps>(({ theme, open, isMobile }) => ({
+  margin: `${theme.spacing(5)} auto ${theme.spacing(1)} ${theme.spacing(
+    isMobile ? 1 : 7
+  )}`,
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.paper, // Branding green for light mode, semi-dark for dark mode
 
-  ...(open && {
-    marginLeft: drawerWidth - 40,
-  }),
+  ...(open &&
+    !isMobile && {
+      marginLeft: drawerWidth - 40,
+    }),
 }));
 
 const Layout: React.FC<{
@@ -84,9 +88,10 @@ const Layout: React.FC<{
       <CssBaseline />
       <AppBarTop
         handleDrawerOpen={handleDrawerOpen}
-        open={ !isMobile?open:false}
+        open={open}
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
+        isMobile={isMobile}
       />
       {!isMobile && (
         <>
@@ -96,7 +101,9 @@ const Layout: React.FC<{
       <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, overflow: "auto", position: "relative" }}>
-        <ContentBox open={!isMobile && open}>{children}</ContentBox>
+        <ContentBox open={!isMobile && open} isMobile={isMobile}>
+          {children}
+        </ContentBox>
         {!isMobile && (
           <Fab
             color="primary"
