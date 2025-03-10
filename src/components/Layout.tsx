@@ -84,7 +84,7 @@ const Layout: React.FC<{
       <CssBaseline />
       <AppBarTop
         handleDrawerOpen={handleDrawerOpen}
-        open={open}
+        open={ !isMobile?open:false}
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
       />
