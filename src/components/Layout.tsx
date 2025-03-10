@@ -23,20 +23,20 @@ const drawerWidth = 240;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
-  isMobile?: boolean;
+  ismobile?: boolean | string;
 }
 
 const ContentBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open, isMobile }) => ({
+})<AppBarProps>(({ theme, open, ismobile }) => ({
   margin: `${theme.spacing(5)} auto ${theme.spacing(1)} ${theme.spacing(
-    isMobile ? 1 : 7
+    ismobile ? 1 : 7
   )}`,
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.paper, // Branding green for light mode, semi-dark for dark mode
 
   ...(open &&
-    !isMobile && {
+    !ismobile && {
       marginLeft: drawerWidth - 40,
     }),
 }));
@@ -49,7 +49,7 @@ const Layout: React.FC<{
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
   const [showScrollButton, setShowScrollButton] = React.useState(false);
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check for mobile view
+  const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // Check for mobile view
   const [value, setValue] = React.useState(0);
 
   const handleDrawerOpen = () => {
@@ -91,9 +91,9 @@ const Layout: React.FC<{
         open={open}
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
-        isMobile={isMobile}
+        ismobile={ismobile ? "true" : undefined}
       />
-      {!isMobile && (
+      {!ismobile && (
         <>
           <SideDrawer open={open} handleDrawerClose={handleDrawerClose} />
         </>
@@ -101,10 +101,12 @@ const Layout: React.FC<{
       <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, overflow: "auto", position: "relative" }}>
-        <ContentBox open={!isMobile && open} isMobile={isMobile}>
+        <ContentBox
+          open={!ismobile && open}
+          ismobile={ismobile ? "true" : undefined}>
           {children}
         </ContentBox>
-        {!isMobile && (
+        {!ismobile && (
           <Fab
             color="primary"
             aria-label="scroll"
@@ -117,7 +119,7 @@ const Layout: React.FC<{
             )}
           </Fab>
         )}
-        {isMobile && (
+        {ismobile && (
           <BottomNavigation
             sx={{
               position: "fixed",
