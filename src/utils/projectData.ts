@@ -4,22 +4,22 @@ export const PROJECTS_DATA = {
       subtitle: "A showcase of innovation, creativity, and technical expertise.",
     },
     projects: [
-      {
-        title: "DSP Platform Modernization",
-        description:
-          "Upgraded legacy DSP platform using Next.js and Spring Boot, improving UI responsiveness by 50%. Integrated Redis for caching and RabbitMQ for async processing.",
-        technologies: ["Java", "Spring Boot", "Next.js", "Redis", "RabbitMQ"],
-        thumbnail: "image/portfolio.png",
-        liveDemo: "https://github.com/azhagu-swe/dsp-platform",
-        github: "https://github.com/azhagu-swe/dsp-platform",
-      },
+      // {
+      //   title: "DSP Platform Modernization",
+      //   description:
+      //     "Upgraded legacy DSP platform using Next.js and Spring Boot, improving UI responsiveness by 50%. Integrated Redis for caching and RabbitMQ for async processing.",
+      //   technologies: ["Java", "Spring Boot", "Next.js", "Redis", "RabbitMQ"],
+      //   thumbnail: "image/portfolio.png",
+      //   liveDemo: "https://github.com/azhagu-swe/dsp-platform",
+      //   github: "https://github.com/azhagu-swe/dsp-platform",
+      // },
       {
         title: "Proximity Hash Algorithm",
         description:
           "Developed a Java-based geohash algorithm for spatial targeting, improving accuracy by 15%. Integrated with PostgreSQL for efficient data storage.",
         technologies: ["Java", "Geohash", "PostgreSQL"],
         thumbnail: "https://via.placeholder.com/400x200",
-        liveDemo: "https://github.com/azhagu-swe/proximityhash-java",
+        // liveDemo: "https://github.com/azhagu-swe/proximityhash-javas",
         github: "https://github.com/azhagu-swe/proximityhash-java",
       },
       {

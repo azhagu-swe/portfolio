@@ -9,19 +9,21 @@ interface CustomAppBarProps {
   handleDrawerOpen: () => void;
   toggleTheme: () => void;
   isDarkMode: boolean;
+  isMobile: boolean;
 }
 
 const drawerWidth = 250;
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
+  isMobile?: boolean;
 }
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
+})<AppBarProps>(({ theme, open, isMobile }) => ({
   zIndex: theme.zIndex.drawer + 1,
   marginRight: 25, // Add a small margin on the right side
-  width: `calc(100% - ${105}px )`, // Adjust width for margin
+  width: `calc(100% - ${isMobile ? 60 : 105}px )`, // Adjust width for margin
   backgroundColor: theme.palette.primary.main, // Use secondary color when open
   transition: theme.transitions.create(
     ["width", "margin", "background-color"],
@@ -30,17 +32,18 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.leavingScreen,
     }
   ),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px )`,
-    transition: theme.transitions.create(
-      ["width", "margin", "background-color"],
-      {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }
-    ),
-  }),
+  ...(!isMobile &&
+    open && {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px )`,
+      transition: theme.transitions.create(
+        ["width", "margin", "background-color"],
+        {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.enteringScreen,
+        }
+      ),
+    }),
 }));
 
 const AppBarTop: React.FC<CustomAppBarProps> = ({
@@ -48,9 +51,10 @@ const AppBarTop: React.FC<CustomAppBarProps> = ({
   handleDrawerOpen,
   toggleTheme,
   isDarkMode,
+  isMobile,
 }) => {
   return (
-    <AppBar position="fixed" open={open}>
+    <AppBar position="fixed" open={open} isMobile={isMobile}>
       <Toolbar>
         {/* <IconButton
           color="inherit"

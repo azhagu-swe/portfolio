@@ -16,7 +16,8 @@ import { CSSObject } from "@emotion/react";
 import { Tooltip } from "@mui/material";
 import CustomizeTooltip from "./style/CustomizeTooltip";
 import { useRouter } from "next/router";
-import { MENU_ITEMS,BOTTOM_ITEMS } from "@/utils/drawerData";
+import { MENU_ITEMS, BOTTOM_ITEMS } from "@/utils/drawerData";
+import Image from "next/image";
 
 const drawerWidth = 240;
 
@@ -89,9 +90,10 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
   const theme = useTheme();
   const router = useRouter();
   const iconSize = 28;
+  const { basePath } = router;
 
   const renderListItems = (items: typeof MENU_ITEMS) => {
-    return items.map((item:any) => {
+    return items.map((item: any) => {
       const isActive = router.pathname === item.link;
       const icon = isActive ? item.icon.filled : item.icon.outline;
 
@@ -140,6 +142,25 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
   return (
     <Drawer variant="permanent" open={open}>
       <DrawerHeader>
+        {/* Logo Container */}
+        {/* <div style={{ 
+          position: 'absolute',
+          left: 16,
+          transition: 'opacity 0.3s ease',
+          // opacity: open ? 1 : 0
+        }}>
+          <Image
+            src={`${basePath}/favicon.ico`}
+            alt="Your Logo"
+            width={32}
+            height={32}
+            style={{
+              borderRadius: '50%',
+              boxShadow: theme.shadows[3],
+              border: `2px solid ${theme.palette.background.paper}`
+            }}
+          />
+        </div> */}
         <StyledIconButton
           sx={{ backgroundColor: theme.palette.primary.main }}
           onClick={handleDrawerClose}>
