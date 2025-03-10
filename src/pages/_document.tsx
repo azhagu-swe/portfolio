@@ -1,13 +1,17 @@
-// pages/_document.tsx
 import Document, {
   Html,
   Head,
   Main,
   NextScript,
   DocumentContext,
+  DocumentInitialProps,
 } from "next/document";
 
-class MyDocument extends Document {
+interface MyDocumentProps extends DocumentInitialProps {
+  theme: string;
+}
+
+class MyDocument extends Document<MyDocumentProps> {
   static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
 
@@ -25,11 +29,15 @@ class MyDocument extends Document {
   }
 
   render() {
-    const { theme } = this.props as any;
+    const { theme } = this.props;
 
     return (
       <Html lang="en" data-theme={theme}>
-        <Head />
+        <Head>
+          {/* Add favicon */}
+          <link rel="icon" href="/favicon.ico" />
+          <meta name="description" content="Azhagu-Swe Portfolio" />
+        </Head>
         <body>
           <Main />
           <NextScript />
