@@ -1,0 +1,186 @@
+---
+title: "Mastering Core Java: Essential Interview Questions"
+date: "2025-07-08"
+excerpt: "A curated list of essential Core Java interview questions covering OOP, Collections, Exception Handling, Concurrency, and Java 8 features to help you ace your next technical interview."
+coverImage: "https://placehold.co/800x400/1E1E1E/32CD32?text=Core+Java+Q&A"
+category: "Technical Guides"
+tags:
+  [
+    "Java",
+    "Interview",
+    "Software Development",
+    "Core Java",
+    "Concurrency",
+    "Java 8",
+  ]
+readTime: "25 min"
+---
+
+## Cracking the Core Java Interview
+
+Core Java remains the bedrock of many enterprise systems and a fundamental skill for any Java developer. A strong grasp of its principles is often the first thing an interviewer will test. This guide covers some of the most frequently asked questions to help you prepare.
+
+---
+
+### Object-Oriented Programming (OOP) Concepts
+
+OOP is the heart of Java. Be ready to explain its principles clearly.
+
+#### **What are the four main principles of OOP?**
+
+- **Encapsulation:** The practice of bundling data (attributes) and the methods that operate on that data within a single unit, or "class." It restricts direct access to some of an object's components, which is a means of preventing accidental interference and misuse of the methods and data.
+- **Abstraction:** Hiding complex implementation details and showing only the necessary features of an object. In Java, this is achieved using `abstract` classes and `interfaces`.
+- **Inheritance:** A mechanism where a new class (subclass) inherits attributes and methods from an existing class (superclass). It promotes code reusability and establishes an "IS-A" relationship.
+- **Polymorphism:** The ability of a method to do different things based on the object it is acting upon. It allows you to perform a single action in different ways, primarily through method overriding (runtime polymorphism) and method overloading (compile-time polymorphism).
+
+#### **What is the difference between an `abstract class` and an `interface`?**
+
+An **abstract class** can have both abstract methods (without a body) and concrete methods (with a body), and it can have instance variables. A class can extend only one abstract class.
+
+An **interface**, on the other hand, can only have abstract methods (in Java 7 and earlier; Java 8+ allows `default` and `static` methods with implementations). A class can implement multiple interfaces. Use an interface to define a contract that different, unrelated classes can follow.
+
+---
+
+### Key Java Keywords & Concepts
+
+These questions test your understanding of Java's specific language features.
+
+#### **Explain the difference between `==` and the `.equals()` method.**
+
+- The `==` operator compares the memory addresses of two objects. It checks if two references point to the exact same object in memory.
+- The `.equals()` method, as defined in the `Object` class, also checks for memory address equality. However, it is meant to be overridden (as it is in classes like `String`, `Integer`, etc.) to compare the actual content or state of two objects.
+
+#### **What is the contract between `hashCode()` and `equals()`?**
+
+This is a critical concept, especially for using objects in collections like `HashMap`.
+
+1.  If two objects are equal according to the `equals(Object)` method, then calling the `hashCode()` method on each of the two objects must produce the same integer result.
+2.  If two objects are unequal according to the `equals(Object)` method, their `hashCode()` values are not required to be different. However, producing distinct hash codes for unequal objects may improve the performance of hash tables.
+
+#### **What is the difference between `final`, `finally`, and `finalize`?**
+
+- `final`: A keyword used to apply restrictions. A `final` class cannot be subclassed, a `final` method cannot be overridden, and a `final` variable's value cannot be changed once assigned.
+- `finally`: A block used in `try-catch` exception handling. The `finally` block is always executed, regardless of whether an exception is thrown or not. It's used for cleanup code, like closing database connections.
+- `finalize`: A method from the `Object` class that is called by the garbage collector just before an object is destroyed. Its use is generally discouraged.
+
+---
+
+### The Collections Framework
+
+Understanding how to store and manage groups of objects is crucial.
+
+#### **What is the difference between `ArrayList` and `LinkedList`?**
+
+Both are implementations of the `List` interface.
+
+- **`ArrayList`** is backed by a dynamic array. It provides fast, O(1) random access but has slower, O(n) performance for adding or removing elements from the middle of the list, as it may require shifting subsequent elements.
+- **`LinkedList`** is backed by a doubly-linked list. It has slow, O(n) random access but provides fast, O(1) performance for adding or removing elements from the beginning or end.
+
+#### **How does a `HashMap` work internally?**
+
+A `HashMap` stores key-value pairs. When you `put(key, value)`, it calculates the `hashCode()` of the key and uses it to determine the index of the bucket where the entry should be stored. If multiple keys have the same `hashCode` (a collision), the entries are stored in that bucket as a linked list (or a balanced tree in Java 8+ for performance).
+
+```java
+public class HashMapInternalExample {
+    public static void main(String[] args) {
+        // When you put a key-value pair
+        // 1. The key's hashCode() is calculated.
+        // 2. The hash is used to find a bucket index in the internal array.
+        // 3. The Entry(key, value) is stored in that bucket.
+        // If a collision occurs, it's added to the list/tree in that bucket.
+        java.util.Map<String, Integer> map = new java.util.HashMap<>();
+        map.put("test", 1);
+    }
+}
+```
+
+---
+
+### Exception Handling
+
+Robust applications handle errors gracefully.
+
+#### **What is the difference between checked and unchecked exceptions?**
+
+- **Checked Exceptions:** These are exceptions that are checked at compile-time, like `IOException` or `SQLException`. If a method can throw a checked exception, it must either handle it using a `try-catch` block or declare it using the `throws` keyword. They typically represent recoverable error conditions.
+- **Unchecked Exceptions (Runtime Exceptions):** These are exceptions that are not checked at compile-time, such as `NullPointerException` or `ArrayIndexOutOfBoundsException`. They usually indicate programming errors or bugs in the code and do not need to be declared or caught explicitly. They extend `RuntimeException`.
+
+#### **What is the `try-with-resources` statement?**
+
+Introduced in Java 7, it's a feature that automatically closes resources (like streams or database connections) after they are used. Any object that implements the `java.lang.AutoCloseable` interface can be used with this statement. It simplifies code and prevents resource leaks by ensuring `close()` is always called.
+
+```java
+// Before Java 7
+FileInputStream fis = null;
+try {
+    fis = new FileInputStream("file.txt");
+    // ... use the stream
+} finally {
+    if (fis != null) {
+        fis.close();
+    }
+}
+
+// With try-with-resources (Java 7+)
+try (FileInputStream fis = new FileInputStream("file.txt")) {
+    // ... use the stream
+} // fis.close() is called automatically
+```
+
+---
+
+### Multithreading and Concurrency
+
+Questions about concurrency test your ability to write safe and efficient code for modern multi-core processors.
+
+#### **What are the ways to create a thread in Java?**
+
+1.  **Extending the `Thread` class:** Create a new class that extends `Thread` and override its `run()` method.
+2.  **Implementing the `Runnable` interface:** Create a class that implements the `Runnable` interface and its `run()` method. Then, create a `Thread` object and pass the `Runnable` instance to its constructor. Implementing `Runnable` is generally preferred as it allows the class to extend other classes.
+
+#### **What is the difference between `wait()` and `sleep()`?**
+
+- `sleep()`: A static method of the `Thread` class. It pauses the current thread for a specified amount of time. It **does not release the lock** it holds on any object.
+- `wait()`: A method of the `Object` class. It causes the current thread to release the lock and wait until another thread invokes the `notify()` or `notifyAll()` method for that object's monitor. It must be called from within a `synchronized` block.
+
+#### **What does the `volatile` keyword do?**
+
+The `volatile` keyword is a field modifier that guarantees two things:
+
+1.  **Visibility:** Any write to a `volatile` variable will be immediately visible to all other threads.
+2.  **Ordering:** It prevents compiler instruction reordering (a common optimization). This ensures that reads and writes to the `volatile` variable happen in the order they appear in the code. It's a lightweight synchronization mechanism.
+
+---
+
+### Java 8+ Features
+
+Modern Java development relies heavily on features introduced in Java 8.
+
+#### **What is a Stream in Java 8?**
+
+A Stream is a sequence of elements from a source that supports aggregate operations. It's not a data structure but rather a way to process data declaratively. Key characteristics include:
+
+- **Declarative:** You describe _what_ you want to do, not _how_ to do it.
+- **Lazy:** Intermediate operations are not executed until a terminal operation is invoked.
+- **Non-reusable:** A stream can only be traversed once.
+
+<!-- end list -->
+
+```java
+import java.util.List;
+import java.util.Arrays;
+
+public class StreamExample {
+    public static void main(String[] args) {
+        List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "Anna");
+        names.stream()
+             .filter(s -> s.startsWith("A")) // Intermediate operation
+             .map(String::toUpperCase)        // Intermediate operation
+             .forEach(System.out::println);  // Terminal operation
+    }
+}
+```
+
+#### **What is the purpose of the `Optional` class?**
+
+`Optional` is a container object which may or may not contain a non-null value. Its primary purpose is to provide a better way to handle `null` values, avoiding `NullPointerException` and making the code's intent clearer. It forces the developer to actively think about and handle the case where a value might be absent.
