@@ -1,65 +1,98 @@
 import React from "react";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
+import { Stack, Divider, IconButton, Grid } from "@mui/material";
+import { CONTACT_DATA } from "@/utils/contactData"; 
 
-const FooterBox = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: theme.spacing(3),
-  borderTop: `1px solid ${theme.palette.divider}`,
-  backgroundColor: theme.palette.background.paper,
+
+const FooterContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#121212' : '#F8F9FA',
   color: theme.palette.text.secondary,
-  width: "100%",
+  padding: theme.spacing(6, 2),
+  borderTop: `1px solid ${theme.palette.divider}`,
 }));
 
-const SocialMediaLinks = styled("div")(({ theme }) => ({
-  display: "flex",
-  justifyContent: "center",
-  marginTop: theme.spacing(2),
-  "& a": {
-    margin: theme.spacing(1),
-    color: theme.palette.primary.main,
-    transition: "color 0.3s, transform 0.3s",
-    "&:hover": {
-      color: theme.palette.secondary.main,
-      transform: "scale(1.2)",
-    },
-  },
+const FooterContent = styled(Box)(({ theme }) => ({
+  maxWidth: '1200px',
+  margin: '0 auto',
+  textAlign: 'center',
 }));
+
 
 const Footer = () => {
+  const theme = useTheme();
+
   return (
-    <FooterBox>
-      <Typography variant="body2" align="center" gutterBottom>
-        &copy; {new Date().getFullYear()} Azhagu-swe. All rights reserved.
-      </Typography>
-      <Typography variant="body2" align="center">
-        Crafted with ❤️ by Azhagu-swe
-      </Typography>
-      <SocialMediaLinks>
-        <Link href="https://github.com/azhagu-swe" passHref>
-          <Icon icon="akar-icons:github-fill" width="24" height="24" />
-        </Link>
-        <Link href="https://linkedin.com/in/azhagu379" passHref>
-          <Icon icon="akar-icons:linkedin-box-fill" width="24" height="24" />
-        </Link>
-        <Link href="https://twitter.com/azhagu-swe" passHref>
-          <Icon icon="akar-icons:twitter-fill" width="24" height="24" />
-        </Link>
-        <Link href="https://instagram.com/azhagu.dev" passHref>
-          <Icon icon="akar-icons:instagram-fill" width="24" height="24" />
-        </Link>
-      </SocialMediaLinks>
-      <Box mt={3}>
-        <Typography variant="body2" align="center">
-          {"Coding is my art, and this site is my canvas."}
-        </Typography>
-      </Box>
-    </FooterBox>
+    <FooterContainer>
+      <FooterContent>
+        <Grid container spacing={4} justifyContent="center">
+          
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" color="text.primary" gutterBottom>
+              Azhagu-swe
+            </Typography>
+            <Typography variant="body2">
+              A Full Stack Developer passionate about creating modern, scalable web applications.
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" color="text.primary" gutterBottom>
+              Quick Links
+            </Typography>
+            <Stack spacing={1} alignItems="center">
+              <Link href="/about" passHref><Typography variant="body2" sx={{ '&:hover': { color: theme.palette.primary.main, textDecoration: 'underline' }}}>About</Typography></Link>
+              <Link href="/projects" passHref><Typography variant="body2" sx={{ '&:hover': { color: theme.palette.primary.main, textDecoration: 'underline' }}}>Projects</Typography></Link>
+              <Link href="/contact" passHref><Typography variant="body2" sx={{ '&:hover': { color: theme.palette.primary.main, textDecoration: 'underline' }}}>Contact</Typography></Link>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Typography variant="h6" color="text.primary" gutterBottom>
+              Connect With Me
+            </Typography>
+            <Stack direction="row" spacing={1} justifyContent="center">
+              {CONTACT_DATA.socialLinks.map((social) => (
+                <IconButton
+                  key={social.platform}
+                  component="a"
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.platform}
+                  sx={{
+                    color: 'text.secondary',
+                    transition: 'color 0.3s ease, transform 0.3s ease',
+                    '&:hover': {
+                      color: social.color,
+                      transform: 'translateY(-3px)',
+                    },
+                  }}
+                >
+                  <Icon icon={social.icon} width="24" height="24" />
+                </IconButton>
+              ))}
+            </Stack>
+          </Grid>
+
+        </Grid>
+
+        <Divider sx={{ my: 4 }} />
+
+        <Box>
+          <Typography variant="body2" align="center">
+            &copy; {new Date().getFullYear()} Azhagu-swe. All rights reserved.
+          </Typography>
+          <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+            Crafted with ❤️ By Azhagu-swe
+          </Typography>
+        </Box>
+
+      </FooterContent>
+    </FooterContainer>
   );
 };
 

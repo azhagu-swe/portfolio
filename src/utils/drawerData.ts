@@ -50,20 +50,20 @@ export const MENU_ITEMS = [
   ];
   
   export const BOTTOM_ITEMS = [
-    // {
-    //   text: "Tutorial",
-    //   icon: {
-    //     outline: "hugeicons:laptop-programming",
-    //     filled: "hugeicons:laptop-programming",
-    //   },
-    //   link: "/tutorial",
-    // },
-    // {
-    //   text: "Blog",
-    //   icon: {
-    //     outline: "material-symbols:menu-book-outline",
-    //     filled: "material-symbols:menu-book",
-    //   },
-    //   link: "/blog",
-    // },
+    {
+      text: "Tutorial",
+      icon: {
+        outline: "hugeicons:laptop-programming",
+        filled: "hugeicons:laptop-programming",
+      },
+      link: "/tutorials",
+    },
+    {
+      text: "Blog",
+      icon: {
+        outline: "material-symbols:menu-book-outline",
+        filled: "material-symbols:menu-book",
+      },
+      link: "/blog",
+    },
   ];

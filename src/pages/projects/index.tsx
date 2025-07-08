@@ -38,8 +38,7 @@ const CardContentWrapper = styled(CardContent)(({ theme }) => ({
 
 const ProjectPage = () => {
   const [filter, setFilter] = React.useState("All");
-    const { basePath } = useRouter();
-  
+  const { basePath } = useRouter();
 
   const handleFilterChange = (
     event: React.SyntheticEvent,
@@ -54,6 +53,7 @@ const ProjectPage = () => {
       : PROJECTS_DATA.projects.filter((project) =>
           project.technologies.includes(filter)
         );
+
 
   return (
     <Box sx={{ padding: 4 }}>
@@ -96,65 +96,73 @@ const ProjectPage = () => {
 
       {/* Projects Grid */}
       <Grid container spacing={4}>
-        {filteredProjects.map((project, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <StyledCard>
-              <CardMedia
-                component="img"
-                height="140"
-                image={`${basePath}/`+project.thumbnail}
-                alt={project.title}
-                sx={{ objectFit: "cover" }} // Ensure images are uniformly sized
-              />
-              <CardContentWrapper>
-                <Typography variant="h6" gutterBottom>
-                  {project.title}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ flexGrow: 1 }} // Allow description to grow and fill space
-                >
-                  {project.description}
-                </Typography>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  sx={{ marginY: 2, flexWrap: "wrap" }}>
-                  {project.technologies.map((tech, i) => (
-                    <Chip
-                      key={i}
-                      label={tech}
-                      color="primary"
-                      variant="outlined"
+        {filteredProjects.map((project, index) => {
+          // FIX: The logic is now inside the map loop where 'project' is defined.
+          const imageUrl = project.thumbnail.startsWith("http")
+            ? project.thumbnail
+            : `${basePath}/${project.thumbnail}`;
+
+          return (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <StyledCard>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={imageUrl} // Use the corrected imageUrl here
+                  alt={project.title}
+                  sx={{ objectFit: "cover" }}
+                />
+                <CardContentWrapper>
+                  <Typography variant="h6" gutterBottom>
+                    {project.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ flexGrow: 1 }}>
+                    {project.description}
+                  </Typography>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ marginY: 2, flexWrap: "wrap" }}>
+                    {project.technologies.map((tech, i) => (
+                      <Chip
+                        key={i}
+                        label={tech}
+                        color="primary"
+                        variant="outlined"
+                        size="small"
+                      />
+                    ))}
+                  </Stack>
+                  <Stack direction="row" spacing={2}>
+                    {project.liveDemo && (
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="primary"
+                        href={project.liveDemo}
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        Live Demo
+                      </Button>
+                    )}
+                    <Button
                       size="small"
-                    />
-                  ))}
-                </Stack>
-                <Stack direction="row" spacing={2}>
-                  {project.liveDemo&&<Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    href={project.liveDemo}
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    Live Demo
-                  </Button>}
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    color="primary"
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    GitHub
-                  </Button>
-                </Stack>
-              </CardContentWrapper>
-            </StyledCard>
-          </Grid>
-        ))}
+                      variant="outlined"
+                      color="primary"
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer">
+                      GitHub
+                    </Button>
+                  </Stack>
+                </CardContentWrapper>
+              </StyledCard>
+            </Grid>
+          );
+        })}
       </Grid>
     </Box>
   );
