@@ -94,7 +94,11 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
 
   const renderListItems = (items: typeof MENU_ITEMS) => {
     return items.map((item: any) => {
-      const isActive = router.pathname === item.link;
+      const isActive =
+        item.link === "/"
+          ? router.pathname === item.link
+          : router.pathname.startsWith(item.link);
+
       const icon = isActive ? item.icon.filled : item.icon.outline;
 
       return (

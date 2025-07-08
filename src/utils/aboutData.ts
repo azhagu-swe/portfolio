@@ -1,58 +1,59 @@
 // aboutData.ts
-export const PROFILE =(basePath: string) =>( {
-  name: "Alagappan",
-  role: "Java Specialist | Full Stack Developer",
+export const PROFILE = (basePath: string) => ({
+  name: "Alagappan P", //
+  role: " Software Engineer", //
   intro:
-    "Full Stack Developer with 2.5 years of professional experience. My expertise lies in crafting scalable, secure, and user-friendly applications. 🎯 Armed with a Master's degree in Computer Applications, I thrive on tackling complex challenges and delivering innovative tech solutions. 🚀 Let's build something remarkable together!",
-  avatar:  `${basePath}/image/profile.jpg`,
+    "A Full Stack Developer with professional experience in building scalable and secure applications using Java and Spring Boot. Armed with a Master's degree in Computer Science, I enjoy tackling complex challenges and delivering innovative tech solutions. Let's build something remarkable together!",
+  avatar: `${basePath}/image/profile.jpg`,
 });
 
 export const SKILLS_DATA = [
   {
-    title: "Backend Systems",
-    skills: "Java, Spring Boot, Hibernate, Redis, RabbitMQ, REST APIs, Microservices",
+    title: "Languages",
+    skills: "Java (Core, 8+), SQL, JavaScript, HTML, CSS", //
   },
   {
-    title: "Frontend Development",
-    skills: "HTML, CSS, JavaScript, Next.js, React, TypeScript, Redux, Material-UI, Responsive Design",
-},
+    title: "Frameworks & Technologies",
+    skills: "Spring Boot, Spring MVC, Spring Data JPA, Hibernate, RESTful APIs, Microservices, RabbitMQ, Redis", //
+  },
   {
     title: "Databases",
-    skills: "PostgreSQL, MySQL, Query Optimization, Database Schema Design",
-  },
-  {
-    title: "Core Fundamentals",
-    skills: "OOP, Data Structures, System Design, Algorithm Optimization, Debugging",
+    skills: "PostgreSQL, MySQL", //
   },
   {
     title: "Tools & Platforms",
-    skills: "Git, Ubuntu, Windows, IntelliJ IDEA, VS Code, pgAdmin, Postman",
+    skills: "Git, IntelliJ IDEA, VS Code, Maven, Docker (Basic), Windows, Ubuntu", //
   },
 ];
 
 export const CERTIFICATIONS_DATA = (basePath: string) => [
   {
-    description: "FullStack Java Development",
+    description: "Full Stack Java Development - Simplilearn, 2022", 
     img: `${basePath}/image/Java-Full-Stack-skillup.png`,
   },
   {
-    description: "Java Certificate Course",
+    description: "Java Certification Course - Simplilearn, 2022",
     img: `${basePath}/image/java-certificate.jpg`,
   },
   {
-    description: "Advanced C++",
-    img: `${basePath}/image/c++ certificate.jpg`,
+    description: "ChatGPT Advanced Course - Simplilearn, 2025",
+    img: `${basePath}/image/chat_gpt_advanced_cert.jpg`,
+  },
+  {
+    description: "Introduction to Prompt Engineering - Simplilearn, 2025", //
+    img: `${basePath}/image/prompt_engineer_cert.jpg`, 
   },
 ];
 
 export const ACHIEVEMENTS_DATA = (basePath: string) => [
   {
     description:
-      "🏆 2nd Prize in Debugging Competition - Exceptional debugging in a competitive contest.",
+      "🏆 Secured Second Prize in a Debugging Competition at National College, Trichy.", //
     img: `${basePath}/image/Debuggin-2nd-Prize.jpg`,
   },
 ];
 
+// NOTE: The 'Participations' data could not be updated as it was not present in the provided resume.
 export const PARTICIPATIONS_DATA = (basePath: string) => [
   {
     description:

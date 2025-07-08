@@ -8,7 +8,7 @@ const AboutSection: React.FC = () => {
         About Me
       </Typography>
       <Typography paragraph>
-        With 2 years of experience in the software development industry, I specialize in creating efficient and scalable
+        With 3 years of experience in the software development industry, I specialize in creating efficient and scalable
         web applications. My passion for technology drives me to continuously learn and adapt to new challenges.
       </Typography>
     </Box>
