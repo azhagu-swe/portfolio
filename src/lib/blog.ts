@@ -5,7 +5,6 @@ import { serialize } from 'next-mdx-remote/serialize';
 
 const postsDirectory = path.join(process.cwd(), '_posts');
 
-// FIX: Define a type for your post frontmatter
 export interface PostFrontmatter {
   date: string;
   title: string;
@@ -26,11 +25,10 @@ export function getSortedPostsData() {
 
     return {
       slug,
-      ...(data as PostFrontmatter), // Apply the type here
+      ...(data as PostFrontmatter),
     };
   });
 
-  // Sort posts by date, newest first. This now works without error.
   return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 

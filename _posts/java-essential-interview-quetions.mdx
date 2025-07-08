@@ -2,7 +2,7 @@
 title: "Mastering Core Java: Essential Interview Questions"
 date: "2025-07-08"
 excerpt: "A curated list of essential Core Java interview questions covering OOP, Collections, Exception Handling, Concurrency, and Java 8 features to help you ace your next technical interview."
-coverImage: "https://placehold.co/800x400/1E1E1E/32CD32?text=Core+Java+Q&A"
+coverImage: "https://placehold.co/800x400/1E1E1E/32CD32?text=Core+Java+QA"
 category: "Technical Guides"
 tags:
   [
@@ -164,8 +164,6 @@ A Stream is a sequence of elements from a source that supports aggregate operati
 - **Lazy:** Intermediate operations are not executed until a terminal operation is invoked.
 - **Non-reusable:** A stream can only be traversed once.
 
-<!-- end list -->
-
 ```java
 import java.util.List;
 import java.util.Arrays;
@@ -175,7 +173,7 @@ public class StreamExample {
         List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "Anna");
         names.stream()
              .filter(s -> s.startsWith("A")) // Intermediate operation
-             .map(String::toUpperCase)        // Intermediate operation
+             .map(String::toUpperCase)       // Intermediate operation
              .forEach(System.out::println);  // Terminal operation
     }
 }
