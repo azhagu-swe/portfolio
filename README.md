@@ -16,8 +16,8 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
 
 ## 🚀 Tech Stack
 
-| Technology      | Purpose                        |
-| --------------- | ------------------------------ |
+| Technology            | Purpose                        |
+| --------------------- | ------------------------------ |
 | **Next.js**     | Framework for building the app |
 | **TypeScript**  | Strongly typed JavaScript      |
 | **Material-UI** | Design system and components   |
@@ -32,13 +32,11 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
    git clone https://github.com/azhagu-swe/portfolio.git
    cd my-portfolio
    ```
-
 2. **Install dependencies**
 
    ```bash
    yarn install
    ```
-
 3. **Run the development server**
 
    ```bash
@@ -46,7 +44,6 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
    ```
 
    Open [http://localhost:3000](http://localhost:3000) to see your portfolio in action.
-
 4. **Build for production**
 
    ```bash
@@ -55,7 +52,6 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
    ```
 
    This will generate an optimized production build and serve it.
-
 5. **Deploy to Vercel**
 
    - Install the [Vercel CLI](https://vercel.com/docs/cli) if you don’t have it:
@@ -66,6 +62,7 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
      ```bash
      vercel
      ```
+
      Follow the prompts to deploy your portfolio.
 
    Alternatively, you can deploy directly through the Vercel dashboard:
@@ -73,7 +70,6 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
    1. Push your project to a GitHub repository.
    2. Connect your GitHub repository to Vercel.
    3. Vercel will automatically build and deploy your project.
-
 6. **Deploy to Other Platforms**
 
    - **Netlify:**
@@ -87,12 +83,32 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
         netlify deploy
         ```
      3. Follow the prompts to upload the production build.
-
    - **Custom Hosting (e.g., AWS, DigitalOcean):**
+
      1. Build the project:
         ```bash
         yarn build
         ```
      2. Serve the `/out` directory using your preferred hosting service.
+7. Blog sample:
+
 
 ---
+title: "My First Blog Post"
+date: "2025-07-08"
+excerpt: "This is a summary of my first post. Learning how to build a blog with Next.js is exciting!"
+coverImage: "https://placehold.co/600x400/1E1E1E/32CD32?text=First+Post"
+category: "Personal Thoughts"
+tags: ["Next.js", "React", "Web Dev"]
+readTime: "3 min"
+---
+
+## Welcome to My Blog!
+
+This is the main content of my first blog post. Writing in Markdown is simple and intuitive.
+
+You can use all standard Markdown features, like:
+- Lists
+- **Bold text**
+- *Italic text*
+- `inline code`
