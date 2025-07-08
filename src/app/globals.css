@@ -1,0 +1,23 @@
+.prose-styles h2,
+.prose-styles h3 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  font-weight: 600;
+}
+.prose-styles p {
+  line-height: 1.7;
+  margin-bottom: 1.25em;
+}
+.prose-styles code {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+.prose-styles pre > code {
+  display: block;
+  padding: 1em;
+  border-radius: 8px;
+  background-color: #2d2d2d;
+  color: #f8f8f2;
+  overflow-x: auto;
+}

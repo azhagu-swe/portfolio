@@ -1,0 +1,175 @@
+---
+title: "The Full-Stack Developer's Interview Blueprint"
+date: "2025-07-08"
+excerpt: "A deep dive into the essential Java, Spring, React, Database, and System Design concepts for technical interviews."
+coverImage: "https://placehold.co/600x400/1E1E1E/32CD32?text=Interview+Blueprint"
+category: "Technical Guides"
+tags: ["Java", "React", "Spring Boot", "System Design", "Interview"]
+readTime: "25 min"
+---
+
+
+Navigating the technical interview for a Java Full-Stack Developer role with a React frontend can be demanding. This guide provides a comprehensive blueprint of the essential topics and specific questions you're likely to encounter. Let's dive into the core areas to ensure you're fully prepared.
+
+## ☕ Core Java
+
+The foundation of your backend expertise. A deep understanding of Java's core principles is non-negotiable.
+
+### **Explain the four main principles of Object-Oriented Programming (OOP).**
+* **Encapsulation:** The practice of bundling data (attributes) and the methods that operate on that data within a single unit, or "class." It hides the internal state of an object from the outside.
+* **Abstraction:** Hiding complex implementation details and showing only the necessary features of an object. In Java, this is achieved using abstract classes and interfaces.
+* **Inheritance:** A mechanism where a new class (subclass) inherits attributes and methods from an existing class (superclass). It promotes code reusability.
+* **Polymorphism:** The ability of a method to do different things based on the object it is acting upon. It allows you to perform a single action in different ways (e.g., method overriding and method overloading).
+
+### **What is the difference between `final`, `finally`, and `finalize`?**
+* **`final`:** A keyword used to apply restrictions. It can be used with variables (to make them constant), methods (to prevent overriding), and classes (to prevent inheritance).
+* **`finally`:** A block used in exception handling. The `finally` block is always executed, regardless of whether an exception is thrown or handled. It's often used for cleanup tasks like closing resources.
+* **`finalize`:** A method called by the garbage collector just before an object is reclaimed from memory. Its use is generally discouraged in modern Java development.
+
+### **Explain the Java Collections Framework.**
+The Collections Framework provides a unified architecture for storing and manipulating groups of objects.
+* **List:** An ordered collection that allows duplicate elements. Key implementations are `ArrayList` and `LinkedList`.
+* **Set:** A collection that does not allow duplicate elements. Key implementations are `HashSet`, `LinkedHashSet`, and `TreeSet`.
+* **Map:** An object that maps keys to values. It does not allow duplicate keys. Key implementations are `HashMap`, `LinkedHashMap`, and `TreeMap`.
+
+### **What is the difference between `==` and the `.equals()` method?**
+* **`==`:** An operator that compares the memory addresses of two objects (reference comparison).
+* **`.equals()`:** A method that compares the content or state of two objects. By default, in the `Object` class, it behaves the same as `==`, but it's often overridden in classes like `String` to provide value comparison.
+
+## 🌱 Spring Framework & Spring Boot
+
+The heart of modern Java web development. Expect questions on dependency injection, core annotations, and the magic of Spring Boot.
+
+### **What are Inversion of Control (IoC) and Dependency Injection (DI)?**
+**Inversion of Control** is a design principle where the control of object creation and lifecycle management is transferred from your application code to a container or framework (the Spring IoC container).
+
+**Dependency Injection** is a pattern used to implement IoC. Instead of an object creating its dependencies, the dependencies are "injected" into the object by the Spring container. The main types of DI are:
+* **Constructor Injection:** Dependencies are provided through the class constructor.
+* **Setter Injection:** Dependencies are provided through setter methods.
+
+### **Explain some of the common Spring Boot annotations.**
+* `@SpringBootApplication`: A convenience annotation that combines `@Configuration`, `@EnableAutoConfiguration`, and `@ComponentScan`.
+* `@RestController`: A specialized version of `@Controller` used for creating RESTful web services. It combines `@Controller` and `@ResponseBody`.
+* `@Autowired`: Used for automatic dependency injection.
+* `@Service`: Indicates that a class is a business logic service.
+* `@Repository`: Indicates that a class is a data access object (DAO).
+* `@RequestMapping`: Maps web requests to specific handler methods.
+
+### **How does Spring Boot's auto-configuration work?**
+Spring Boot auto-configuration attempts to automatically configure your Spring application based on the JAR dependencies you have added. For example, if `spring-boot-starter-web` is on the classpath, Spring Boot automatically configures Tomcat and Spring MVC. It looks for `@EnableAutoConfiguration` and then checks the classpath for known libraries to configure.
+
+## ⚛️ React
+
+The frontend powerhouse. Your knowledge of components, state management, and hooks will be tested.
+
+### **What is the Virtual DOM?**
+The Virtual DOM (VDOM) is a programming concept where a virtual representation of a UI is kept in memory and synced with the "real" DOM. When the state of a React component changes, the VDOM is updated. React then compares the updated VDOM with a pre-update version and calculates the most efficient way to make these changes to the real DOM, minimizing performance-costly DOM manipulations.
+
+### **What is the difference between props and state?**
+* **State:** An object that holds data and determines how the component renders and behaves. State is managed within the component and can be changed over time (it's mutable).
+* **Props (Properties):** Read-only data passed from a parent component to a child component. Props are immutable within the child component.
+
+### **Explain React Hooks.**
+Hooks are functions that let you "hook into" React state and lifecycle features from function components. They allow you to use state and other React features without writing a class.
+* **`useState`:** Allows you to add state to function components. It returns an array with two values: the current state and a function to update it.
+* **`useEffect`:** Lets you perform side effects in function components. It's a close replacement for `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount` in class components.
+* **`useContext`:** Allows you to subscribe to React context without introducing nesting. It makes it easy to pass data through the component tree without having to pass props down manually at every level.
+
+## 🗃️ Databases (SQL & NoSQL)
+
+Data is king. You need to be proficient in both relational and non-relational database concepts.
+
+### **What are the different types of SQL JOINs?**
+* **`INNER JOIN`:** Returns records that have matching values in both tables.
+* **`LEFT (OUTER) JOIN`:** Returns all records from the left table, and the matched records from the right table.
+* **`RIGHT (OUTER) JOIN`:** Returns all records from the right table, and the matched records from the left table.
+* **`FULL (OUTER) JOIN`:** Returns all records when there is a match in either the left or right table.
+
+### **What is database normalization?**
+Normalization is the process of organizing columns and tables in a relational database to minimize data redundancy. The goal is to isolate data so that additions, deletions, and modifications of a field can be made in just one table and then propagated through the rest of the database via the defined relationships.
+
+### **When would you use a NoSQL database over a SQL database?**
+You might choose NoSQL over SQL for:
+* **Large-scale data:** When dealing with huge volumes of rapidly growing, unstructured data.
+* **Scalability:** NoSQL databases are typically designed to scale out horizontally.
+* **Flexible data models:** When the data schema is not fixed and is likely to evolve.
+* **High availability:** Many NoSQL databases offer superior availability and fault tolerance.
+
+## 🌐 RESTful APIs
+
+The communication layer of your application. Understanding REST principles is crucial for building scalable services.
+
+### **What are the principles of REST?**
+* **Client-Server Architecture:** Separation of concerns between the client (UI) and the server (backend).
+* **Statelessness:** Each request from a client to a server must contain all the information needed to understand and complete the request. The server should not store any client context between requests.
+* **Cacheability:** Responses must define themselves as cacheable or not to prevent clients from reusing stale data.
+* **Layered System:** A client cannot ordinarily tell whether it is connected directly to the end server or to an intermediary along the way.
+* **Uniform Interface:** A common interface simplifies and decouples the architecture. This includes resource identification in requests, resource manipulation through representations, and self-descriptive messages.
+
+### **What are the common HTTP methods and what do they do?**
+* **`GET`:** Retrieves a resource.
+* **`POST`:** Creates a new resource.
+* **`PUT`:** Updates an existing resource entirely.
+* **`DELETE`:** Deletes a resource.
+* **`PATCH`:** Partially updates a resource.
+
+## 🧠 Data Structures & Algorithms (DSA)
+
+The universal language of problem-solving in software engineering.
+
+### **What is Big O notation?**
+Big O notation is a mathematical notation that describes the limiting behavior of a function when the argument tends towards a particular value or infinity. In computer science, it's used to classify algorithms according to how their run time or space requirements grow as the input size grows. For example, a search algorithm with a time complexity of $O(n)$ means its runtime grows linearly with the number of items.
+
+### **Solve a common problem: "Given an array of integers, return indices of the two numbers such that they add up to a specific target."**
+A common approach is to use a `HashMap` for an optimal solution.
+```java
+public int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        if (map.containsKey(complement)) {
+            return new int[] { map.get(complement), i };
+        }
+        map.put(nums[i], i);
+    }
+    throw new IllegalArgumentException("No two sum solution");
+}
+````
+
+This solution has a time complexity of $O(n)$ because we iterate through the array only once.
+
+## 🏛️ System Design
+
+The big picture. How do you design scalable, resilient, and maintainable systems?
+
+### **How would you design a URL shortening service like TinyURL?**
+
+This question tests your ability to think about system components and scale. A high-level approach includes:
+
+1.  **API Design:** Define endpoints for creating a short URL (`POST /api/shorten`) and redirecting a short URL (`GET /{shortCode}`).
+2.  **Data Model:** A simple schema would include columns for `short_code`, `long_url`, `created_at`, and `user_id`. `short_code` should be the primary key and indexed for fast lookups.
+3.  **Hash Generation:** The core of the service. You need a function to convert a long URL into a short, unique alphanumeric code. A common approach is to use a base-62 encoding on a unique counter or to take a hash (like MD5) of the long URL and take the first few characters.
+4.  **Scalability:**
+      * **Database:** Use a distributed database like Cassandra or shard a relational database to handle write-heavy loads.
+      * **Caching:** Use a cache like Redis to store popular short URL to long URL mappings to reduce database reads.
+      * **Load Balancing:** Place a load balancer in front of your web servers to distribute traffic.
+
+## 🛠️ Development Tools & Practices
+
+The tools of the trade. Proficiency with Git, build tools, and CI/CD is expected.
+
+### **Explain the Gitflow workflow.**
+
+Gitflow is a branching model for Git. It defines a strict branching model designed around the project release. It uses several types of branches:
+
+  * **`main` (or `master`):** Stores the official release history.
+  * **`develop`:** Serves as an integration branch for features.
+  * **Feature branches (`feature/*`):** Used to develop new features. They branch off `develop` and are merged back into `develop`.
+  * **Release branches (`release/*`):** Support preparation of a new production release. They branch from `develop` and are merged into both `main` and `develop`.
+  * **Hotfix branches (`hotfix/*`):** Used to quickly patch production releases. They branch from `main` and are merged into both `main` and `develop`.
+
+### **What is CI/CD?**
+
+**Continuous Integration (CI)** is the practice of automatically building and testing your code every time a developer commits a change to version control.
+
+**Continuous Delivery/Deployment (CD)** is the practice of automatically deploying all code changes to a testing and/or production environment after the build and test stages.
