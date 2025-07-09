@@ -1,0 +1,156 @@
+---
+date: '2025-07-07'
+title: 'Write Once, Run Anywhere: An Introduction to Java'
+excerpt: 'Explore one of the most robust and widely-used programming languages in the world. This tutorial covers the core concepts of Java, from setting up your environment to writing your first object-oriented program.'
+coverImage: 'https://placehold.co/600x400/68D391/1A202C?text=Java'
+difficulty: 'Beginner'
+tags: ['Java', 'Programming', 'Backend']
+duration: '25 min read'
+---
+
+## What is Java?
+
+**Java** is a high-level, object-oriented programming language known for its philosophy of "Write Once, Run Anywhere" (WORA). This means that Java code is compiled into a special format called bytecode, which can then be run on any device that has a Java Virtual Machine (JVM), regardless of the underlying computer architecture.
+
+This platform independence, combined with its strong emphasis on object-oriented principles, has made Java a popular choice for a huge range of applications, including:
+-   Large-scale enterprise web applications (using frameworks like Spring).
+-   Native Android mobile app development.
+-   Big data processing.
+-   Scientific and financial applications.
+
+---
+
+## 1. Setting Up Your Development Environment
+
+To start writing Java, you need two things:
+
+1.  **Java Development Kit (JDK)**: This is a software package that contains everything you need to compile and run Java code. You can download it from providers like Oracle or AdoptOpenJDK.
+2.  **Integrated Development Environment (IDE)**: While you can write Java in a simple text editor, an IDE provides powerful features like code completion, debugging, and project management. Popular choices include IntelliJ IDEA (Community Edition is free), Eclipse, and Visual Studio Code with the "Extension Pack for Java".
+
+Once you have the JDK and an IDE installed, you're ready to write your first program.
+
+---
+
+## 2. Your First "Hello, World!" Program
+
+In Java, all code must reside inside a **class**. A class is a blueprint for creating objects. The entry point for any Java application is a special method called `main`.
+
+Create a new file named `HelloWorld.java` and add the following code:
+
+```java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+```
+
+Let's break this down:
+-   `public class HelloWorld`: This declares a class named `HelloWorld`. The file name must match the public class name.
+-   `public static void main(String[] args)`: This is the main method. The JVM looks for this exact signature to start the program.
+-   `System.out.println(...)`: This is the standard Java function for printing a line of text to the console.
+
+Compile and run this file in your IDE. You should see "Hello, World!" printed in the output console.
+
+---
+
+## 3. Variables and Primitive Data Types
+
+Variables are containers for storing data values. In Java, you must declare the type of the variable before you use it. This is known as **static typing**.
+
+Here are some of the most common primitive data types:
+
+-   `int`: For whole numbers (integers), e.g., `10`, `-50`.
+-   `double`: For floating-point (decimal) numbers, e.g., `3.14`, `-0.001`.
+-   `boolean`: For `true` or `false` values.
+-   `char`: For a single character, e.g., `'A'`, `'%'`.
+
+A **String** (with a capital 'S') is not a primitive type but a class, used for sequences of characters.
+
+```java
+public class Variables {
+    public static void main(String[] args) {
+        String name = "Azhagu";
+        int age = 30;
+        double score = 95.5;
+        boolean isLearning = true;
+
+        System.out.println("Name: " + name);
+        System.out.println("Age: " + age);
+    }
+}
+```
+
+---
+
+## 4. Methods (Functions)
+
+In Java, functions are called **methods**, and they must belong to a class. A method is a block of code that runs only when it is called.
+
+```java
+public class Greeter {
+    // This is a method
+    public void greet(String personName) {
+        System.out.println("Hello, " + personName + "!");
+    }
+
+    public static void main(String[] args) {
+        // To call a non-static method, we must first create an object of the class
+        Greeter myGreeter = new Greeter();
+        
+        // Now we can call the method on the object
+        myGreeter.greet("Java Developer"); // Prints "Hello, Java Developer!"
+    }
+}
+```
+
+---
+
+## 5. Introduction to Objects and Classes
+
+Java is built around the concept of **Objects**. A class is a blueprint, and an object is an actual instance created from that blueprint.
+
+Let's create a simple `Dog` class.
+
+```java
+// Dog.java
+public class Dog {
+    // Instance variable (state)
+    String breed;
+
+    // Method (behavior)
+    public void bark() {
+        System.out.println("Woof! Woof!");
+    }
+}
+```
+
+Now, we can create and use `Dog` objects in another class.
+
+```java
+// DogPark.java
+public class DogPark {
+    public static void main(String[] args) {
+        // Create a new Dog object from the Dog class blueprint
+        Dog myDog = new Dog();
+        
+        // Set its state
+        myDog.breed = "Labrador";
+        
+        // Call its behavior
+        myDog.bark(); // Prints "Woof! Woof!"
+        
+        System.out.println("My dog is a " + myDog.breed); // Prints "My dog is a Labrador"
+    }
+}
+```
+
+This separation of state (`breed`) and behavior (`bark`) into objects is the core idea of Object-Oriented Programming (OOP).
+
+---
+
+## Conclusion
+
+You've just completed a whirlwind tour of the Java fundamentals! You've learned what Java is, how to set up your environment, and the core syntax for creating **variables**, **methods**, and your first **class** and **object**.
+
+Java is a vast and powerful language that is the backbone of countless applications worldwide. This foundation is your first step toward building robust backend systems, Android apps, and much more. Keep practicing, and happy coding!

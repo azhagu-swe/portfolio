@@ -1,0 +1,120 @@
+---
+date: '2025-07-15'
+title: 'Querying Your Data: An Introduction to SQL'
+excerpt: 'Learn the language of databases with this beginner-friendly guide to SQL. This tutorial covers the essential commands you need to retrieve, insert, and manage data.'
+coverImage: 'https://placehold.co/600x400/68D391/1A202C?text=SQL'
+difficulty: 'Beginner'
+tags: ['SQL', 'Databases', 'Backend', 'Data']
+duration: '20 min read'
+---
+
+## What is SQL?
+
+**SQL (Structured Query Language)** is the standard language for managing and manipulating relational databases. If data is the lifeblood of modern applications, SQL is the language we use to communicate with the heart—the database.
+
+Whether you're building a web application, analyzing business data, or working in data science, understanding SQL is an essential skill. It allows you to perform the four fundamental database operations, often referred to by the acronym **CRUD**:
+-   **C**reate (Insert) data
+-   **R**ead (Select) data
+-   **U**pdate data
+-   **D**elete data
+
+---
+
+## 1. The `SELECT` Statement: Reading Data
+
+The most common operation in SQL is retrieving data. We do this with the `SELECT` statement.
+
+Imagine we have a simple table called `Users` with the following structure:
+
+| id  | name      | email              | age |
+| --- | --------- | ------------------ | --- |
+| 1   | Azhagu    | azhagu@example.com | 30  |
+| 2   | Jane Doe  | jane@example.com   | 25  |
+| 3   | John Smith| john@example.com   | 35  |
+
+To retrieve all data from this table, you would use a `SELECT *` query:
+
+```sql
+SELECT * FROM Users;
+```
+-   `SELECT *`: This means "select all columns".
+-   `FROM Users`: This specifies the table you want to retrieve data from.
+
+If you only wanted to see the names and emails, you could specify the columns:
+
+```sql
+SELECT name, email FROM Users;
+```
+
+---
+
+## 2. Filtering with `WHERE`
+
+Often, you don't want every single row in a table. The `WHERE` clause allows you to filter your results based on specific conditions.
+
+Let's find the user whose name is "Jane Doe":
+
+```sql
+SELECT * FROM Users
+WHERE name = 'Jane Doe';
+```
+
+You can also use other operators like `>`, `<`, and `<>` (not equal). Let's find all users older than 30:
+
+```sql
+SELECT * FROM Users
+WHERE age > 30;
+```
+
+---
+
+## 3. `INSERT INTO`: Creating Data
+
+To add a new row of data to a table, you use the `INSERT INTO` statement.
+
+Let's add a new user to our `Users` table:
+
+```sql
+INSERT INTO Users (name, email, age)
+VALUES ('Peter Jones', 'peter@example.com', 42);
+```
+Here, we specify the columns we want to fill and then provide the corresponding values in the same order. The `id` column is often handled automatically by the database (as an auto-incrementing primary key), so we don't need to provide it.
+
+---
+
+## 4. `UPDATE`: Modifying Data
+
+To change existing data in a table, you use the `UPDATE` statement. It's almost always used with a `WHERE` clause to specify which row(s) you want to change.
+
+**Warning:** If you forget the `WHERE` clause, you will update **every single row** in the table!
+
+Let's update the email address for the user with an `id` of 1:
+
+```sql
+UPDATE Users
+SET email = 'new.email@example.com'
+WHERE id = 1;
+```
+This query finds the user with `id = 1` and sets their `email` column to the new value.
+
+---
+
+## 5. `DELETE`: Removing Data
+
+To remove rows from a table, you use the `DELETE` statement. Just like `UPDATE`, you should almost always use a `WHERE` clause.
+
+Let's remove the user we just added, "Peter Jones":
+
+```sql
+DELETE FROM Users
+WHERE name = 'Peter Jones';
+```
+This finds the row where the `name` is "Peter Jones" and deletes it from the table.
+
+---
+
+## Conclusion
+
+You've just learned the four most important commands in SQL! With `SELECT`, `INSERT`, `UPDATE`, and `DELETE`, you have the fundamental tools to interact with any relational database.
+
+SQL is a deep language with many more powerful features like `JOIN`s (for combining tables), aggregate functions (like `COUNT` and `SUM`), and `GROUP BY` clauses, but mastering these basic CRUD operations is the first and most crucial step. Keep practicing, and happy querying!

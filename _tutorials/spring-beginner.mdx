@@ -1,0 +1,144 @@
+---
+date: "2025-07-13"
+title: "Backend Development Made Easy: An Introduction to Spring Boot"
+excerpt: "Discover the most popular framework for building robust, enterprise-grade Java applications. This tutorial introduces the core concepts of the Spring Framework and shows you how to build your first web application with Spring Boot."
+coverImage: "https://placehold.co/600x400/68D391/1A202C?text=Spring+Boot"
+difficulty: "Beginner"
+tags: ["Spring Boot", "Java", "Backend", "Web Development"]
+duration: "25 min read"
+---
+
+## What is the Spring Framework?
+
+The **Spring Framework** is a powerful and comprehensive framework for building modern Java-based enterprise applications. Think of it as a complete toolkit that simplifies many of the complex challenges of backend development, such as database access, security, and web services.
+
+However, configuring a traditional Spring application can be complex. That's where **Spring Boot** comes in.
+
+**Spring Boot** is an extension of the Spring Framework that makes it incredibly easy to create stand-alone, production-grade Spring applications with minimal configuration. It follows a principle of "convention over configuration," meaning it makes intelligent assumptions about what you need, so you can start building your application's logic right away.
+
+---
+
+## 1. Creating Your First Spring Boot Project
+
+The easiest way to start a new Spring Boot project is by using the **Spring Initializr**, a web-based tool that generates your project structure for you.
+
+1.  Go to [start.spring.io](https://start.spring.io).
+2.  Configure your project metadata:
+    - **Project**: Maven
+    - **Language**: Java
+    - **Spring Boot**: Select the latest stable version (e.g., 3.x.x).
+    - **Group**: `com.example`
+    - **Artifact**: `demo`
+    - **Packaging**: Jar
+    - **Java**: 17 (or a recent LTS version)
+3.  On the right-hand side, click "Add Dependencies" and add **"Spring Web"**. This dependency provides everything we need to build a simple web application.
+4.  Click "Generate". This will download a `.zip` file.
+5.  Unzip the file and open the project in your favorite Java IDE (like IntelliJ IDEA or VS Code with the Java Extension Pack).
+
+---
+
+## 2. Your First "Hello World" Controller
+
+In Spring, a **Controller** is a component responsible for handling incoming web requests. Let's create one that responds with "Hello, World!".
+
+Navigate to `src/main/java/com/example/demo/` and create a new Java class called `HelloController`.
+
+```java
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @GetMapping("/")
+    public String sayHello() {
+        return "Hello, World!";
+    }
+}
+```
+
+Let's break this down:
+
+- `@RestController`: This is a Spring annotation that marks this class as a controller where every method returns a domain object instead of a view. It's a shorthand for including `@Controller` and `@ResponseBody`.
+- `@GetMapping("/")`: This annotation maps HTTP GET requests for the root URL (`/`) to the `sayHello()` method.
+- `sayHello()`: When a request hits the `/` endpoint, this method is called, and it returns the `String` "Hello, World!" directly as the response body.
+
+Now, go to your main application file (`DemoApplication.java`) and run it. Spring Boot will start a built-in web server (usually on port 8080). Open your browser and navigate to `http://localhost:8080`. You should see "Hello, World!" on the screen!
+
+---
+
+## 3. Core Concepts: Dependency Injection and Beans
+
+One of the most fundamental concepts in Spring is **Dependency Injection (DI)**. Instead of your components creating their own dependencies (the other objects they need to work), the Spring framework "injects" them.
+
+Objects managed by the Spring container are called **Beans**.
+
+Let's see a simple example. Imagine we have a `GreetingService` that provides a greeting message.
+
+```java
+// src/main/java/com/example/demo/GreetingService.java
+package com.example.demo;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class GreetingService {
+    public String getGreeting() {
+        return "Hello from the Greeting Service!";
+    }
+}
+```
+
+- `@Service`: This annotation marks the class as a service component. Spring will automatically detect it and create a bean for it.
+
+Now, we can inject this service into our controller.
+
+```java
+// src/main/java/com/example/demo/HelloController.java
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    private final GreetingService greetingService;
+
+    // Constructor-based dependency injection
+    @Autowired
+    public HelloController(GreetingService greetingService) {
+        this.greetingService = greetingService;
+    }
+
+    @GetMapping("/")
+    public String sayHello() {
+        return greetingService.getGreeting();
+    }
+}
+```
+
+- `@Autowired`: This annotation tells Spring to automatically inject an instance of `GreetingService` into the controller's constructor. We didn't have to write `new GreetingService()`. Spring handled it for us! This makes our code more modular and easier to test.
+
+---
+
+## 4. Common Annotations
+
+You've already seen a few annotations. They are a core part of how you configure a Spring Boot application. Here are a few more common ones:
+
+- `@Component`: A generic annotation for any Spring-managed component. `@Service`, `@Repository`, and `@Controller` are specializations of `@Component`.
+- `@Repository`: Used to mark classes that access the database.
+- `@RequestMapping`: A more general mapping annotation that can be used for GET, POST, PUT, etc.
+- `@PathVariable`: Used to extract values from the URL path (e.g., `/users/{id}`).
+- `@RequestBody`: Used to bind the HTTP request body to a method parameter.
+
+---
+
+## Conclusion
+
+Congratulations! You've just built your first web application with Spring Boot. You've learned how to create a project with the Spring Initializr, build a simple web controller, and understand the core concepts of **Dependency Injection** and **Beans**.
+
+Spring Boot provides a massive ecosystem for building powerful applications, from complex APIs and microservices to data-driven backends. This is just the beginning of your journey into the world of Spring. Keep exploring, and happy coding!

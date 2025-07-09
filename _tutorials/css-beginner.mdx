@@ -1,0 +1,180 @@
+---
+date: "2025-07-10"
+title: "Styling Your First Web Page: An Introduction to CSS"
+excerpt: "Take your HTML5 page to the next level with CSS! Learn how to add colors, change fonts, and control the layout of your website with Cascading Style Sheets."
+coverImage: "https://placehold.co/600x400/68D391/1A202C?text=CSS"
+difficulty: "Beginner"
+tags: ["CSS", "Web Development", "Frontend"]
+duration: "20 min read"
+---
+
+## What is CSS?
+
+Welcome to the next step in your web development journey! If HTML is the skeleton of your website, then **CSS (Cascading Style Sheets)** is the skin, clothes, and personality. It's the language we use to style our HTML documents, controlling everything from colors and fonts to the layout of complex pages.
+
+In this tutorial, we'll take the simple HTML page we built previously and bring it to life with CSS.
+
+---
+
+## 1. Linking Your CSS File
+
+First, we need a place to write our styles. While you _can_ write CSS directly inside your HTML file, the best practice is to keep it in a separate file. This keeps your code organized and reusable.
+
+1.  Create a new file in the same directory as your `index.html` and name it `style.css`.
+2.  Now, we need to link this new CSS file from our HTML. Add a `<link>` tag inside the `<head>` section of your `index.html` file.
+
+```html
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My First Web Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+```
+
+The `rel="stylesheet"` attribute tells the browser that this is a stylesheet, and the `href` attribute points to the location of our CSS file. Now, any styles we write in `style.css` will be applied to `index.html`.
+
+---
+
+## 2. The Anatomy of a CSS Rule
+
+CSS works by selecting HTML elements and applying a set of rules to them. A single CSS rule looks like this:
+
+```css
+selector {
+  property: value;
+}
+```
+
+- **Selector**: This targets the HTML element(s) you want to style. It could be an element name (like `p`), a class name, or an ID.
+- **Property**: This is the visual characteristic you want to change (e.g., `color`, `font-size`, `background-color`).
+- **Value**: This is the specific style you want to apply (e.g., `blue`, `16px`, `#ffffff`).
+
+Let's write our first rule. Open `style.css` and add the following to change the background color of our entire page and set a default font.
+
+```css
+body {
+  background-color: #f0f4f8;
+  font-family: Arial, sans-serif;
+}
+```
+
+Here, `body` is the selector. We've applied two rules to it. Save the file and open your `index.html` in a browser. You should see the background color change!
+
+---
+
+## 3. Common Selectors
+
+You can select elements in many ways. Here are the most common ones.
+
+### Element Selector
+
+Selects all elements of a certain type.
+
+```css
+/* Styles all <h1> elements */
+h1 {
+  color: #333;
+}
+```
+
+### Class Selector
+
+This is the most flexible way to style elements. First, add a `class` attribute to your HTML element.
+
+```html
+<p class="highlight">This is an important paragraph.</p>
+```
+
+Then, in your CSS, you can target this class using a period (`.`).
+
+```css
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}
+```
+
+### ID Selector
+
+This selects a single, unique element on the page. An ID should only be used once per page.
+
+```html
+<footer id="main-footer">...</footer>
+```
+
+In CSS, you target an ID using a hash (`#`).
+
+```css
+#main-footer {
+  border-top: 2px solid #ccc;
+  padding: 20px;
+}
+```
+
+---
+
+## 4. The Box Model
+
+Every element on a web page is a rectangular box. The CSS Box Model describes how this box is structured. It consists of four parts:
+
+![CSS Box Model](https://placehold.co/400x200/9AE6B4/1A202C?text=Content>Padding>Border>Margin)
+
+- **Content**: The actual text, image, or other content of the element.
+- **Padding**: The space between the content and the border. It's like the stuffing in a pillow.
+- **Border**: A line that goes around the padding and content.
+- **Margin**: The space _outside_ the border. It separates the element from other elements.
+
+Let's add some styling to our `<header>` to see this in action.
+
+```css
+header {
+  background-color: #68d391; /* Our theme's mint green */
+  color: #1a202c;
+  padding: 20px;
+  border-bottom: 5px solid #48bb78;
+  margin-bottom: 30px;
+}
+```
+
+Here, we've given the header a background color, some padding to give the content space, a solid bottom border, and a bottom margin to push the rest of the content down.
+
+---
+
+## 5. Styling Text and Links
+
+Let's make our text more readable and our links more interactive.
+
+```css
+/* Style for all paragraphs */
+p {
+  line-height: 1.6; /* Increases space between lines of text */
+  color: #555;
+}
+
+/* Style for navigation links */
+nav a {
+  color: #1a202c;
+  text-decoration: none; /* Removes the underline */
+  padding: 10px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+/* Style for links on hover */
+nav a:hover {
+  color: #fff;
+  background-color: #48bb78;
+  border-radius: 5px;
+}
+```
+
+The `:hover` pseudo-class is special. It applies styles only when the user's mouse is over the element, creating an interactive effect.
+
+---
+
+## Conclusion
+
+You've now taken your first steps into CSS! You've learned how to create and link a stylesheet, the basic syntax of CSS rules, how to use selectors to target elements, the fundamentals of the box model, and how to style text and links.
+
+CSS is a vast and powerful language, but these core concepts are the foundation for everything else. The best way to learn is to experiment. Try changing colors, adjusting padding, and exploring new properties. Happy styling!

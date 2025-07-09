@@ -12,12 +12,37 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  useTheme,
+  SelectChangeEvent,
+  Paper,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { CONTACT_DATA } from "@/utils/contactData";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
 const ContactPage = () => {
+  const theme = useTheme();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,19 +50,19 @@ const ContactPage = () => {
     method: "WhatsApp",
   });
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | SelectChangeEvent
+  ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleWhatsAppMessage = () => {
     const { name, message, email } = formData;
-    const phoneNumber = "+917502005724"; // Replace with your phone number
-    const text = `${name}.
-
-${message}
-
-Email: ${email}`;
+    const phoneNumber = "+917502005724"; 
+    const text = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
     window.open(url, "_blank");
   };
@@ -52,7 +77,7 @@ Email: ${email}`;
     window.open(mailtoLink, "_blank");
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (formData.method === "WhatsApp") {
       handleWhatsAppMessage();
@@ -62,194 +87,175 @@ Email: ${email}`;
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      <Typography
-        variant="h3"
-        component={motion.h1}
-        gutterBottom
-        sx={{
-          fontWeight: "bold",
-          textAlign: "center",
-          mb: 2,
-        }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}>
-        {CONTACT_DATA.title}
-      </Typography>
+    <Box
+      component={motion.div}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      sx={{ p: { xs: 2, sm: 4 } }}>
+      <Container maxWidth="lg">
+        <Box
+          sx={{ textAlign: "center", mb: 6 }}
+          component={motion.div}
+          variants={itemVariants}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: "bold",
+              color: theme.palette.primary.main,
+              fontFamily: "Orbitron, sans-serif",
+            }}>
+            {CONTACT_DATA.title}
+          </Typography>
+          <Typography variant="h6" color="text.secondary">
+            {CONTACT_DATA.subtitle}
+          </Typography>
+        </Box>
 
-      <Grid container spacing={2} justifyContent="center">
-        {CONTACT_DATA.socialLinks.map((item, index) => (
-          <Grid item xs={6} sm={6} md={4} lg={4} key={index}>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300 }}>
-              <Card
-                sx={{
-                  textAlign: "center",
-                  p: 2,
-                  borderRadius: "10px",
-                  boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
-                  height: "220px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  "&:hover": {
-                    boxShadow: "0 5px 10px rgba(0, 0, 0, 0.2)",
-                  },
-                }}
-                onClick={() => window.open(item.link, "_blank")}>
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      mb: 2,
-                      transition: "color 0.3s",
-                      color: item.color,
-                      "&:hover": {
-                        color: (theme) => theme.palette.primary.main,
-                      },
-                    }}>
-                    <Icon icon={item.icon} fontSize={36} />
-                  </Box>
-                  <Typography
-                    variant="subtitle1"
-                    sx={{ fontWeight: "bold", mb: 1 }}>
-                    {item.platform}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      cursor: "pointer",
-                      wordWrap: "break-word",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}>
-                    {item.username}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </motion.div>
+        <Grid container spacing={6} alignItems="flex-start">
+          <Grid
+            item
+            xs={12}
+            md={5}
+            component={motion.div}
+            variants={itemVariants}>
+            <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
+              Connect with Me
+            </Typography>
+            <Grid container spacing={2}>
+              {CONTACT_DATA.socialLinks.map((item, index) => (
+                <Grid item xs={12} sm={6} key={index}>
+                  <motion.div whileHover={{ y: -5 }} style={{ height: "100%" }}>
+                    <Card
+                      sx={{
+                        p: 2,
+                        borderRadius: "12px",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        textAlign: "center",
+                        cursor: "pointer",
+                        border: `1px solid ${theme.palette.divider}`,
+                        transition: "border-color 0.3s, box-shadow 0.3s",
+                        "&:hover": {
+                          borderColor: item.color,
+                          boxShadow: `0 0 15px ${item.color}55`,
+                        },
+                      }}
+                      onClick={() => window.open(item.link, "_blank")}>
+                      <Icon
+                        icon={item.icon}
+                        style={{
+                          fontSize: 36,
+                          color: item.color,
+                          marginBottom: "8px",
+                        }}
+                      />
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ fontWeight: "bold" }}>
+                        {item.platform}
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{ wordBreak: "break-all" }}>
+                        {item.username}
+                      </Typography>
+                    </Card>
+                  </motion.div>
+                </Grid>
+              ))}
+            </Grid>
           </Grid>
-        ))}
-      </Grid>
 
-      <Typography
-        variant="h4"
-        sx={{ fontWeight: "bold", mt: 6, mb: 3, textAlign: "center" }}>
-        {CONTACT_DATA.subtitle}
-      </Typography>
+          <Grid
+            item
+            xs={12}
+            md={7}
+            component={motion.div}
+            variants={itemVariants}>
+            <Typography variant="h5" sx={{ fontWeight: "bold", mb: 2 }}>
+              Send a Message
+            </Typography>
+            <Paper
+              component="form"
+              elevation={0}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2.5,
+                p: { xs: 2, sm: 3 },
+                borderRadius: "16px",
+                border: `1px solid ${theme.palette.divider}`,
+              }}
+              onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label={CONTACT_DATA.form.nameLabel}
+                variant="outlined"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
 
-      <Typography variant="body1" sx={{ mb: 4, textAlign: "center" }}>
-        {CONTACT_DATA.description}
-      </Typography>
+              <TextField
+                fullWidth
+                label={CONTACT_DATA.form.emailLabel}
+                type="email"
+                variant="outlined"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
 
-      <Box
-        component="form"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-          padding: 4,
-          borderRadius: "15px",
-          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-          "&:hover": {
-            boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)",
-          },
-        }}
-        onSubmit={handleSubmit}>
-        <TextField
-          fullWidth
-          label={CONTACT_DATA.form.nameLabel}
-          variant="outlined"
-          name="name"
-          value={formData.name}
-          onChange={handleInputChange}
-          required
-          sx={{
-            "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#32CD32",
-            },
-            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-              {
-                borderColor: "#32CD32",
-              },
-          }}
-        />
+              <TextField
+                fullWidth
+                label={CONTACT_DATA.form.messageLabel}
+                multiline
+                rows={4}
+                variant="outlined"
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+              />
 
-        <TextField
-          fullWidth
-          label={CONTACT_DATA.form.emailLabel}
-          type="email"
-          variant="outlined"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-          sx={{
-            "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#32CD32",
-            },
-            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-              {
-                borderColor: "#32CD32",
-              },
-          }}
-        />
+              <FormControl fullWidth>
+                <InputLabel>{CONTACT_DATA.form.methodLabel}</InputLabel>
+                <Select
+                  name="method"
+                  value={formData.method}
+                  onChange={handleInputChange}
+                  label={CONTACT_DATA.form.methodLabel}>
+                  {CONTACT_DATA.form.methods.map((method) => (
+                    <MenuItem key={method.value} value={method.value}>
+                      {method.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
-        <TextField
-          fullWidth
-          label={CONTACT_DATA.form.messageLabel}
-          multiline
-          rows={4}
-          variant="outlined"
-          name="message"
-          value={formData.message}
-          onChange={handleInputChange}
-          required
-          sx={{
-            "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#32CD32",
-            },
-            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-              {
-                borderColor: "#32CD32",
-              },
-          }}
-        />
-
-        <FormControl fullWidth>
-          <InputLabel>{CONTACT_DATA.form.methodLabel}</InputLabel>
-          <Select
-            name="method"
-            value={formData.method}
-            onChange={handleInputChange}
-            label={CONTACT_DATA.form.methodLabel}>
-            {CONTACT_DATA.form.methods.map((method) => (
-              <MenuItem key={method.value} value={method.value}>
-                {method.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <Button
-          type="submit"
-          variant="contained"
-          color="success"
-          size="large"
-          sx={{
-            alignSelf: "flex-start",
-            transition: "all 0.3s",
-            "&:hover": { transform: "translateY(-2px)" },
-          }}>
-          {CONTACT_DATA.form.submitText}
-        </Button>
-      </Box>
-    </Container>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+                sx={{
+                  alignSelf: "flex-start",
+                  fontWeight: "bold",
+                  "&:hover": { transform: "translateY(-2px)" },
+                }}>
+                {CONTACT_DATA.form.submitText}
+              </Button>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 

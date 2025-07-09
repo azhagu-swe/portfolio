@@ -19,7 +19,8 @@ export const PROJECTS_DATA = {
         "Developed a Java-based geohash algorithm for spatial targeting, improving accuracy by 15%. Integrated with PostgreSQL for efficient data storage.",
       technologies: ["Java", "Geohash", "PostgreSQL"],
       thumbnail: "https://placehold.co/600x400/1E1E1E/FFC107?text=Proximity+Hash",
-      github: "https://github.com/azhagu-swe/proximityhash-java",
+      github: "https://github.com/azhagu-swe/proximityhash-javas",
+      liveDemo: "https://github.com/azhagu-swe/proximityhash-javas",
     },
    
     {

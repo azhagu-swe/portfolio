@@ -1,24 +1,25 @@
-import React from "react";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetStaticPaths } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { getAllPostSlugs, getPostData, PostFrontmatter } from "../../lib/blog";
+import { getAllTutorialSlugs, getTutorialData } from "../../lib/tutorials";
+import { Divider, Paper, Stack } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
+import React from "react";
+import { GetStaticProps } from "next";
+import Link from "next/link";
+import { TutorialFrontmatter } from "../../lib/tutorials";
 import {
   Box,
   Typography,
-  Paper,
-  Chip,
-  Stack,
-  Divider,
+  CardMedia,
   Button,
   useTheme,
-  CardMedia,
+  Chip,
 } from "@mui/material";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-interface PostPageProps {
-  frontmatter: PostFrontmatter;
+interface TutorialPageProps {
+  frontmatter: TutorialFrontmatter;
   mdxSource: MDXRemoteSerializeResult;
 }
 
@@ -27,7 +28,7 @@ const containerVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-const PostPage = ({ frontmatter, mdxSource }: PostPageProps) => {
+const TutorialPage = ({ frontmatter, mdxSource }: TutorialPageProps) => {
   const theme = useTheme();
   return (
     <Box
@@ -48,7 +49,15 @@ const PostPage = ({ frontmatter, mdxSource }: PostPageProps) => {
           },
         }}>
         <Box component="header" sx={{ textAlign: "center" }}>
-          <Chip label={frontmatter.category} color="primary" sx={{ mb: 2 }} />
+          <Stack
+            direction="row"
+            spacing={1}
+            justifyContent="center"
+            alignItems="center"
+            sx={{ mb: 2 }}>
+            <Chip label={frontmatter.difficulty} color="primary" />
+            <Chip label={frontmatter.duration} variant="outlined" />
+          </Stack>
           <Typography
             variant="h3"
             component="h1"
@@ -57,12 +66,12 @@ const PostPage = ({ frontmatter, mdxSource }: PostPageProps) => {
             {frontmatter.title}
           </Typography>
           <Typography variant="body1" color="text.secondary">
+            Published on{" "}
             {new Date(frontmatter.date).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
               day: "numeric",
-            })}{" "}
-            • {frontmatter.readTime}
+            })}
           </Typography>
         </Box>
 
@@ -134,15 +143,8 @@ const PostPage = ({ frontmatter, mdxSource }: PostPageProps) => {
               py: "2px",
               borderRadius: "4px",
             },
-            "& pre > code": {
-              backgroundColor: "transparent",
-              px: 0,
-              py: 0,
-            },
-            "& img": {
-              maxWidth: "100%",
-              borderRadius: "8px",
-            },
+            "& pre > code": { backgroundColor: "transparent", px: 0, py: 0 },
+            "& img": { maxWidth: "100%", borderRadius: "8px" },
           }}>
           <MDXRemote {...mdxSource} />
         </Box>
@@ -150,10 +152,10 @@ const PostPage = ({ frontmatter, mdxSource }: PostPageProps) => {
         <Box sx={{ textAlign: "center" }}>
           <Button
             component={Link}
-            href="/blog"
+            href="/tutorials"
             variant="outlined"
             startIcon={<ArrowBackIcon />}>
-            Back to Blog
+            Back to Tutorials
           </Button>
         </Box>
       </Paper>
@@ -161,10 +163,10 @@ const PostPage = ({ frontmatter, mdxSource }: PostPageProps) => {
   );
 };
 
-export default PostPage;
+export default TutorialPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getAllPostSlugs();
+  const paths = getAllTutorialSlugs();
   return { paths, fallback: false };
 };
 
@@ -172,6 +174,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params?.slug) {
     return { notFound: true };
   }
-  const postData = await getPostData(params.slug as string);
-  return { props: { ...postData } };
+  const tutorialData = await getTutorialData(params.slug as string);
+  return { props: { ...tutorialData } };
 };

@@ -1,0 +1,207 @@
+---
+date: "2025-07-09"
+title: "Your First Steps in Web Development: An Introduction to HTML5"
+excerpt: "Learn the absolute basics of web development by building your first web page with HTML5. This tutorial covers everything from document structure to semantic tags and forms."
+coverImage: "https://placehold.co/600x400/68D391/1A202C?text=HTML5"
+difficulty: "Beginner"
+tags: ["HTML", "Web Development", "Frontend"]
+duration: "15 min read"
+---
+
+## What is HTML5?
+
+Welcome to the world of web development! Your journey starts here, with HTML5. Think of HTML (HyperText Markup Language) as the skeleton of every website you visit. It provides the fundamental structure and content for a web page. HTML5 is the latest version, and it introduced a host of new features and semantic elements that make our websites more organized and accessible.
+
+In this tutorial, we'll build a simple web page from scratch and learn the core concepts you need to know.
+
+---
+
+## 1. The Basic Document Structure
+
+Every HTML5 document starts with the same basic template. It tells the browser what kind of document it's reading.
+
+Create a new file called `index.html` and add the following code:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My First Web Page</title>
+  </head>
+  <body>
+    <!-- All your content will go here! -->
+  </body>
+</html>
+```
+
+Let's break this down:
+
+- `<!DOCTYPE html>`: This is the very first thing in your document. It declares that this is an HTML5 document.
+- `<html>`: This is the root element that wraps all the content on the page.
+- `<head>`: This section contains meta-information about your page that isn't displayed directly. This includes the character set, viewport settings for responsiveness, and the page title that appears in the browser tab.
+- `<body>`: This is where all the visible content of your website goes—headings, paragraphs, images, links, and more.
+
+---
+
+## 2. Semantic Elements: Giving Structure Meaning
+
+HTML5 introduced new elements that describe their content. This is called "semantics," and it's great for both search engines (SEO) and accessibility.
+
+Let's add some semantic structure to our `<body>`:
+
+```html
+<body>
+  <header>
+    <h1>Welcome to My Website</h1>
+  </header>
+
+  <nav>
+    <!-- Navigation links will go here -->
+  </nav>
+
+  <main>
+    <article>
+      <h2>About Me</h2>
+      <p>This is a paragraph about me. I am learning HTML5!</p>
+    </article>
+    <section>
+      <h2>My Hobbies</h2>
+      <p>I enjoy coding, reading, and hiking.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Website. All rights reserved.</p>
+  </footer>
+</body>
+```
+
+- `<header>`: Represents introductory content, typically a group of introductory or navigational aids.
+- `<nav>`: Contains the main navigation links for the site.
+- `<main>`: Specifies the main, dominant content of the document. There should only be one `<main>` element per page.
+- `<article>`: Represents a self-contained piece of content (e.g., a blog post, a news story).
+- `<section>`: Represents a standalone section of a document, which doesn't have a more specific semantic element to represent it.
+- `<footer>`: Represents the footer for a document or section, which might contain information about the author, copyright data, or links to related documents.
+
+---
+
+## 3. Text, Links, and Images
+
+Let's flesh out our content with some of the most common HTML tags.
+
+### Headings and Paragraphs
+
+We've already used `<h1>`, `<h2>`, and `<p>`. Headings range from `<h1>` (most important) to `<h6>` (least important). Paragraphs (`<p>`) are used for blocks of text.
+
+### Links
+
+Links, or hyperlinks, are created with the `<a>` (anchor) tag.
+
+Update your `<nav>` section:
+
+```html
+<nav>
+  <a href="/">Home</a>
+  <a href="/about">About</a>
+  <a href="/contact">Contact</a>
+</nav>
+```
+
+The `href` attribute specifies the URL the link goes to.
+
+### Images
+
+Images are embedded using the `<img>` tag. It's a self-closing tag.
+
+Let's add an image to our "About Me" article:
+
+```html
+<article>
+  <h2>About Me</h2>
+  <img
+    src="[https://placehold.co/200x200/9AE6B4/1A202C?text=Me](https://placehold.co/200x200/9AE6B4/1A202C?text=Me)"
+    alt="A picture of me" />
+  <p>This is a paragraph about me. I am learning HTML5!</p>
+</article>
+```
+
+- `src`: The source attribute points to the URL of the image.
+- `alt`: The alternative text provides a description of the image for screen readers and if the image fails to load. **Always include an `alt` attribute!**
+
+---
+
+## 4. Lists
+
+HTML provides two main types of lists: unordered (bullet points) and ordered (numbered).
+
+### Unordered List (`<ul>`)
+
+Let's update our "Hobbies" section to use a list.
+
+```html
+<section>
+  <h2>My Hobbies</h2>
+  <ul>
+    <li>Coding</li>
+    <li>Reading</li>
+    <li>Hiking</li>
+  </ul>
+</section>
+```
+
+Each list item is wrapped in an `<li>` tag.
+
+### Ordered List (`<ol>`)
+
+If the order matters, use an ordered list.
+
+```html
+<section>
+  <h2>My Top 3 Favorite Foods</h2>
+  <ol>
+    <li>Pizza</li>
+    <li>Tacos</li>
+    <li>Sushi</li>
+  </ol>
+</section>
+```
+
+---
+
+## 5. Simple Forms
+
+Forms are essential for user interaction. Let's create a simple contact form.
+
+```html
+<section>
+  <h2>Contact Me</h2>
+  <form>
+    <label for="name">Name:</label><br />
+    <input type="text" id="name" name="name" /><br /><br />
+
+    <label for="email">Email:</label><br />
+    <input type="email" id="email" name="email" /><br /><br />
+
+    <label for="message">Message:</label><br />
+    <textarea id="message" name="message" rows="4"></textarea><br /><br />
+
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+```
+
+- `<form>`: The container for all form elements.
+- `<label>`: A caption for an item in a user interface. The `for` attribute should match the `id` of the input it's labeling.
+- `<input>`: The most used form element. The `type` attribute can be `text`, `email`, `password`, `checkbox`, and many more.
+- `<textarea>`: A multi-line text input.
+- `<button>`: A clickable button.A
+
+---
+
+## Conclusion
+
+Congratulations! You've just created your first structured web page using HTML5. You've learned about the basic document structure, semantic elements, text formatting, links, images, lists, and forms.
+
+This is the foundation upon which all websites are built. The next step in your journey is to learn CSS (Cascading Style Sheets) to style your page and make it visually appealing. Keep practicing, and happy coding!

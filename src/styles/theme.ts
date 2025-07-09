@@ -48,7 +48,6 @@ const typography = {
   },
 };
 
-// COMPONENT & GLOBAL STYLES
 const components = {
   MuiCssBaseline: {
     styleOverrides: (theme: Theme) => ({

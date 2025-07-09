@@ -1,0 +1,270 @@
+---
+date: '2025-07-21'
+title: 'Writing Better Code: An Introduction to SOLID Principles'
+excerpt: 'Go beyond basic OOP and learn the five SOLID principles that are fundamental to writing clean, maintainable, and scalable software. This guide covers each principle with clear explanations and simple Java examples.'
+coverImage: 'https://placehold.co/600x400/68D391/1A202C?text=SOLID'
+difficulty: 'Intermediate'
+tags: ['SOLID', 'OOP', 'Software Design', 'Programming', 'Java']
+duration: '30 min read'
+---
+
+## What are SOLID Principles?
+
+After learning the basics of Object-Oriented Programming (OOP), the next step is to learn how to write *good* object-oriented code. The **SOLID** principles are a set of five design principles that are intended to make software designs more understandable, flexible, and maintainable.
+
+Coined by Robert C. Martin (also known as "Uncle Bob"), these principles are a cornerstone of modern software engineering and are essential for building scalable and robust applications.
+
+SOLID is an acronym for:
+-   **S** - Single Responsibility Principle
+-   **O** - Open/Closed Principle
+-   **L** - Liskov Substitution Principle
+-   **I** - Interface Segregation Principle
+-   **D** - Dependency Inversion Principle
+
+Let's dive into each one.
+
+---
+
+## 1. Single Responsibility Principle (SRP)
+
+> A class should have only one reason to change.
+
+This principle states that a class should have only one job or responsibility. If a class has more than one responsibility, it becomes coupled. A change to one responsibility can lead to unintended changes in another.
+
+**Bad Example:** A single class that both manages employee data and calculates payroll.
+
+```java
+// VIOLATES SRP: This class does two things.
+class Employee {
+    public void calculatePay() { /* ... */ }
+    public void saveEmployeeData() { /* ... */ }
+}
+```
+If the rules for calculating pay change, you have to modify the `Employee` class. If the database schema changes, you *also* have to modify the `Employee` class.
+
+**Good Example:** Separate the responsibilities into different classes.
+
+```java
+// Adheres to SRP
+class EmployeeData {
+    // Methods related to storing and retrieving employee data
+    public void save() { /* ... */ }
+    public Employee findById(int id) { /* ... */ }
+}
+
+class PayCalculator {
+    // Methods related to calculating pay
+    public Money calculatePay(Employee e) { /* ... */ }
+}
+```
+Now, each class has only one reason to change, making the system much easier to maintain.
+
+---
+
+## 2. Open/Closed Principle (OCP)
+
+> Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification.
+
+This means you should be able to add new functionality to a class without changing its existing code. This is typically achieved by using interfaces, abstract classes, and inheritance.
+
+**Bad Example:** A `ShapeCalculator` that needs to be modified every time a new shape is added.
+
+```java
+// VIOLATES OCP
+class ShapeCalculator {
+    public double calculateArea(Object shape) {
+        if (shape instanceof Rectangle) {
+            // calculation for rectangle
+        }
+        if (shape instanceof Circle) {
+            // calculation for circle
+        }
+        // If we want to add a Triangle, we have to modify this method!
+    }
+}
+```
+
+**Good Example:** Use an interface and have each shape implement its own area calculation.
+
+```java
+// Adheres to OCP
+interface Shape {
+    double calculateArea();
+}
+
+class Rectangle implements Shape {
+    public double calculateArea() { /* ... */ }
+}
+
+class Circle implements Shape {
+    public double calculateArea() { /* ... */ }
+}
+
+// Now, we can add a new Triangle class without changing any existing code.
+class Triangle implements Shape {
+    public double calculateArea() { /* ... */ }
+}
+```
+The original `ShapeCalculator` is no longer needed, and our system is now open to new shapes being added without modification.
+
+---
+
+## 3. Liskov Substitution Principle (LSP)
+
+> Subtypes must be substitutable for their base types.
+
+This principle, named after Barbara Liskov, means that objects of a superclass should be replaceable with objects of its subclasses without breaking the application. In other words, a child class should be able to do everything its parent class can do.
+
+**Bad Example:** A `Bird` class with a `fly()` method, and a subclass `Ostrich` that cannot fly.
+
+```java
+// VIOLATES LSP
+class Bird {
+    public void fly() { /* ... */ }
+}
+
+class Ostrich extends Bird {
+    @Override
+    public void fly() {
+        // Ostriches can't fly, so we throw an exception or do nothing.
+        // This breaks the expectation of what a Bird can do.
+        throw new UnsupportedOperationException("Ostriches cannot fly.");
+    }
+}
+```
+If a piece of code expects a `Bird` object and tries to call `fly()`, it will crash if it receives an `Ostrich`.
+
+**Good Example:** Create a more appropriate class hierarchy.
+
+```java
+// Adheres to LSP
+class Bird {
+    // Common bird properties
+}
+
+class FlyingBird extends Bird {
+    public void fly() { /* ... */ }
+}
+
+class Ostrich extends Bird {
+    // Ostrich-specific methods, but no fly() method.
+}
+```
+Now, an `Ostrich` is still a `Bird`, but it doesn't pretend to be a `FlyingBird`.
+
+---
+
+## 4. Interface Segregation Principle (ISP)
+
+> Clients should not be forced to depend on interfaces they do not use.
+
+This principle suggests that it's better to have many small, specific interfaces than one large, general-purpose interface. If an interface is too "fat," implementing classes are forced to implement methods they don't need.
+
+**Bad Example:** A single `Worker` interface with methods for both working and eating.
+
+```java
+// VIOLATES ISP
+interface Worker {
+    void work();
+    void eat();
+}
+
+class HumanWorker implements Worker {
+    public void work() { /* ... */ }
+    public void eat() { /* ... */ }
+}
+
+class RobotWorker implements Worker {
+    public void work() { /* ... */ }
+    
+    // Robots don't eat! This class is forced to implement a useless method.
+    public void eat() { /* Do nothing or throw exception */ }
+}
+```
+
+**Good Example:** Split the large interface into smaller, more specific ones.
+
+```java
+// Adheres to ISP
+interface Workable {
+    void work();
+}
+
+interface Eatable {
+    void eat();
+}
+
+// Now, classes can implement only the interfaces they need.
+class HumanWorker implements Workable, Eatable {
+    public void work() { /* ... */ }
+    public void eat() { /* ... */ }
+}
+
+class RobotWorker implements Workable {
+    public void work() { /* ... */ }
+}
+```
+
+---
+
+## 5. Dependency Inversion Principle (DIP)
+
+> 1.  High-level modules should not depend on low-level modules. Both should depend on abstractions.
+> 2.  Abstractions should not depend on details. Details should depend on abstractions.
+
+This principle is about decoupling your code. Instead of a high-level component (like a `NotificationService`) depending directly on a low-level component (like an `EmailClient`), both should depend on an abstraction (like a `MessageSender` interface).
+
+**Bad Example:** A high-level class directly creating and using a low-level class.
+
+```java
+// VIOLATES DIP
+class EmailClient {
+    public void sendEmail(String message) { /* ... */ }
+}
+
+class NotificationService {
+    private EmailClient emailClient = new EmailClient(); // Direct dependency!
+
+    public void sendNotification(String message) {
+        emailClient.sendEmail(message);
+    }
+}
+```
+The `NotificationService` is tightly coupled to the `EmailClient`. What if we want to send an SMS instead? We'd have to change the `NotificationService` class.
+
+**Good Example:** Depend on an interface (an abstraction).
+
+```java
+// Adheres to DIP
+interface MessageSender {
+    void sendMessage(String message);
+}
+
+class EmailClient implements MessageSender {
+    public void sendMessage(String message) { /* Send email... */ }
+}
+
+class SmsClient implements MessageSender {
+    public void sendMessage(String message) { /* Send SMS... */ }
+}
+
+class NotificationService {
+    private MessageSender sender; // Depends on the abstraction
+
+    // The dependency is injected
+    public NotificationService(MessageSender sender) {
+        this.sender = sender;
+    }
+
+    public void sendNotification(String message) {
+        sender.sendMessage(message);
+    }
+}
+```
+Now, our `NotificationService` doesn't care *how* the message is sent, only that it can be sent. We can easily switch from sending emails to sending SMS messages without changing the `NotificationService` at all.
+
+---
+
+## Conclusion
+
+The SOLID principles are your guide to writing clean, high-quality object-oriented code. While they might seem abstract at first, consistently applying them will lead to software that is easier to maintain, extend, and test.

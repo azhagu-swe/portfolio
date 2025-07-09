@@ -19,7 +19,7 @@ const FooterRoot = styled("footer")(({ theme }) => ({
   color: theme.palette.text.secondary,
   padding: theme.spacing(6, 2),
   borderTop: `1px solid ${theme.palette.divider}`,
-  marginTop: "20px",
+  marginTop: "40px",
 }));
 
 const FooterContent = styled(Box)(({ theme }) => ({
@@ -44,7 +44,9 @@ const Footer = () => {
               }}>
               Azhagu-swe
             </Typography>
-            <Typography variant="body2">
+            <Typography
+              variant="body2"
+              sx={{ mt: 3, lineHeight: 1.6, textAlign: "justify" }}>
               A Full Stack Developer passionate about creating modern, scalable
               web applications.
             </Typography>
@@ -55,20 +57,14 @@ const Footer = () => {
               Quick Links
             </Typography>
             <Stack spacing={1} alignItems={{ xs: "center", md: "flex-start" }}>
-              <Link href="/about" passHref legacyBehavior>
-                <MuiLink color="inherit" underline="hover">
-                  About
-                </MuiLink>
+              <Link href="/about" passHref>
+                About
               </Link>
-              <Link href="/projects" passHref legacyBehavior>
-                <MuiLink color="inherit" underline="hover">
-                  Projects
-                </MuiLink>
+              <Link href="/projects" passHref>
+                Projects
               </Link>
-              <Link href="/contact" passHref legacyBehavior>
-                <MuiLink color="inherit" underline="hover">
-                  Contact
-                </MuiLink>
+              <Link href="/contact" passHref>
+                Contact
               </Link>
             </Stack>
           </Grid>
