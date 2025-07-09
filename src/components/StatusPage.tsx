@@ -128,7 +128,7 @@ export const Maintenance = () => (
     subtitle="I'm upgrading the site with some powerful new features. Think of it as refactoring in progress!"
     quote="Good code, like good coffee, takes a little extra time."
     buttonText="Go to Homepage"
-    buttonLink="/portfolio"
+    buttonLink="/"
   />
 );
 
@@ -138,7 +138,7 @@ export const ComingSoon = () => (
     title="Page Under Construction"
     subtitle="Just like coding, great things take time. Stay tuned while I debug and deploy something amazing!"
     buttonText="Take Me Home"
-    buttonLink="/portfolio"
+    buttonLink="/"
   />
 );
 
@@ -149,7 +149,7 @@ export const NotFound = () => (
     subtitle="Oops! Looks like you wandered into the void. But hey, even the best coders hit a dead end sometimes!"
     quote="If at first you don’t succeed, try debugging."
     buttonText="Back to Safety"
-    buttonLink="/portfolio"
+    buttonLink="/"
   />
 );
 
