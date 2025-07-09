@@ -1,0 +1,95 @@
+---
+title: "The Ultimate Guide to Spring & Spring Boot Interview Questions"
+date: "2025-07-08"
+excerpt: "Ace your Java backend interview with this deep dive into essential Spring Framework and Spring Boot questions, covering everything from IoC and DI to auto-configuration, REST APIs, and security."
+coverImage: "https://placehold.co/600x400/1E1E1E/32CD32?text=Spring+Boot+QA"
+category: "Technical Guides"
+tags: ["Java", "Spring", "Spring Boot", "Interview", "Backend"]
+readTime: "30 min"
+---
+
+## Decoding Spring & Spring Boot Interviews
+
+For any Java backend developer, mastering the Spring Framework and Spring Boot is non-negotiable. Interviews will rigorously test your understanding of these powerful tools. This guide breaks down the most common and critical questions you're likely to face, from core principles to advanced features.
+
+---
+
+### Core Spring Framework Concepts
+
+These questions test your understanding of the fundamental principles that make Spring work.
+
+#### **What are Inversion of Control (IoC) and Dependency Injection (DI)?**
+* **Inversion of Control (IoC):** A design principle where the control of object creation and lifecycle management is transferred from your application code to an external container or framework. In Spring, this is the IoC Container.
+* **Dependency Injection (DI):** A design pattern used to implement IoC. Instead of an object creating its dependencies, the dependencies are "injected" into the object by the container. This decouples your components and makes them easier to test. The main types are:
+    * **Constructor Injection:** The container injects dependencies through the class constructor. This is the recommended approach for mandatory dependencies.
+    * **Setter Injection:** The container calls setter methods to inject dependencies. Useful for optional dependencies.
+    * **Field Injection (`@Autowired` on a field):** Easy to use but generally discouraged as it makes testing harder and can hide dependencies.
+
+#### **What is the difference between `ApplicationContext` and `BeanFactory`?**
+Both are interfaces representing the Spring IoC container.
+* **`BeanFactory`** is the root interface, providing the basic DI functionality (i.e., instantiating, configuring, and managing beans). It loads beans lazily (on-demand).
+* **`ApplicationContext`** is a sub-interface of `BeanFactory`. It provides all the functionality of a `BeanFactory` plus more enterprise-specific features, such as AOP integration, event publication, and internationalization. It pre-instantiates singleton-scoped beans by default at startup. In modern applications, `ApplicationContext` is almost always preferred.
+
+#### **What are Spring Beans and what are their scopes?**
+A **Spring Bean** is an object that is instantiated, assembled, and otherwise managed by a Spring IoC container.
+
+A **Bean Scope** defines the lifecycle and visibility of a bean instance. The most common scopes are:
+* **`singleton` (Default):** Only one instance of the bean is created per Spring IoC container.
+* **`prototype`:** A new instance of the bean is created every time it is requested.
+* **`request`:** Scopes a single bean definition to the lifecycle of a single HTTP request. (Web-aware `ApplicationContext` only).
+* **`session`:** Scopes a single bean definition to the lifecycle of an HTTP Session. (Web-aware `ApplicationContext` only).
+* **`application`:** Scopes a single bean definition to the lifecycle of a `ServletContext`. (Web-aware `ApplicationContext` only).
+
+#### **Can you explain the Spring Bean lifecycle?**
+The lifecycle of a Spring bean is a sequence of steps from instantiation to destruction. The key phases are:
+1.  **Instantiate:** The container creates an instance of the bean.
+2.  **Populate Properties:** The container injects dependencies using DI.
+3.  **Bean Name Awareness:** If the bean implements `BeanNameAware`, its `setBeanName()` method is called.
+4.  **Bean Factory Awareness:** If the bean implements `BeanFactoryAware`, `setBeanFactory()` is called.
+5.  **Pre-initialization:** `BeanPostProcessor`s `postProcessBeforeInitialization()` methods are called.
+6.  **Initialize:** If the bean implements `InitializingBean`, `afterPropertiesSet()` is called. If a custom `init-method` is defined, it's invoked.
+7.  **Post-initialization:** `BeanPostProcessor`s `postProcessAfterInitialization()` methods are called.
+8.  **Bean is Ready:** The bean is now ready for use.
+9.  **Destroy:** When the container is shut down, if the bean implements `DisposableBean`, `destroy()` is called. If a custom `destroy-method` is defined, it's invoked.
+
+---
+
+### Spring Boot Fundamentals
+
+Spring Boot simplifies the creation of stand-alone, production-grade Spring-based applications.
+
+#### **What are the main advantages of Spring Boot?**
+* **Auto-Configuration:** Automatically configures your application based on the JAR dependencies you have added.
+* **Standalone:** Allows you to create applications that can be run directly using `java -jar`, as it embeds a web server like Tomcat or Netty.
+* **Opinionated:** Provides "starter" dependencies to simplify build configuration and offers sensible defaults, reducing boilerplate code.
+* **Production-Ready:** Includes features like metrics, health checks, and externalized configuration out of the box (via Spring Boot Actuator).
+
+#### **How does Spring Boot's auto-configuration work?**
+At its core, auto-configuration is driven by the `@EnableAutoConfiguration` annotation (which is included in `@SpringBootApplication`). When the application starts, Spring Boot checks the classpath for the presence of certain classes. For example:
+- If it finds `spring-webmvc.jar` on the classpath, it assumes you want to build a web application and auto-configures `DispatcherServlet`, Tomcat, and other web-related beans.
+- If it finds a database driver and Spring Data JPA, it will auto-configure a `DataSource` and an `EntityManagerFactory`.
+This mechanism relies on `@Conditional` annotations (`@ConditionalOnClass`, `@ConditionalOnBean`, etc.) within configuration classes.
+
+#### **What are Spring Boot Starters?**
+Starters are a set of convenient dependency descriptors that you can include in your application. They are one-stop-shops for all the Spring and related technology that you need, without having to hunt down and configure individual dependencies. For example, including `spring-boot-starter-web` brings in everything needed for a web application, including Spring MVC, Jackson for JSON, and an embedded Tomcat server.
+
+#### **What is Spring Boot Actuator?**
+Spring Boot Actuator is a sub-project that brings production-ready features to your application. Once its dependency (`spring-boot-starter-actuator`) is added, it provides several built-in endpoints over HTTP or JMX to monitor and manage your application. Common endpoints include:
+* `/health`: Shows application health information.
+* `/info`: Displays arbitrary application info.
+* `/metrics`: Shows various metrics like memory usage, HTTP request counts, etc.
+* `/env`: Displays the current environment properties.
+* `/beans`: Shows a complete list of all Spring beans in your application.
+
+---
+
+### Spring MVC and REST APIs
+
+This section covers building web applications and services.
+
+#### **What is the difference between `@Controller` and `@RestController`?**
+* **`@Controller`:** A standard Spring MVC controller. It indicates that a class's purpose is to handle web requests. Methods in a `@Controller` typically return a view name to be resolved by a `ViewResolver`.
+* **`@RestController`:** A specialized version of `@Controller` introduced in Spring 4.0 for creating RESTful web services. It's a convenience annotation that combines `@Controller` and `@ResponseBody`. This means that the return value of a method is automatically serialized into the HTTP response body (e.g., as JSON), without needing a view.
+
+#### **Explain the `@Transactional` annotation.**
+The `@Transactional` annotation provides declarative transaction management. When applied to a method (or a class), Spring creates a proxy that wraps the method call in a database transaction. If the method completes successfully, the transaction is committed. If an unchecked exception is thrown, the transaction is rolled back by default. It has various attributes, such as `propagation`, `isolation`, and `readOnly`, to control transaction behavior.

@@ -4,7 +4,6 @@ import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { getAllPostSlugs, getPostData, PostFrontmatter } from '../../lib/blog'; // Import the type
 import { Box, Typography, Paper, Chip, Stack, Divider } from '@mui/material';
 
-// FIX: Define the type for this page's props
 interface PostPageProps {
   frontmatter: PostFrontmatter;
   mdxSource: MDXRemoteSerializeResult;

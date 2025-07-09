@@ -1,13 +1,11 @@
-// pages/_app.tsx
 import React from "react";
-import { CssBaseline, GlobalStyles } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import { ThemeProvider, useThemeContext } from "../context/ThemeContext";
 import Layout from "../components/Layout";
 import type { AppProps } from "next/app";
-import "@fontsource/orbitron"; // Orbitron for headers
-import "@fontsource/poppins"; // Poppins for body text
-import { globalStyles } from "@/styles/theme";
+import "@fontsource/orbitron";
+import "@fontsource/poppins";
 
 const AppContent: React.FC<AppProps> = ({ Component, pageProps }) => {
   const { theme, toggleTheme, isDarkMode } = useThemeContext();
@@ -25,8 +23,6 @@ const AppContent: React.FC<AppProps> = ({ Component, pageProps }) => {
 export default function MyApp(props: AppProps) {
   return (
     <ThemeProvider>
-      <GlobalStyles styles={globalStyles} />
-
       <AppContent {...props} />
     </ThemeProvider>
   );
