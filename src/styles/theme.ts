@@ -1,169 +1,157 @@
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes, Theme } from "@mui/material/styles";
 
-// Define colors
-const neonGreen = {
-  light: "#76FF7A",
-  main: "#32CD32",
-  dark: "#228B22",
-  contrastText: "#FFFFFF",
+const mintGreen = {
+  light: "#9AE6B4",
+  main: "#68D391", 
+  dark: "#48BB78",
+  contrastText: "#1A202C", 
 };
 
-const goldenYellow = {
-  light: "#FFECB3",
-  main: "#FFC107",
-  dark: "#FFA000",
-  contrastText: "#000000",
+const neutralGray = {
+  light: "#E2E8F0",
+  main: "#A0AEC0",
+  dark: "#718096",
+  contrastText: "#1A202C",
 };
 
-// Define typography
 const typography = {
   fontFamily: "Poppins, Arial, sans-serif",
   h1: {
     fontFamily: "Orbitron, Arial, sans-serif",
-    fontSize: "2.5rem",
+    fontSize: "3rem",
     fontWeight: 700,
-    color: neonGreen.main,
   },
   h2: {
-    fontFamily: "Orbitron, Arial, sans-serif",
-    fontSize: "2rem",
+    fontFamily: "Poppins, Arial, sans-serif",
+    fontSize: "2.2rem",
     fontWeight: 600,
-    color: neonGreen.main,
   },
   h3: {
-    fontFamily: "Orbitron, Arial, sans-serif",
-    fontSize: "1.75rem",
-    fontWeight: 500,
-    color: neonGreen.main,
+    fontFamily: "Poppins, Arial,sans-serif",
+    fontSize: "1.8rem",
+    fontWeight: 600,
   },
   h4: {
-    fontFamily: "Orbitron, Arial, sans-serif",
+    fontFamily: "Poppins, Arial, sans-serif",
     fontSize: "1.5rem",
     fontWeight: 500,
-    color: neonGreen.main,
   },
   body1: {
     fontFamily: "Poppins, Arial, sans-serif",
     fontSize: "1rem",
-    lineHeight: 1.6,
+    lineHeight: 1.7,
   },
   body2: {
     fontFamily: "Poppins, Arial, sans-serif",
     fontSize: "0.875rem",
-    lineHeight: 1.5,
+    lineHeight: 1.6,
   },
 };
 
-// Define components
+// COMPONENT & GLOBAL STYLES
 const components = {
+  MuiCssBaseline: {
+    styleOverrides: (theme: Theme) => ({
+      body: {
+        scrollBehavior: "smooth",
+        backgroundColor: theme.palette.background.default,
+        color: theme.palette.text.primary,
+      },
+      a: {
+        color: theme.palette.primary.main,
+        textDecoration: "none",
+        transition: "color 0.2s ease-in-out",
+        "&:hover": {
+          color: theme.palette.primary.light,
+        },
+      },
+      // ADDED: Custom scrollbar that matches the theme
+      '*::-webkit-scrollbar': {
+        width: '12px',
+      },
+      '*::-webkit-scrollbar-track': {
+        background: theme.palette.background.paper, 
+      },
+      '*::-webkit-scrollbar-thumb': {
+        backgroundColor: theme.palette.primary.main,
+        borderRadius: '10px',
+        border: `3px solid ${theme.palette.background.paper}`,
+      },
+    }),
+  },
   MuiButton: {
     styleOverrides: {
       root: {
-        textTransform: "none", // Prevent all caps text on buttons
-        borderRadius: "8px", // Rounded corners for buttons
-        padding: "8px 16px", // Consistent padding
-        variants: [], // Add an empty variants array
+        textTransform: "none",
+        borderRadius: "8px",
+        padding: "8px 20px",
+        fontWeight: "bold",
+        variants: [],
       },
-      contained: {
-        boxShadow: "none",
+      containedPrimary: {
+        transition: "transform 0.2s ease-in-out, background-color 0.2s ease",
         "&:hover": {
-          boxShadow: "none",
+          transform: "translateY(-2px)",
+          backgroundColor: mintGreen.light,
         },
       },
     },
   },
   MuiCard: {
     styleOverrides: {
-      root: {
-        borderRadius: "12px",
-        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+      root: (props: { theme: Theme }) => ({
+        borderRadius: "16px",
         padding: "16px",
-      },
+        border: `1px solid ${props.theme.palette.divider}`,
+        backgroundColor: props.theme.palette.background.paper,
+        boxShadow: "none",
+      }),
     },
   },
   MuiTypography: {
     styleOverrides: {
-      h1: {
-        color: neonGreen.main,
-      },
-      h2: {
-        color: goldenYellow.main,
-      },
+      h1: ({ theme }: { theme: Theme }) => ({
+        color: theme.palette.primary.main,
+      }),
+      h2: ({ theme }: { theme: Theme }) => ({
+        color: theme.palette.text.primary, 
+      }),
     },
   },
 };
 
-// Define base theme
 const baseTheme = {
   typography,
   components,
   breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
-    },
+    values: { xs: 0, sm: 600, md: 900, lg: 1200, xl: 1536 },
   },
 };
 
-// Create light theme
 export const lightTheme = responsiveFontSizes(
   createTheme({
     ...baseTheme,
     palette: {
       mode: "light",
-      primary: neonGreen,
-      secondary: goldenYellow,
-      background: {
-        default: "#F0F2F5",
-        paper: "#FFFFFF",
-      },
-      text: {
-        primary: "#2B2D42",
-        secondary: "#6C757D",
-      },
+      primary: mintGreen,
+      secondary: neutralGray,
+      background: { default: "#F7FAFC", paper: "#FFFFFF" },
+      text: { primary: "#2D3748", secondary: "#718096" },
+      divider: "rgba(0, 0, 0, 0.12)",
     },
   })
 );
 
-// Create dark theme
 export const darkTheme = responsiveFontSizes(
   createTheme({
     ...baseTheme,
     palette: {
       mode: "dark",
-      primary: neonGreen,
-      secondary: goldenYellow,
-      background: {
-        default: "#121212",
-        paper: "#1E1E1E",
-      },
-      text: {
-        primary: "#E5E5E5",
-        secondary: "#9CA3AF",
-      },
+      primary: mintGreen,
+      secondary: neutralGray,
+      background: { default: "#1A202C", paper: "#2D3748" }, 
+      text: { primary: "#F7FAFC", secondary: "#A0AEC0" },
+      divider: "rgba(255, 255, 255, 0.12)",
     },
   })
 );
-
-// Add global styles
-export const globalStyles = {
-  body: {
-    margin: 0,
-    padding: 0,
-    fontFamily: "Poppins, Arial, sans-serif",
-    backgroundColor: lightTheme.palette.background.default,
-    color: lightTheme.palette.text.primary,
-  },
-  a: {
-    color: neonGreen.main,
-    textDecoration: "none",
-    "&:hover": {
-      textDecoration: "underline",
-    },
-  },
-};
-export const drawerWidth = 240;
-
