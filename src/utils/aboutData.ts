@@ -1,7 +1,7 @@
 // aboutData.ts
 export const PROFILE = (basePath: string) => ({
   name: "Alagappan P", //
-  role: " Software Engineer", //
+  role: "Java FullStack Developer", //
   intro:
     "A Full Stack Developer with professional experience in building scalable and secure applications using Java and Spring Boot. Armed with a Master's degree in Computer Science, I enjoy tackling complex challenges and delivering innovative tech solutions. Let's build something remarkable together!",
   avatar: `${basePath}/image/profile.jpg`,

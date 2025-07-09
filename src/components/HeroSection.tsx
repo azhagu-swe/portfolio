@@ -1,10 +1,29 @@
 import React from "react";
-import { Box, Typography, Button, useTheme } from "@mui/material";
+import { Box, Typography, Button, useTheme, Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/router";
-import { HERO_DATA, ANIMATION_CONFIG } from "@/utils/heroData";
+import { HERO_DATA } from "@/utils/heroData";
 import Image from "next/image";
+
+const ANIMATION_CONFIG = {
+  textContainer: {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  },
+  item: {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  },
+  image: {
+    hidden: { opacity: 0, scale: 0.8 },
+    show: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  },
+};
 
 const HeroSection: React.FC = () => {
   const theme = useTheme();
@@ -12,94 +31,126 @@ const HeroSection: React.FC = () => {
   const { basePath } = router;
 
   return (
-    <Box
+    <Grid
+      container
+      alignItems="center"
+      justifyContent="center"
       sx={{
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        alignItems: "center",
-        justifyContent: "space-between",
         minHeight: "90vh",
-        padding: "20px",
-        // backgroundImage: `url(${basePath}${HERO_DATA.images.background})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        textAlign: { xs: "center", md: "left" },
+        padding: { xs: "20px", md: "40px" },
       }}>
-      {/* Text Section */}
-      <Box>
-        <Typography
-          component={motion.h1}
-          variant="h2"
-          gutterBottom
-          {...ANIMATION_CONFIG.text}>
-          Hi, I&apos;m{" "}
-          <span style={{ color: "#FFD700" }}>{HERO_DATA.name}</span>
-        </Typography>
+      <Grid
+        item
+        xs={12}
+        md={7}
+        sx={{ textAlign: { xs: "center", md: "left" } }}>
+        <motion.div
+          variants={ANIMATION_CONFIG.textContainer}
+          initial="hidden"
+          animate="show">
+          <Typography
+            component={motion.h1}
+            variant="h2"
+            gutterBottom
+            variants={ANIMATION_CONFIG.item}>
+            Hi, I&apos;m{" "}
+            <span style={{ color: theme.palette.primary.main }}>
+              {HERO_DATA.name}
+            </span>
+          </Typography>
 
-        <Typography
-          component={motion.h1}
-          variant="h2"
-          gutterBottom
-          color="primary"
-          {...ANIMATION_CONFIG.text}>
-          <Typewriter
-            words={HERO_DATA.roles}
-            loop={Infinity}
-            cursor
-            cursorStyle="_"
-            typeSpeed={70}
-            deleteSpeed={50}
-            delaySpeed={1500}
-          />
-        </Typography>
+          <Typography
+            component={motion.h1}
+            variant="h2"
+            gutterBottom
+            color="text.primary"
+            variants={ANIMATION_CONFIG.item}
+            sx={{
+              minHeight: { xs: 140, sm: "auto" },
+            }}>
+            <Typewriter
+              words={HERO_DATA.roles}
+              loop={Infinity}
+              cursor
+              cursorStyle="_"
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={1500}
+            />
+          </Typography>
 
-        <Typography
-          component={motion.h2}
-          variant="h5"
-          {...ANIMATION_CONFIG.text}
-          transition={{ ...ANIMATION_CONFIG.text.transition, delay: 0.2 }}
-          sx={{ mt: 3, lineHeight: 1.6 }}>
-          {HERO_DATA.description}
-        </Typography>
+          <Typography
+            component={motion.p}
+            variant="h5"
+            color="text.secondary"
+            variants={ANIMATION_CONFIG.item}
+            sx={{ mt: 3, lineHeight: 1.6, textAlign: "justify" }}>
+            {HERO_DATA.description}
+          </Typography>
 
-        <Box sx={{ mt: 4, display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <Button
-            component={motion.button}
-            variant="contained"
-            size="large"
-            {...ANIMATION_CONFIG.button}
-            onClick={() => router.push("/contact")}>
-            {HERO_DATA.buttons.hire}
-          </Button>
+          <motion.div variants={ANIMATION_CONFIG.item}>
+            <Box
+              sx={{
+                mt: 4,
+                display: "flex",
+                gap: 2,
+                justifyContent: { xs: "center", md: "flex-start" },
+              }}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => router.push("/contact")}
+                sx={{ "&:hover": { transform: "translateY(-2px)" } }}>
+                {HERO_DATA.buttons.hire}
+              </Button>
 
-          <Button
-            component={motion.button}
-            variant="outlined"
-            size="large"
-            {...ANIMATION_CONFIG.button}
-            onClick={() =>
-              window.open(`${basePath}${HERO_DATA.images.resume}`)
-            }>
-            {HERO_DATA.buttons.resume}
-          </Button>
-        </Box>
-      </Box>
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={() =>
+                  window.open(`${basePath}${HERO_DATA.images.resume}`)
+                }
+                sx={{ "&:hover": { transform: "translateY(-2px)" } }}>
+                {HERO_DATA.buttons.resume}
+              </Button>
+            </Box>
+          </motion.div>
+        </motion.div>
+      </Grid>
 
-      {/* Profile Image */}
-      <motion.div {...ANIMATION_CONFIG.image} style={{ marginLeft: "40px" }}>
-        <Image
-          src={`${basePath}${HERO_DATA.images.profile}`}
-          alt={HERO_DATA.name}
-          width={280}
-          height={280}
-          style={{
-            borderRadius: "50%",
-            boxShadow: theme.shadows[6],
-            border: `4px solid ${theme.palette.primary.main}`,
-          }}
-        />
-      </motion.div>
-    </Box>
+      <Grid
+        item
+        xs={12}
+        md={5}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: { xs: 6, md: 0 },
+        }}>
+        <motion.div initial="hidden" animate="show">
+          <Box
+            sx={{
+              position: "relative",
+              width: { xs: 250, sm: 300, md: 350 },
+              height: { xs: 250, sm: 300, md: 350 },
+              borderRadius: "50%",
+              border: `4px solid ${theme.palette.primary.main}`,
+              boxShadow: `0 0 30px ${theme.palette.primary.light}`,
+            }}>
+            <Image
+              src={`${basePath}${HERO_DATA.images.profile}`}
+              alt={HERO_DATA.name}
+              layout="fill"
+              objectFit="cover"
+              style={{
+                borderRadius: "50%",
+              }}
+            />
+          </Box>
+        </motion.div>
+      </Grid>
+    </Grid>
   );
 };
 

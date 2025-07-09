@@ -1,0 +1,150 @@
+---
+date: '2025-07-19'
+title: 'Consistent Environments for All: An Introduction to Docker'
+excerpt: 'Learn how to package your applications into portable, reproducible containers with Docker. This tutorial covers the core concepts of images, containers, and Dockerfiles, and shows you how to run your first containerized app.'
+coverImage: 'https://placehold.co/600x400/68D391/1A202C?text=Docker'
+difficulty: 'Intermediate'
+tags: ['Docker', 'DevOps', 'Containers', 'Backend']
+duration: '25 min read'
+---
+
+## What is Docker?
+
+Have you ever heard the phrase, "But it works on my machine!"? **Docker** is a platform designed to solve this exact problem. It allows you to package your application, along with all of its dependencies, libraries, and configuration files, into a single, isolated unit called a **container**.
+
+This container can then be run on any machine that has Docker installed, guaranteeing that the application will behave exactly the same way, whether it's on your laptop, a teammate's computer, or a production server. This technology is called **containerization**.
+
+### Containers vs. Virtual Machines (VMs)
+
+You might be familiar with Virtual Machines, which also provide isolated environments. The key difference is that VMs virtualize the entire hardware stack, including the operating system, which makes them large and slow to start.
+
+Containers, on the other hand, virtualize the operating system itself. They share the host machine's OS kernel, making them incredibly lightweight, fast, and efficient.
+
+---
+
+## 1. Core Concepts: Images and Containers
+
+There are two fundamental concepts you need to understand in the Docker world.
+
+### Images
+An **Image** is a read-only template that contains a set of instructions for creating a container. It includes everything needed to run your application: the code, a runtime (like Java or Node.js), libraries, and environment variables. You can think of an image as a blueprint or a snapshot. Images are often built based on other, more basic images (e.g., an official Python image).
+
+### Containers
+A **Container** is a runnable instance of an image. When you run an image, you create a container. You can create, start, stop, move, and delete containers. Each container is an isolated, secure application platform.
+
+The relationship is similar to classes and objects in OOP: an image is the class (the blueprint), and a container is the object (the instance created from the blueprint).
+
+---
+
+## 2. Setting Up Docker
+
+First, you'll need to install **Docker Desktop** for your operating system (Windows, Mac, or Linux). You can find the official installation guides on the [Docker website](https://docs.docker.com/get-docker/).
+
+Once installed, open your terminal and run the following command to verify that Docker is working:
+
+```bash
+docker --version
+```
+You should see the installed Docker version printed to the console.
+
+---
+
+## 3. Running Your First Container
+
+Let's run a simple "hello-world" container to see Docker in action.
+
+```bash
+docker run hello-world
+```
+
+When you run this command, Docker performs a few steps:
+1.  It checks if you have the `hello-world` image on your machine locally.
+2.  If not, it pulls the image from **Docker Hub**, the default public registry for Docker images.
+3.  It creates a new container from that image.
+4.  It runs the container, which prints a confirmation message to your console and then exits.
+
+---
+
+## 4. Building Your Own Image with a Dockerfile
+
+The real power of Docker comes from creating your own images. We do this by writing a set of instructions in a special file called a `Dockerfile`.
+
+Let's create a simple Node.js web application and containerize it.
+
+First, create a directory for your project. Inside it, create a file named `app.js`:
+
+```javascript
+// app.js
+const http = require('http');
+
+const hostname = '0.0.0.0';
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.end('Hello from my Dockerized App!\n');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+```
+
+Now, in the same directory, create a file named `Dockerfile` (with no extension):
+
+```dockerfile
+# 1. Start with a base image
+FROM node:18-alpine
+
+# 2. Set the working directory inside the container
+WORKDIR /app
+
+# 3. Copy your application files into the container
+COPY app.js .
+
+# 4. Expose the port your app runs on
+EXPOSE 3000
+
+# 5. Define the command to run your application
+CMD [ "node", "app.js" ]
+```
+
+Let's break down the `Dockerfile`:
+1.  `FROM node:18-alpine`: Every Dockerfile starts with a base image. We're using an official, lightweight image that already has Node.js version 18 installed.
+2.  `WORKDIR /app`: This sets the working directory for subsequent commands inside the container.
+3.  `COPY app.js .`: This copies our `app.js` file from our local machine into the `/app` directory inside the container.
+4.  `EXPOSE 3000`: This informs Docker that the container listens on port 3000 at runtime.
+5.  `CMD [ "node", "app.js" ]`: This specifies the default command to execute when the container starts.
+
+---
+
+## 5. Building and Running Your Custom Container
+
+Now that we have our `Dockerfile`, let's build our image. In your terminal, in the same directory as your files, run:
+
+```bash
+docker build -t my-hello-app .
+```
+-   `docker build`: The command to build an image.
+-   `-t my-hello-app`: The `-t` flag "tags" our image with a human-readable name.
+-   `.`: This tells Docker to look for the `Dockerfile` in the current directory.
+
+Once the build is complete, you can run a container from your new image:
+
+```bash
+docker run -p 4000:3000 my-hello-app
+```
+-   `docker run`: The command to run a container.
+-   `-p 4000:3000`: This is important. It maps port `4000` on your local machine to port `3000` inside the container.
+-   `my-hello-app`: The name of the image you want to run.
+
+Now, open your web browser and navigate to `http://localhost:4000`. You should see the message "Hello from my Dockerized App!" served from your container.
+
+---
+
+## Conclusion
+
+You've just learned the fundamentals of Docker! You understand the difference between **images** and **containers**, how to run pre-built images from Docker Hub, and how to create your own custom image using a **Dockerfile**.
+
+Docker is a transformative tool in modern software development, enabling consistent environments, simplifying deployments, and forming the foundation of microservices architectures. This is your first step into the powerful world of containerization.

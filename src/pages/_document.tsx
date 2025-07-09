@@ -20,7 +20,7 @@ class MyDocument extends Document<MyDocumentProps> {
       ctx.req?.headers?.cookie
         ?.split("; ")
         ?.find((cookie) => cookie.startsWith("theme="))
-        ?.split("=")[1] || "dark";
+        ?.split("=")[1] || "light";
 
     return {
       ...initialProps,
@@ -35,7 +35,10 @@ class MyDocument extends Document<MyDocumentProps> {
       <Html lang="en" data-theme={theme}>
         <Head>
           {/* Add favicon */}
-          <link rel="icon" href={`https://azhagu-swe.github.io/portfolio/image/favicon.ico`} />
+          <link
+            rel="icon"
+            href={`https://azhagu-swe.github.io/portfolio/image/favicon.ico`}
+          />
           <meta name="description" content="Azhagu-Swe Portfolio" />
         </Head>
         <body>

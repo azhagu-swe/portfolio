@@ -1,9 +1,6 @@
 import React from "react";
 import {
   Box,
-  Card,
-  CardContent,
-  CardMedia,
   Typography,
   Button,
   Grid,
@@ -12,32 +9,45 @@ import {
   TextField,
   Tabs,
   Tab,
+  Card,
+  CardContent,
+  CardMedia,
+  useTheme,
+  CardActions,
+  InputAdornment,
+  CardActionArea,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { motion } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
 import { PROJECTS_DATA } from "@/utils/projectData";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
-// Styled components
-const StyledCard = styled(Card)(({ theme }) => ({
-  transition: "transform 0.3s ease",
-  boxShadow: theme.shadows[4],
-  height: "100%", // Ensure all cards have the same height
-  display: "flex",
-  flexDirection: "column",
-  ":hover": {
-    transform: "scale(1.03)",
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
   },
-}));
+};
 
-const CardContentWrapper = styled(CardContent)(({ theme }) => ({
-  flexGrow: 1, // Allow content to grow and fill the card
-  display: "flex",
-  flexDirection: "column",
-}));
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 const ProjectPage = () => {
+  const theme = useTheme();
   const [filter, setFilter] = React.useState("All");
+  const [searchTerm, setSearchTerm] = React.useState("");
   const { basePath } = useRouter();
 
   const handleFilterChange = (
@@ -47,119 +57,180 @@ const ProjectPage = () => {
     setFilter(newValue);
   };
 
-  const filteredProjects =
-    filter === "All"
-      ? PROJECTS_DATA.projects
-      : PROJECTS_DATA.projects.filter((project) =>
-          project.technologies.includes(filter)
-        );
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
+  const filteredProjects = PROJECTS_DATA.projects
+    .filter((project) =>
+      filter === "All" ? true : project.technologies.includes(filter)
+    )
+    .filter((project) =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
-    <Box sx={{ padding: 4 }}>
-      {/* Header Section */}
-      <Typography variant="h4" align="center" gutterBottom>
-        {PROJECTS_DATA.header.title}
-      </Typography>
-      <Typography variant="subtitle1" align="center" sx={{ marginBottom: 4 }}>
-        {PROJECTS_DATA.header.subtitle}
-      </Typography>
-
-      {/* Search and Filter Section */}
+    <Box
+      component={motion.div}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      sx={{ p: { xs: 2, sm: 4 } }}>
       <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 4,
-        }}>
-        <TextField
-          variant="outlined"
-          placeholder="Search projects..."
-          size="small"
-          InputProps={{
-            startAdornment: <SearchIcon sx={{ marginRight: 1 }} />,
-          }}
-          sx={{ width: "50%" }}
-        />
-        <Tabs
-          value={filter}
-          onChange={handleFilterChange}
-          aria-label="Project filter tabs">
-          <Tab label="All" value="All" />
-          <Tab label="Java" value="Java" />
-          <Tab label="Next.js" value="Next.js" />
-          <Tab label="React.js" value="React.js" />
-          <Tab label="PostgreSQL" value="PostgreSQL" />
-        </Tabs>
+        sx={{ textAlign: "center", mb: 6 }}
+        component={motion.div}
+        variants={itemVariants}>
+        <Typography
+          variant="h3"
+          sx={{
+            fontWeight: "bold",
+            color: theme.palette.primary.main,
+            fontFamily: "Orbitron, sans-serif",
+          }}>
+          {PROJECTS_DATA.header.title}
+        </Typography>
+        <Typography variant="h6" color="text.secondary">
+          {PROJECTS_DATA.header.subtitle}
+        </Typography>
       </Box>
 
-      {/* Projects Grid */}
+      <Box
+        component={motion.div}
+        variants={itemVariants}
+        sx={{
+          mb: 5,
+          p: 2,
+          backgroundColor: "action.hover",
+          borderRadius: "16px",
+        }}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="Search projects..."
+              size="small"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={8}>
+            <Tabs
+              value={filter}
+              onChange={handleFilterChange}
+              variant="scrollable"
+              scrollButtons="auto"
+              allowScrollButtonsMobile
+              aria-label="Project filter tabs">
+              <Tab label="All" value="All" />
+              <Tab label="Java" value="Java" />
+              <Tab label="Next.js" value="Next.js" />
+              <Tab label="React.js" value="React.js" />
+              <Tab label="PostgreSQL" value="PostgreSQL" />
+            </Tabs>
+          </Grid>
+        </Grid>
+      </Box>
+
       <Grid container spacing={4}>
         {filteredProjects.map((project, index) => {
-          // FIX: The logic is now inside the map loop where 'project' is defined.
           const imageUrl = project.thumbnail.startsWith("http")
             ? project.thumbnail
             : `${basePath}/${project.thumbnail}`;
 
           return (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <StyledCard>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={imageUrl} // Use the corrected imageUrl here
-                  alt={project.title}
-                  sx={{ objectFit: "cover" }}
-                />
-                <CardContentWrapper>
-                  <Typography variant="h6" gutterBottom>
-                    {project.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ flexGrow: 1 }}>
-                    {project.description}
-                  </Typography>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              key={index}
+              component={motion.div}
+              variants={itemVariants}>
+              <Card
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  borderRadius: "16px",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
+                  },
+                }}>
+                <CardActionArea
+                  component="a"
+                  href={project.liveDemo}
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={imageUrl}
+                    alt={project.title}
+                    sx={{
+                      objectFit: "cover",
+                    }}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography
+                      variant="h6"
+                      component="h2"
+                      gutterBottom
+                      sx={{ fontWeight: "bold" }}>
+                      {project.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {project.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardContent sx={{ pt: 0, mt: "auto" }}>
                   <Stack
                     direction="row"
                     spacing={1}
-                    sx={{ marginY: 2, flexWrap: "wrap" }}>
+                    useFlexGap
+                    flexWrap="wrap"
+                    sx={{ mb: 2 }}>
                     {project.technologies.map((tech, i) => (
                       <Chip
                         key={i}
                         label={tech}
-                        color="primary"
-                        variant="outlined"
                         size="small"
+                        variant="outlined"
                       />
                     ))}
                   </Stack>
-                  <Stack direction="row" spacing={2}>
-                    {project.liveDemo && (
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        href={project.liveDemo}
-                        target="_blank"
-                        rel="noopener noreferrer">
-                        Live Demo
-                      </Button>
-                    )}
+                </CardContent>
+                <CardActions sx={{ p: 2, pt: 0, mt: "auto" }}>
+                  {project.liveDemo && (
                     <Button
                       size="small"
-                      variant="outlined"
-                      color="primary"
-                      href={project.github}
+                      variant="contained"
+                      href={project.liveDemo}
                       target="_blank"
                       rel="noopener noreferrer">
-                      GitHub
+                      Live Demo
                     </Button>
-                  </Stack>
-                </CardContentWrapper>
-              </StyledCard>
+                  )}
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    GitHub
+                  </Button>
+                </CardActions>
+              </Card>
             </Grid>
           );
         })}

@@ -1,50 +1,31 @@
 import React from "react";
 import { styled, Theme, useTheme } from "@mui/material/styles";
 import Link from "next/link";
-import MuiDrawer from "@mui/material/Drawer";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Icon } from "@iconify/react";
+import {
+  Drawer as MuiDrawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Tooltip,
+  Box,
+  Typography,
+} from "@mui/material";
 import { CSSObject } from "@emotion/react";
-import { Tooltip } from "@mui/material";
-import CustomizeTooltip from "./style/CustomizeTooltip";
 import { useRouter } from "next/router";
+import { Icon } from "@iconify/react";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+
+// Assuming these are correctly imported from your utils
 import { MENU_ITEMS, BOTTOM_ITEMS } from "@/utils/drawerData";
-import Image from "next/image";
 
 const drawerWidth = 240;
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-  position: "relative",
-}));
-
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  position: "absolute",
-  top: "50%",
-  right: "-15px",
-  transform: "translateY(-50%)",
-  borderRadius: "50%",
-  boxShadow: theme.shadows[3],
-  "&:hover": {
-    backgroundColor: theme.palette.action.hover,
-    color: theme.palette.primary.main,
-  },
-}));
-
 const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth - 20,
+  width: drawerWidth,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -64,49 +45,54 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 });
 
-const Drawer = styled(MuiDrawer, {
+const StyledDrawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
+  // Hide the drawer completely on mobile
+  [theme.breakpoints.down("sm")]: {
+    display: "none",
+  },
+  // Apply mixins for desktop view
+  "& .MuiDrawer-paper": {
+    borderRight: "none",
+    ...((open && openedMixin(theme)) || (!open && closedMixin(theme))),
+  },
+}));
+
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
 }));
 
 interface SideDrawerProps {
   open: boolean;
-  handleDrawerClose: () => void;
+  handleDrawerToggle: () => void;
+  isMobile: boolean;
 }
 
-const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
+const SideDrawer: React.FC<SideDrawerProps> = ({
+  open,
+  handleDrawerToggle,
+  isMobile,
+}) => {
   const theme = useTheme();
   const router = useRouter();
-  const iconSize = 28;
-  const { basePath } = router;
 
   const renderListItems = (items: typeof MENU_ITEMS) => {
     return items.map((item: any) => {
-      const isActive =
-        item.link === "/"
-          ? router.pathname === item.link
-          : router.pathname.startsWith(item.link);
-
+      const isActive = router.pathname === item.link;
       const icon = isActive ? item.icon.filled : item.icon.outline;
 
       return (
         <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-          <CustomizeTooltip
-            title={!open ? item.text : ""}
-            placement="right"
-            arrow>
+          <Tooltip title={!open ? item.text : ""} placement="right" arrow>
             <ListItemButton
               component={Link}
               href={item.link}
@@ -114,86 +100,87 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ open, handleDrawerClose }) => {
                 minHeight: 48,
                 justifyContent: open ? "initial" : "center",
                 px: 2.5,
-                "&:hover .MuiListItemIcon-root": {
-                  color: theme.palette.secondary.main,
-                  transform: "scale(1.2)",
+                borderRadius: "8px",
+                margin: "4px 8px",
+                color: isActive
+                  ? theme.palette.primary.main
+                  : theme.palette.text.secondary,
+                backgroundColor: isActive
+                  ? theme.palette.action.selected
+                  : "transparent",
+                "&:hover": {
+                  backgroundColor: theme.palette.action.hover,
+                  color: theme.palette.primary.light,
                 },
-                transition: "color 0.3s, transform 0.3s",
               }}>
               <ListItemIcon
                 sx={{
                   minWidth: 0,
                   mr: open ? 3 : "auto",
                   justifyContent: "center",
-                  color: isActive
-                    ? theme.palette.secondary.main
-                    : theme.palette.primary.main,
-                  transition: "color 0.3s, transform 0.3s",
+                  color: "inherit",
                 }}>
-                <Icon icon={icon} width={iconSize} height={iconSize} />
+                <Icon icon={icon} width={24} height={24} />
               </ListItemIcon>
               <ListItemText
                 primary={item.text}
                 sx={{ opacity: open ? 1 : 0 }}
+                primaryTypographyProps={{ fontWeight: "500" }}
               />
             </ListItemButton>
-          </CustomizeTooltip>
+          </Tooltip>
         </ListItem>
       );
     });
   };
 
-  return (
-    <Drawer variant="permanent" open={open}>
+  // The content of the drawer (header, lists, etc.)
+  const drawerContent = (
+    <>
       <DrawerHeader>
-        {/* Logo Container */}
-        {/* <div style={{ 
-          position: 'absolute',
-          left: 16,
-          transition: 'opacity 0.3s ease',
-          // opacity: open ? 1 : 0
-        }}>
-          <Image
-            src={`${basePath}/favicon.ico`}
-            alt="Your Logo"
-            width={32}
-            height={32}
-            style={{
-              borderRadius: '50%',
-              boxShadow: theme.shadows[3],
-              border: `2px solid ${theme.palette.background.paper}`
-            }}
-          />
-        </div> */}
-        <StyledIconButton
-          sx={{ backgroundColor: theme.palette.primary.main }}
-          onClick={handleDrawerClose}>
-          {open ? (
-            <ChevronLeftIcon
-              sx={{
-                color: "white",
-                "&:hover": {
-                  color: theme.palette.primary.main,
-                },
-              }}
-            />
-          ) : (
-            <ChevronRightIcon
-              sx={{
-                color: "white",
-                "&:hover": {
-                  color: theme.palette.primary.main,
-                },
-              }}
-            />
-          )}
-        </StyledIconButton>
+        <Typography
+          variant="h5"
+          sx={{
+            mr: "auto",
+            pl: 2,
+            opacity: open ? 1 : 0,
+            fontFamily: "Orbitron, sans-serif",
+            color: theme.palette.primary.main,
+          }}>
+          Azhagu-swe
+        </Typography>
+        <IconButton onClick={handleDrawerToggle}>
+          <ChevronLeftIcon />
+        </IconButton>
       </DrawerHeader>
       <Divider />
       <List>{renderListItems(MENU_ITEMS)}</List>
+      <Box sx={{ flexGrow: 1 }} />
       <Divider />
-      <List sx={{ marginTop: "auto" }}>{renderListItems(BOTTOM_ITEMS)}</List>
-    </Drawer>
+      <List>{renderListItems(BOTTOM_ITEMS)}</List>
+    </>
+  );
+
+  return (
+    <>
+      {/* Temporary Drawer for Mobile */}
+      <MuiDrawer
+        variant="temporary"
+        open={isMobile && open}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+        }}>
+        {drawerContent}
+      </MuiDrawer>
+
+      {/* Permanent Drawer for Desktop */}
+      <StyledDrawer variant="permanent" open={open}>
+        {drawerContent}
+      </StyledDrawer>
+    </>
   );
 };
 

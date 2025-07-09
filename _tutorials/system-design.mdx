@@ -1,0 +1,101 @@
+---
+date: '2025-07-18'
+title: 'Designing for Scale: An Introduction to System Design'
+excerpt: 'Move beyond writing code and learn to build robust, scalable systems. This guide introduces the core concepts of system design, from understanding requirements to choosing the right architectural components.'
+coverImage: 'https://placehold.co/600x400/68D391/1A202C?text=System+Design'
+difficulty: 'Intermediate'
+tags: ['System Design', 'Software Architecture', 'Backend', 'Scalability']
+duration: '30 min read'
+---
+
+## What is System Design?
+
+**System Design** is the process of defining the architecture, components, modules, interfaces, and data for a system to satisfy specified requirements. In web development, it's the high-level process of planning how a complex application will be built.
+
+While coding focuses on implementing specific features, system design focuses on the bigger picture:
+-   How will the different parts of the system communicate with each other?
+-   How will the system handle millions of users?
+-   How can we ensure the system is reliable and always available?
+-   What are the trade-offs between different technologies and approaches?
+
+Understanding these concepts is what separates a junior developer from a senior architect.
+
+---
+
+## 1. Core Concepts: The Pillars of a Good System
+
+Before designing any system, you need to understand the key non-functional requirements that will guide your decisions.
+
+### Scalability
+Scalability is the ability of a system to handle a growing amount of work by adding resources. There are two main ways to scale:
+-   **Vertical Scaling (Scaling Up)**: Increasing the resources of a single server (e.g., adding more CPU, RAM, or storage). It's simple but has a hard limit and can be very expensive.
+-   **Horizontal Scaling (Scaling Out)**: Adding more servers to your system and distributing the load between them. This is the foundation of most large-scale web applications.
+
+### Availability
+Availability is the measure of a system's uptime, usually expressed as a percentage. A system with "five nines" availability (99.999%) is down for only about 5 minutes per year. High availability is achieved through **redundancy**—eliminating single points of failure by having backup components.
+
+### Latency
+Latency is the time it takes for data to travel from its source to its destination. In web applications, it's the delay between a user's action and the system's response. Low latency is crucial for a good user experience. Strategies to reduce latency include using Content Delivery Networks (CDNs) and placing servers geographically closer to users.
+
+---
+
+## 2. Common Architectural Components
+
+Most large-scale web systems are built from a common set of building blocks.
+
+![System Design Components](https://placehold.co/600x200/9AE6B4/1A202C?text=Client+->+Load+Balancer+->+Web+Servers+->+Database)
+
+### Load Balancers
+When you scale horizontally by adding more web servers, you need a way to distribute incoming traffic among them. A **Load Balancer** sits in front of your servers and intelligently routes requests to ensure no single server is overwhelmed.
+
+### Web Servers (Application Layer)
+These are the workhorses of your application. They run your backend code (e.g., written in Java with Spring, or Node.js), process user requests, execute business logic, and communicate with the database. This layer is typically **stateless**, meaning the servers don't store any user-specific data. This allows any server to handle any request, which is key for horizontal scaling.
+
+### Databases (Data Layer)
+This is where your application's data is stored. Choosing the right database is a critical system design decision.
+-   **SQL (Relational) Databases** (e.g., PostgreSQL, MySQL): Excellent for structured data where data integrity and consistency are crucial (e.g., financial transactions, user profiles).
+-   **NoSQL (Non-Relational) Databases** (e.g., MongoDB, Cassandra): Excellent for unstructured or semi-structured data and are often easier to scale horizontally (e.g., social media feeds, IoT data).
+
+### Caching
+A **cache** is a high-speed data storage layer that stores a subset of data, typically transient data, so that future requests for that data are served up faster than is possible by accessing the data's primary storage location. Caching can significantly reduce latency and the load on your database. A common caching system is **Redis**.
+
+---
+
+## 3. A Simple Example: Designing a URL Shortener
+
+Let's apply these concepts to design a simple URL shortener like Bitly.
+
+### Step 1: Understand the Requirements
+-   **Functional Requirements**:
+    1.  Users can input a long URL and get a short URL.
+    2.  When a user accesses the short URL, they should be redirected to the original long URL.
+-   **Non-Functional Requirements**:
+    1.  The service must be highly available.
+    2.  The redirection must have very low latency.
+
+### Step 2: High-Level Design
+
+1.  **The Write Path (Creating a short URL)**:
+    -   A user sends a `POST` request with a long URL to our web server.
+    -   The server generates a unique short code (e.g., a 7-character alphanumeric string).
+    -   It stores the mapping in a database: `short_code -> long_url`.
+    -   It returns the short URL (e.g., `https://myshort.ly/short_code`) to the user.
+
+2.  **The Read Path (Redirecting)**:
+    -   A user clicks on `https://myshort.ly/short_code`.
+    -   The request hits our server.
+    -   The server looks up the `short_code` in the database to find the corresponding `long_url`.
+    -   The server returns an HTTP 301 redirect response to the user's browser, which then sends them to the long URL.
+
+### Step 3: Choosing Components and Scaling
+-   **Database**: We need a fast key-value lookup (`short_code` -> `long_url`). A NoSQL database like DynamoDB or Redis would be excellent for this due to its speed and scalability.
+-   **Latency**: The read path (redirection) needs to be extremely fast. We can introduce a **cache**. Before hitting the database, the server first checks the cache. If the short code is in the cache, we can return the long URL immediately, saving a database trip.
+-   **Availability & Scalability**: We would place multiple web servers behind a **Load Balancer** to handle the traffic. If one server goes down, the load balancer will route requests to the healthy ones.
+
+This simple design provides a solid, scalable foundation for our URL shortening service.
+
+---
+
+## Conclusion
+
+System design is a deep and complex field, but it's built on these fundamental principles. By understanding the trade-offs between different components and focusing on core requirements like scalability and availability, you can start to think like an architect and design systems that are robust, efficient, and ready to handle real-world scale.

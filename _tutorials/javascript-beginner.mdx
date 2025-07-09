@@ -1,0 +1,149 @@
+---
+date: '2025-07-08'
+title: 'The Language of the Web: An Introduction to JavaScript'
+excerpt: 'Dive into the core programming language of the web. This tutorial introduces the absolute basics of JavaScript, including variables, data types, functions, and how to make your web pages interactive.'
+coverImage: 'https://placehold.co/600x400/68D391/1A202C?text=JavaScript'
+difficulty: 'Beginner'
+tags: ['JavaScript', 'Web Development', 'Programming']
+duration: '20 min read'
+---
+
+## What is JavaScript?
+
+If HTML is the skeleton and CSS is the skin, then **JavaScript (JS)** is the brain and nervous system of a website. It's a programming language that allows you to implement complex features on web pages, making them interactive and dynamic. Every time you see a pop-up, an animated graphic, or content that updates without reloading the page, you're seeing JavaScript in action.
+
+This tutorial will introduce you to the absolute fundamentals of the language.
+
+---
+
+## 1. Your First JavaScript Code
+
+You don't need any special tools to start writing JavaScript. You can do it right in your web browser's developer console.
+
+1.  Open your web browser (like Chrome or Firefox).
+2.  Right-click anywhere on a page and select "Inspect".
+3.  Click on the "Console" tab.
+
+Now, you have a place to write JavaScript! Let's try a classic first program. Type the following into the console and press Enter:
+
+```javascript
+console.log("Hello, World!");
+```
+The `console.log()` function is a simple way to print information to the console. You've just written and executed your first line of JavaScript!
+
+---
+
+## 2. Variables: Storing Information
+
+In programming, we need a way to store values so we can use them later. We do this with **variables**. In modern JavaScript, we declare variables using the `let` and `const` keywords.
+
+-   `let`: Use for variables whose value might change.
+-   `const`: Use for variables whose value will not change (constants).
+
+```javascript
+// Using let because the age will change next year
+let age = 25;
+
+// Using const because the name is unlikely to change
+const name = "Azhagu";
+
+console.log(name); // Prints "Azhagu"
+console.log(age);  // Prints 25
+
+age = 26; // This is allowed because we used 'let'
+console.log(age); // Prints 26
+```
+
+---
+
+## 3. Data Types
+
+JavaScript can handle several types of data. The most common ones are:
+
+-   **String**: Text, wrapped in quotes. e.g., `"Hello, World!"`
+-   **Number**: Any kind of number, including integers and decimals. e.g., `42`, `3.14`
+-   **Boolean**: Represents `true` or `false`. Used for logical operations.
+
+```javascript
+const greeting = "Welcome to my portfolio"; // String
+const year = 2025;                         // Number
+const isLearning = true;                   // Boolean
+```
+
+---
+
+## 4. Functions: Reusable Blocks of Code
+
+A **function** is a block of code designed to perform a particular task. Functions are executed when they are "called" or "invoked". This is a fundamental concept for writing clean, reusable code.
+
+```javascript
+// 1. Define the function
+function greet(personName) {
+  console.log("Hello, " + personName + "!");
+}
+
+// 2. Call the function with different arguments
+greet("Azhagu");  // Prints "Hello, Azhagu!"
+greet("World");   // Prints "Hello, World!"
+```
+Here, we defined a function called `greet` that takes one argument, `personName`. We can then call this function multiple times with different names to get different outputs.
+
+---
+
+## 5. Control Flow: Making Decisions
+
+Often, you'll want your code to do different things based on certain conditions. This is called **control flow**, and the most common way to handle it is with an `if...else` statement.
+
+```javascript
+let currentHour = 14; // 2 PM
+
+if (currentHour < 12) {
+  console.log("Good morning!");
+} else {
+  console.log("Good afternoon!");
+}
+// This will print "Good afternoon!"
+```
+The code inside the `if` block runs only if the condition in the parentheses is `true`. Otherwise, the code inside the `else` block runs.
+
+---
+
+## 6. Interacting with HTML (The DOM)
+
+This is where JavaScript's true power on the web shines. JavaScript can interact with the HTML on your page through an interface called the **Document Object Model (DOM)**.
+
+Let's imagine you have this HTML:
+```html
+<h1 id="main-title">Welcome</h1>
+<button id="change-button">Click Me</button>
+```
+
+You can use JavaScript to find these elements and change them. Create a file called `script.js` and link it at the *bottom* of your HTML `<body>`:
+
+```html
+    <script src="script.js"></script>
+</body>
+</html>
+```
+
+Now, in `script.js`, you can write:
+```javascript
+// Find the elements on the page
+const titleElement = document.getElementById("main-title");
+const changeButton = document.getElementById("change-button");
+
+// Add an event listener to the button
+changeButton.addEventListener("click", function() {
+  // When the button is clicked, change the title's text
+  titleElement.textContent = "You clicked the button!";
+});
+```
+Now, when you open your `index.html` file and click the button, you'll see the heading text change dynamically!
+
+---
+
+## Conclusion
+
+You've just learned the absolute fundamentals of JavaScript! You know how to create **variables**, understand basic **data types**, write reusable **functions**, make decisions with **control flow**, and even manipulate your HTML page using the **DOM**.
+
+This is the core of all modern web development. From here, you can explore more advanced topics and eventually dive into powerful libraries like React. Keep practicing, and happy coding!

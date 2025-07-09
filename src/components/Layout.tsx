@@ -1,44 +1,62 @@
 import * as React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
-import Fab from "@mui/material/Fab";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { Icon } from "@iconify/react";
+import { styled, useTheme } from "@mui/material/styles";
+import {
+  Box,
+  CssBaseline,
+  Fab,
+  useMediaQuery,
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper,
+} from "@mui/material";
+import { useRouter } from "next/router";
+
 import SideDrawer from "./SideDrawer";
 import AppBarTop from "./AppBarTop";
 import Footer from "./Footer";
-import { BottomNavigationAction, useMediaQuery } from "@mui/material";
+
 import HomeIcon from "@mui/icons-material/Home";
-import WorkIcon from "@mui/icons-material/Work";
+import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import MailIcon from "@mui/icons-material/Mail";
-import Link from "next/link";
-import BottomNavigation from "@mui/material/BottomNavigation";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const drawerWidth = 240;
 
-interface AppBarProps extends MuiAppBarProps {
+const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
-  ismobile?: boolean | string;
-}
+}>(({ theme, open }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  transition: theme.transitions.create("margin", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
 
-const ContentBox = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open, ismobile }) => ({
-  margin: `${theme.spacing(5)} auto ${theme.spacing(1)} ${theme.spacing(
-    ismobile ? 1 : 7
-  )}`,
-  padding: theme.spacing(2),
-  backgroundColor: theme.palette.background.paper, // Branding green for light mode, semi-dark for dark mode
+  [theme.breakpoints.up("sm")]: {
+    ...(open && {
+      marginLeft: `-15px`,
 
-  ...(open &&
-    !ismobile && {
-      marginLeft: drawerWidth - 40,
+      transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     }),
+    ...(!open && {
+      marginLeft: `-190px`,
+      transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    }),
+  },
+}));
+
+const ContentBox = styled(Box)(({ theme }) => ({
+  padding: theme.spacing(2),
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: theme.shape.borderRadius,
+  flexGrow: 1,
 }));
 
 const Layout: React.FC<{
@@ -47,119 +65,111 @@ const Layout: React.FC<{
   isDarkMode: boolean;
 }> = ({ children, toggleTheme, isDarkMode }) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
-  const [showScrollButton, setShowScrollButton] = React.useState(false);
-  const ismobile = useMediaQuery(theme.breakpoints.down("sm")); // Check for mobile view
-  const [value, setValue] = React.useState(0);
+  const router = useRouter();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+  const [open, setOpen] = React.useState(!isMobile);
 
-  const handleDrawerClose = () => {
+  const handleDrawerToggle = () => {
     setOpen(!open);
   };
 
-  const handleScroll = () => {
-    const scrolled = document.documentElement.scrollTop;
-    setShowScrollButton(scrolled > 300);
-  };
+  React.useEffect(() => {
+    setOpen(!isMobile);
+  }, [isMobile]);
+
+  const [bottomNavValue, setBottomNavValue] = React.useState(router.pathname);
+  React.useEffect(() => {
+    setBottomNavValue(router.pathname);
+  }, [router.pathname]);
+
+  const [showScrollUp, setShowScrollUp] = React.useState(false);
+  const handleScroll = React.useCallback(() => {
+    setShowScrollUp(window.scrollY > 300);
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const scrollToBottom = () => {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth",
-    });
-  };
-
-  React.useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <CssBaseline />
       <AppBarTop
-        handleDrawerOpen={handleDrawerOpen}
-        open={open}
-        isDarkMode={isDarkMode}
+        open={!isMobile && open}
+        handleDrawerToggle={handleDrawerToggle}
         toggleTheme={toggleTheme}
-        ismobile={ismobile ? "true" : undefined}
+        isDarkMode={isDarkMode}
       />
-      {!ismobile && (
-        <>
-          <SideDrawer open={open} handleDrawerClose={handleDrawerClose} />
-        </>
+      <SideDrawer
+        open={open}
+        handleDrawerToggle={handleDrawerToggle}
+        isMobile={isMobile}
+      />
+
+      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+        <Main open={!isMobile && open}>
+          <Box sx={theme.mixins.toolbar} />
+
+          <ContentBox>{children}</ContentBox>
+          <Footer />
+        </Main>
+      </Box>
+
+      {!isMobile && (
+        <Fab
+          color="primary"
+          aria-label="scroll to top"
+          onClick={scrollToTop}
+          sx={{
+            display: showScrollUp ? "flex" : "none",
+            position: "fixed",
+            bottom: 32,
+            right: 32,
+          }}>
+          <KeyboardArrowUpIcon />
+        </Fab>
       )}
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, overflow: "auto", position: "relative" }}>
-        <ContentBox
-          open={!ismobile && open}
-          ismobile={ismobile ? "true" : undefined}>
-          {children}
-        </ContentBox>
-        {!ismobile && (
-          <Fab
-            color="primary"
-            aria-label="scroll"
-            onClick={showScrollButton ? scrollToTop : scrollToBottom}
-            sx={{ position: "fixed", bottom: 16, right: 16 }}>
-            {showScrollButton ? (
-              <KeyboardArrowUpIcon />
-            ) : (
-              <KeyboardArrowDownIcon />
-            )}
-          </Fab>
-        )}
-        {ismobile && (
+
+      {isMobile && (
+        <Paper
+          sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+          elevation={3}>
           <BottomNavigation
-            sx={{
-              position: "fixed",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              boxShadow: theme.shadows[4],
-            }}
-            value={value}
-            onChange={(event: any, newValue: any) => {
-              setValue(newValue);
+            showLabels
+            value={bottomNavValue}
+            onChange={(event: React.SyntheticEvent, newValue: string) => {
+              setBottomNavValue(newValue);
+              router.push(newValue);
             }}>
             <BottomNavigationAction
               label="Home"
+              value="/"
               icon={<HomeIcon />}
-              component={Link}
-              href="/"
             />
             <BottomNavigationAction
               label="Experience"
-              icon={<WorkIcon />}
-              component={Link}
-              href="/experience"
+              value="/experience"
+              icon={<WorkHistoryIcon />}
             />
             <BottomNavigationAction
               label="Projects"
+              value="/projects"
               icon={<AccountTreeIcon />}
-              component={Link}
-              href="/projects"
             />
             <BottomNavigationAction
               label="Contact"
+              value="/contact"
               icon={<MailIcon />}
-              component={Link}
-              href="/contact"
             />
           </BottomNavigation>
-        )}
-      </Box>
-      <Footer />
+        </Paper>
+      )}
     </Box>
   );
 };

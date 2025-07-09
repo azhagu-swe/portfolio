@@ -1,87 +1,98 @@
-// AppBarTop.js
-import * as React from "react";
-import { Toolbar, IconButton, Typography, styled } from "@mui/material";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import { Icon } from "@iconify/react/dist/iconify.js";
+import React from "react";
+import { styled } from "@mui/material/styles";
+import {
+  AppBar as MuiAppBar,
+  AppBarProps as MuiAppBarProps,
+  Toolbar,
+  IconButton,
+  Typography,
+  Box,
+  useTheme,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Icon } from "@iconify/react";
 
-interface CustomAppBarProps {
-  open: boolean;
-  handleDrawerOpen: () => void;
-  toggleTheme: () => void;
-  isDarkMode: boolean;
-  ismobile: boolean | string | undefined;
-}
+const drawerWidth = 240;
 
-const drawerWidth = 250;
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
-  ismobile: boolean | string | undefined;
 }
 
-const AppBar = styled(MuiAppBar, {
+const StyledAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open, ismobile }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  marginRight: 25, // Add a small margin on the right side
-  width: `calc(100% - ${ismobile ? 60 : 105}px )`, // Adjust width for margin
-  backgroundColor: theme.palette.primary.main, // Use secondary color when open
-  transition: theme.transitions.create(
-    ["width", "margin", "background-color"],
-    {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }
-  ),
-  ...(!ismobile &&
-    open && {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px )`,
-      transition: theme.transitions.create(
-        ["width", "margin", "background-color"],
-        {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }
-      ),
-    }),
+})<AppBarProps>(({ theme, open }) => ({
+  background: theme.palette.primary.main,
+  backdropFilter: "blur(10px)",
+  boxShadow: "none",
+  borderBottom: `1px solid ${theme.palette.divider}`,
+
+  transition: theme.transitions.create(["width", "margin"], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+
+  ...(open && {
+    [theme.breakpoints.up("sm")]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: `${drawerWidth}px`,
+      transition: theme.transitions.create(["width", "margin"], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+  }),
 }));
 
-const AppBarTop: React.FC<CustomAppBarProps> = ({
+interface AppBarTopProps {
+  open: boolean;
+  handleDrawerToggle: () => void;
+  toggleTheme: () => void;
+  isDarkMode: boolean;
+}
+
+const AppBarTop: React.FC<AppBarTopProps> = ({
   open,
-  handleDrawerOpen,
+  handleDrawerToggle,
   toggleTheme,
   isDarkMode,
-  ismobile,
 }) => {
+  const theme = useTheme();
   return (
-    <AppBar position="fixed" open={open} ismobile={ismobile}>
+    <StyledAppBar position="fixed" open={open}>
       <Toolbar>
-        {/* <IconButton
+        <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={handleDrawerOpen}
+          onClick={handleDrawerToggle}
           edge="start"
           sx={{
-            marginRight: 5,
-            ...(open && { display: "none" }),
+            marginRight: 2,
+            display: { sm: open ? "none" : "block" },
           }}>
           <MenuIcon />
-        </IconButton> */}
-        <Typography align="center" variant="h6" noWrap component="div">
-          Portfolio
+        </IconButton>
+
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{
+            flexGrow: 1,
+            fontFamily: "Orbitron, sans-serif",
+            color: theme.palette.text.primary,
+          }}>
+          {!open && !theme.breakpoints.down("sm") ? "" : "Portfolio"}
         </Typography>
-        <IconButton
-          color="default"
-          onClick={toggleTheme}
-          sx={{ marginLeft: "auto" }}>
+
+        <IconButton color="inherit" onClick={toggleTheme}>
           <Icon
             icon={isDarkMode ? "mdi:weather-night" : "mdi:white-balance-sunny"}
-            fontSize="1.5rem"
-            color={isDarkMode ? "#ffffff" : "#000000"}
+            width={24}
+            height={24}
           />
         </IconButton>
       </Toolbar>
-    </AppBar>
+    </StyledAppBar>
   );
 };
 
