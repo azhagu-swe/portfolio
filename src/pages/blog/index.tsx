@@ -104,7 +104,6 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
             sx={{ mb: 2, fontFamily: "Orbitron, sans-serif" }}>
             Latest Post
           </Typography>
-          ={" "}
           <Link
             href={`/blog/${featuredPost.slug}`}
             passHref
