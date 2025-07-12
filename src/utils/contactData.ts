@@ -9,7 +9,7 @@ export const CONTACT_DATA = {
     messageLabel: "Your Message",
     methodLabel: "Contact Method",
     methods: [
-      { value: "WhatsApp", label: "WhatsApp" },
+      // { value: "WhatsApp", label: "WhatsApp" },
       { value: "Email", label: "Email" },
     ],
     submitText: "Send Message",
@@ -50,12 +50,6 @@ export const CONTACT_DATA = {
       username: "@azhagu.swe",
       color: "#E4405F",
     },
-    {
-      platform: "WhatsApp",
-      icon: "mdi:whatsapp",
-      link: "https://wa.me/+917502005724",
-      username: "+917502005724",
-      color: "#25D366",
-    },
+
   ],
 };

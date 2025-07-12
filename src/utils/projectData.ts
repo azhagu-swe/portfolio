@@ -5,6 +5,7 @@ export const PROJECTS_DATA = {
   },
   projects: [
     {
+      slug: "farmconnect", // NEW
       title: "FarmConnect: E-Commerce Platform",
       description:
         "A comprehensive, role-based e-commerce app connecting farmers and consumers. Features distinct dashboards, Spring Security for RBAC, and a full shopping cart and checkout process.",
@@ -14,6 +15,7 @@ export const PROJECTS_DATA = {
       github: "https://github.com/azhagu-swe/farmconnect",
     },
     {
+      slug: "proximity-hash", // NEW
       title: "Proximity Hash Algorithm",
       description:
         "Developed a Java-based geohash algorithm for spatial targeting, improving accuracy by 15%. Integrated with PostgreSQL for efficient data storage.",
@@ -22,8 +24,8 @@ export const PROJECTS_DATA = {
       github: "https://github.com/azhagu-swe/proximityhash-javas",
       liveDemo: "https://github.com/azhagu-swe/proximityhash-javas",
     },
-   
     {
+      slug: "portfolio-website", // NEW
       title: "Portfolio Website",
       description:
         "Developed a responsive portfolio website using Next.js and MUI. Features dynamic project showcases and a blog section.",

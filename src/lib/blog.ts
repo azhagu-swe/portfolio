@@ -15,7 +15,8 @@ export interface PostFrontmatter {
   readTime: string;
 }
 
-export function getSortedPostsData() {
+
+function getAllPostsData() {
   const fileNames = fs.readdirSync(postsDirectory);
   const allPostsData = fileNames.map((fileName) => {
     const slug = fileName.replace(/\.mdx$/, '');
@@ -28,9 +29,46 @@ export function getSortedPostsData() {
       ...(data as PostFrontmatter),
     };
   });
-
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
+  return allPostsData;
 }
+
+export function getSortedPostsData() {
+  const allPosts = getAllPostsData();
+  // Sort posts by date
+  return allPosts.sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+
+export function getAllTags() {
+  const allPosts = getAllPostsData();
+  const allTags = new Set(allPosts.flatMap(post => post.tags));
+  return Array.from(allTags).map(tag => ({
+    params: { tag: tag.toLowerCase().replace(/\s+/g, '-') },
+  }));
+}
+
+export function getPostsByTag(tag: string) {
+  const allPosts = getSortedPostsData();
+  return allPosts.filter(post => 
+    post.tags.map(t => t.toLowerCase().replace(/\s+/g, '-')).includes(tag)
+  );
+}
+
+export function getAllCategories() {
+  const allPosts = getAllPostsData();
+  const allCategories = new Set(allPosts.map(post => post.category));
+  return Array.from(allCategories).map(category => ({
+    params: { category: category.toLowerCase().replace(/\s+/g, '-') },
+  }));
+}
+
+export function getPostsByCategory(category: string) {
+  const allPosts = getSortedPostsData();
+  return allPosts.filter(post => 
+    post.category.toLowerCase().replace(/\s+/g, '-') === category
+  );
+}
+
 
 export function getAllPostSlugs() {
   const fileNames = fs.readdirSync(postsDirectory);
@@ -44,11 +82,37 @@ export async function getPostData(slug: string) {
   const fileContents = fs.readFileSync(fullPath, 'utf8');
   const { data, content } = matter(fileContents);
 
+  const headingLines = content.split('\n').filter((line) => {
+    return line.match(/^(##|###)\s/);
+  });
+
+  let h2Counter = 0;
+  let h3Counter = 0;
+
+  const headings = headingLines.map(line => {
+    const text = line.replace(/^(##|###)\s/, '').replace(/^\d+\.\s*/, '').trim();
+    const level = line.startsWith('###') ? 3 : 2;
+    const slug = text.toLowerCase().replace(/\s/g, '-').replace(/[^\w-]+/g, '');
+    
+    let number = '';
+    if (level === 2) {
+      h2Counter++;
+      h3Counter = 0;
+      number = `${h2Counter}.`;
+    } else if (level === 3) {
+      h3Counter++;
+      number = `${h2Counter}.${h3Counter}`;
+    }
+    
+    return { text, level, slug, number };
+  });
+
   const mdxSource = await serialize(content);
 
   return {
     slug,
     frontmatter: data,
     mdxSource,
+    headings,
   };
 }

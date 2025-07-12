@@ -11,8 +11,13 @@ import {
   CardMedia,
   Button,
   useTheme,
+  Chip,
+  TextField,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import SearchIcon from "@mui/icons-material/Search";
+import { useRouter } from "next/router";
+import BlogCard from "@/components/blog/BlogCard";
 
 interface BlogIndexProps {
   allPostsData: (PostFrontmatter & { slug: string })[];
@@ -20,16 +25,35 @@ interface BlogIndexProps {
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
 const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
   const theme = useTheme();
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
+
+  const filteredPosts = allPostsData.filter(
+    (post) =>
+      post.title.toLowerCase().includes(searchQuery) ||
+      post.excerpt.toLowerCase().includes(searchQuery) ||
+      post.tags.some((tag) => tag.toLowerCase().includes(searchQuery))
+  );
+
+  const featuredPost = filteredPosts[0];
+  const otherPosts = filteredPosts.slice(1);
 
   return (
     <Box
@@ -37,7 +61,8 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{ p: { xs: 2, sm: 4 } }}>
+      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
+      {/* --- HEADER --- */}
       <Box
         sx={{ textAlign: "center", mb: 6 }}
         component={motion.div}
@@ -49,30 +74,49 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
             color: theme.palette.primary.main,
             fontFamily: "Orbitron, sans-serif",
           }}>
-          Blog
+          My Blog
         </Typography>
         <Typography variant="h6" color="text.secondary">
           Innovating Code, Sharing Thoughts
         </Typography>
       </Box>
 
-      <Grid container spacing={4}>
-        {allPostsData.map((post) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            key={post.slug}
-            component={motion.div}
-            variants={itemVariants}>
+      {/* --- SEARCH BAR --- */}
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 6 }}>
+        <TextField
+          variant="outlined"
+          placeholder="Search articles by title or tag..."
+          size="small"
+          onChange={handleSearchChange}
+          InputProps={{
+            startAdornment: (
+              <SearchIcon sx={{ mr: 1, color: "text.secondary" }} />
+            ),
+          }}
+          sx={{ width: "100%", maxWidth: "600px" }}
+        />
+      </Box>
+
+      {featuredPost && (
+        <Box sx={{ mb: 6 }} component={motion.div} variants={itemVariants}>
+          <Typography
+            variant="h4"
+            sx={{ mb: 2, fontFamily: "Orbitron, sans-serif" }}>
+            Latest Post
+          </Typography>
+          ={" "}
+          <Link
+            href={`/blog/${featuredPost.slug}`}
+            passHref
+            style={{ textDecoration: "none" }}>
             <Card
               sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
+                display: { xs: "flex", md: "flex" },
+                flexDirection: { xs: "column", md: "row" },
                 borderRadius: "16px",
+                boxShadow: 3,
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                cursor: "pointer",
                 "&:hover": {
                   transform: "translateY(-5px)",
                   boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
@@ -80,33 +124,48 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
               }}>
               <CardMedia
                 component="img"
-                height="200"
-                image={post.coverImage}
-                alt={post.title}
+                sx={{
+                  width: { xs: "100%", md: 400 },
+                  height: { xs: 250, md: "auto" },
+                }}
+                image={featuredPost.coverImage}
+                alt={featuredPost.title}
               />
-              <CardContent sx={{ flexGrow: 1, p: 3 }}>
+              <CardContent
+                sx={{
+                  p: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}>
+                <Chip
+                  label={featuredPost.category}
+                  color="primary"
+                  size="small"
+                  sx={{ mb: 1, alignSelf: "flex-start" }}
+                />
                 <Typography
-                  variant="h6"
+                  variant="h5"
                   component="h2"
-                  gutterBottom
-                  sx={{ fontWeight: "bold" }}>
-                  {post.title}
+                  sx={{ fontWeight: "bold", mb: 1 }}>
+                  {featuredPost.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {post.excerpt}
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}>
+                  {featuredPost.excerpt}
                 </Typography>
+                <Button variant="contained">Start Reading</Button>
               </CardContent>
-              <Box sx={{ p: 2, pt: 0, mt: "auto" }}>
-                <Button
-                  component={Link}
-                  href={`/blog/${post.slug}`}
-                  fullWidth
-                  variant="contained"
-                  sx={{ "&:hover": { transform: "translateY(-2px)" } }}>
-                  Read More
-                </Button>
-              </Box>
             </Card>
+          </Link>
+        </Box>
+      )}
+      <Grid container spacing={4}>
+        {otherPosts.map((post) => (
+          <Grid item xs={12} sm={6} md={4} key={post.slug}>
+            <BlogCard post={post} basePath={router.basePath} />
           </Grid>
         ))}
       </Grid>
