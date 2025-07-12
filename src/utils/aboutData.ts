@@ -10,7 +10,7 @@ export const PROFILE = (basePath: string) => ({
 export const SKILLS_DATA = [
   {
     title: "Languages",
-    skills: "Java (Core, 8+), SQL, JavaScript, HTML, CSS", //
+    skills: "Java (Core 8+), SQL, JavaScript, HTML, CSS", //
   },
   {
     title: "Frameworks & Technologies",

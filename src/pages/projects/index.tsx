@@ -15,14 +15,15 @@ import {
   useTheme,
   CardActions,
   InputAdornment,
-  CardActionArea,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
 import { PROJECTS_DATA } from "@/utils/projectData";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { OpenInNew, Code } from "@mui/icons-material";
 
+// --- ANIMATION VARIANTS ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -44,6 +45,7 @@ const itemVariants = {
   },
 };
 
+// --- MAIN COMPONENT ---
 const ProjectPage = () => {
   const theme = useTheme();
   const [filter, setFilter] = React.useState("All");
@@ -75,7 +77,8 @@ const ProjectPage = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{ p: { xs: 2, sm: 4 } }}>
+      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
+      {/* --- HEADER --- */}
       <Box
         sx={{ textAlign: "center", mb: 6 }}
         component={motion.div}
@@ -94,14 +97,20 @@ const ProjectPage = () => {
         </Typography>
       </Box>
 
+      {/* --- FILTER & SEARCH PANEL --- */}
       <Box
         component={motion.div}
         variants={itemVariants}
         sx={{
           mb: 5,
           p: 2,
-          backgroundColor: "action.hover",
+          backgroundColor:
+            theme.palette.mode === "dark"
+              ? "rgba(0,0,0,0.2)"
+              : "rgba(255,255,255,0.7)",
+          backdropFilter: "blur(10px)",
           borderRadius: "16px",
+          border: `1px solid ${theme.palette.divider}`,
         }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={4}>
@@ -139,8 +148,9 @@ const ProjectPage = () => {
         </Grid>
       </Box>
 
+      {/* --- PROJECTS GRID --- */}
       <Grid container spacing={4}>
-        {filteredProjects.map((project, index) => {
+        {filteredProjects.map((project) => {
           const imageUrl = project.thumbnail.startsWith("http")
             ? project.thumbnail
             : `${basePath}/${project.thumbnail}`;
@@ -151,7 +161,7 @@ const ProjectPage = () => {
               xs={12}
               sm={6}
               md={4}
-              key={index}
+              key={project.slug}
               component={motion.div}
               variants={itemVariants}>
               <Card
@@ -161,39 +171,40 @@ const ProjectPage = () => {
                   flexDirection: "column",
                   borderRadius: "16px",
                   transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  backgroundColor:
+                    theme.palette.mode === "dark"
+                      ? "rgba(255, 255, 255, 0.05)"
+                      : "rgba(0, 0, 0, 0.02)",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
                   "&:hover": {
-                    transform: "translateY(-5px)",
-                    boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
+                    transform: "translateY(-8px)",
+                    boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
                   },
                 }}>
-                <CardActionArea
-                  component="a"
-                  href={project.liveDemo}
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <CardMedia
-                    component="img"
-                    height="200"
-                    image={imageUrl}
-                    alt={project.title}
-                    sx={{
-                      objectFit: "cover",
-                    }}
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography
-                      variant="h6"
-                      component="h2"
-                      gutterBottom
-                      sx={{ fontWeight: "bold" }}>
-                      {project.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {project.description}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardContent sx={{ pt: 0, mt: "auto" }}>
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={imageUrl}
+                  alt={project.title}
+                  sx={{ objectFit: "cover" }}
+                />
+                <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                  <Typography
+                    variant="h6"
+                    component="h2"
+                    gutterBottom
+                    sx={{ fontWeight: "bold" }}>
+                    {project.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ flexGrow: 1, minHeight: "60px" }}>
+                    {project.description}
+                  </Typography>
+                </CardContent>
+                <CardContent sx={{ pt: 0 }}>
                   <Stack
                     direction="row"
                     spacing={1}
@@ -210,25 +221,41 @@ const ProjectPage = () => {
                     ))}
                   </Stack>
                 </CardContent>
-                <CardActions sx={{ p: 2, pt: 0, mt: "auto" }}>
-                  {project.liveDemo && (
+                <CardActions
+                  sx={{
+                    p: 2,
+                    pt: 0,
+                    mt: "auto",
+                    justifyContent: "space-between",
+                  }}>
+                  <Button
+                    component={Link}
+                    href={`/projects/${project.slug}`}
+                    size="small"
+                    variant="contained">
+                    Case Study
+                  </Button>
+                  <Stack direction="row" spacing={1}>
+                    {project.liveDemo && (
+                      <Button
+                        size="small"
+                        href={project.liveDemo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        startIcon={<OpenInNew />}>
+                        Demo
+                      </Button>
+                    )}
                     <Button
                       size="small"
-                      variant="contained"
-                      href={project.liveDemo}
+                      variant="outlined"
+                      href={project.github}
                       target="_blank"
-                      rel="noopener noreferrer">
-                      Live Demo
+                      rel="noopener noreferrer"
+                      startIcon={<Code />}>
+                      Code
                     </Button>
-                  )}
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    GitHub
-                  </Button>
+                  </Stack>
                 </CardActions>
               </Card>
             </Grid>

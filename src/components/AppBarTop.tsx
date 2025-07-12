@@ -81,7 +81,7 @@ const AppBarTop: React.FC<AppBarTopProps> = ({
             fontFamily: "Orbitron, sans-serif",
             color: theme.palette.text.primary,
           }}>
-          {!open && !theme.breakpoints.down("sm") ? "" : "Portfolio"}
+          {!open && "Azhagu-swe"}
         </Typography>
 
         <IconButton color="inherit" onClick={toggleTheme}>

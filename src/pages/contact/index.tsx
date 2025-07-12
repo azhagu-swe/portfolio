@@ -7,13 +7,7 @@ import {
   Button,
   Grid,
   Card,
-  CardContent,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   useTheme,
-  SelectChangeEvent,
   Paper,
 } from "@mui/material";
 import { motion } from "framer-motion";
@@ -43,28 +37,18 @@ const itemVariants = {
 
 const ContactPage = () => {
   const theme = useTheme();
+  // FIX: Removed the 'method' property from the state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
-    method: "WhatsApp",
   });
 
   const handleInputChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | SelectChangeEvent
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleWhatsAppMessage = () => {
-    const { name, message, email } = formData;
-    const phoneNumber = "+917502005724"; 
-    const text = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
-    window.open(url, "_blank");
   };
 
   const handleEmailMessage = () => {
@@ -79,11 +63,7 @@ const ContactPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (formData.method === "WhatsApp") {
-      handleWhatsAppMessage();
-    } else {
-      handleEmailMessage();
-    }
+    handleEmailMessage();
   };
 
   return (
@@ -223,22 +203,6 @@ const ContactPage = () => {
                 onChange={handleInputChange}
                 required
               />
-
-              <FormControl fullWidth>
-                <InputLabel>{CONTACT_DATA.form.methodLabel}</InputLabel>
-                <Select
-                  name="method"
-                  value={formData.method}
-                  onChange={handleInputChange}
-                  label={CONTACT_DATA.form.methodLabel}>
-                  {CONTACT_DATA.form.methods.map((method) => (
-                    <MenuItem key={method.value} value={method.value}>
-                      {method.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-
               <Button
                 type="submit"
                 variant="contained"
