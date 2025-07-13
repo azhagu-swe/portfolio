@@ -17,12 +17,14 @@ import {
 import { motion } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
-import BlogCard from "@/components/blog/BlogCard";
+import BlogCard from "@/components/blog/BlogCard"; // Import the reusable BlogCard
 
+// --- TYPE DEFINITIONS ---
 interface BlogIndexProps {
   allPostsData: (PostFrontmatter & { slug: string })[];
 }
 
+// --- ANIMATION VARIANTS ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -36,6 +38,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
+// --- MAIN PAGE COMPONENT ---
 const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
   const theme = useTheme();
   const router = useRouter();
@@ -49,7 +52,7 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
     (post) =>
       post.title.toLowerCase().includes(searchQuery) ||
       post.excerpt.toLowerCase().includes(searchQuery) ||
-      post.tags.some((tag) => tag.toLowerCase().includes(searchQuery))
+      post.tags.some((tag:string) => tag.toLowerCase().includes(searchQuery))
   );
 
   const featuredPost = filteredPosts[0];
@@ -62,7 +65,6 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
       initial="hidden"
       animate="visible"
       sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
-      {/* --- HEADER --- */}
       <Box
         sx={{ textAlign: "center", mb: 6 }}
         component={motion.div}
@@ -81,7 +83,6 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
         </Typography>
       </Box>
 
-      {/* --- SEARCH BAR --- */}
       <Box sx={{ display: "flex", justifyContent: "center", mb: 6 }}>
         <TextField
           variant="outlined"
@@ -104,10 +105,10 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
             sx={{ mb: 2, fontFamily: "Orbitron, sans-serif" }}>
             Latest Post
           </Typography>
-          <Link
+          {/* <Link
             href={`/blog/${featuredPost.slug}`}
             passHref
-            style={{ textDecoration: "none" }}>
+            style={{ textDecoration: "none" }}> */}
             <Card
               sx={{
                 display: { xs: "flex", md: "flex" },
@@ -142,6 +143,12 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
                   color="primary"
                   size="small"
                   sx={{ mb: 1, alignSelf: "flex-start" }}
+                  component="a" 
+                  href={`/categories/${featuredPost.category
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}`}
+                  onClick={(e) => e.stopPropagation()}
+                  clickable
                 />
                 <Typography
                   variant="h5"
@@ -158,9 +165,10 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
                 <Button variant="contained">Start Reading</Button>
               </CardContent>
             </Card>
-          </Link>
+          {/* </Link> */}
         </Box>
       )}
+
       <Grid container spacing={4}>
         {otherPosts.map((post) => (
           <Grid item xs={12} sm={6} md={4} key={post.slug}>

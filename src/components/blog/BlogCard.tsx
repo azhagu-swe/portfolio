@@ -12,6 +12,7 @@ import {
   Stack,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router"; // Import useRouter
 import { PostFrontmatter } from "@/lib/blog";
 
 interface BlogCardProps {
@@ -26,9 +27,22 @@ const itemVariants = {
 
 const BlogCard = ({ post, basePath }: BlogCardProps) => {
   const theme = useTheme();
+  const router = useRouter(); 
   const imageUrl = post.coverImage.startsWith("http")
     ? post.coverImage
     : `${basePath}${post.coverImage}`;
+
+  const handleCategoryClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    router.push(
+      `/categories/${post.category.toLowerCase().replace(/\s+/g, "-")}`
+    );
+  };
+
+  const handleTagClick = (e: React.MouseEvent, tag: string) => {
+    e.stopPropagation();
+    router.push(`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`);
+  };
 
   return (
     <Link
@@ -78,6 +92,8 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
                 color="primary"
                 size="small"
                 variant="outlined"
+                clickable
+                onClick={handleCategoryClick} 
               />
               <Typography variant="caption" color="text.secondary">
                 {post.readTime}
@@ -105,7 +121,9 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
                   label={`#${tag}`}
                   size="small"
                   variant="filled"
+                  clickable
                   sx={{ backgroundColor: "action.hover" }}
+                  onClick={(e) => handleTagClick(e, tag)} // Use the new handler
                 />
               ))}
             </Stack>
