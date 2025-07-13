@@ -12,6 +12,7 @@ import {
   Stack,
 } from "@mui/material";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router"; // Import useRouter
 import { PostFrontmatter } from "@/lib/blog";
 
 interface BlogCardProps {
@@ -26,15 +27,26 @@ const itemVariants = {
 
 const BlogCard = ({ post, basePath }: BlogCardProps) => {
   const theme = useTheme();
+  const router = useRouter();
   const imageUrl = post.coverImage.startsWith("http")
     ? post.coverImage
     : `${basePath}${post.coverImage}`;
 
+  const handleCategoryClick = (e: React.MouseEvent, cat: string) => {
+    e.stopPropagation();
+    router.push(`/categories/${cat.toLowerCase().replace(/\s+/g, "-")}`);
+  };
+
+  const handleTagClick = (e: React.MouseEvent, tag: string) => {
+    e.stopPropagation();
+    router.push(`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`);
+  };
+
   return (
-    <Link
-      href={`/blog/${post.slug}`}
-      passHref
-      style={{ textDecoration: "none", height: "100%" }}>
+    // <Link
+    //   href={`/blog/${post.slug}`}
+    //   passHref
+    //   style={{ textDecoration: "none", height: "100%" }}>
       <motion.div variants={itemVariants} style={{ height: "100%" }}>
         <Card
           sx={{
@@ -73,12 +85,17 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
               justifyContent="space-between"
               alignItems="center"
               sx={{ mb: 1 }}>
-              <Chip
-                label={post.category}
-                color="primary"
-                size="small"
-                variant="outlined"
-              />
+              {(Array.isArray(post.category) ? post.category : [post.category]).map((cat: string) => (
+                <Chip
+                  key={cat}
+                  label={cat}
+                  color="primary"
+                  size="small"
+                  variant="outlined"
+                  clickable
+                  onClick={(e) => handleCategoryClick(e, cat)}
+                />
+              ))}
               <Typography variant="caption" color="text.secondary">
                 {post.readTime}
               </Typography>
@@ -99,13 +116,15 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
               useFlexGap
               flexWrap="wrap"
               sx={{ mt: "auto", mb: 2 }}>
-              {post.tags.map((tag:string) => (
+              {post.tags.map((tag: string) => (
                 <Chip
                   key={tag}
                   label={`#${tag}`}
                   size="small"
                   variant="filled"
+                  clickable
                   sx={{ backgroundColor: "action.hover" }}
+                  onClick={(e) => handleTagClick(e, tag)} // Use the new handler
                 />
               ))}
             </Stack>
@@ -117,7 +136,7 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
           </Box>
         </Card>
       </motion.div>
-    </Link>
+    // </Link>
   );
 };
 

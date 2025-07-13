@@ -7,7 +7,7 @@ import {
   getAllCategories,
   getPostsByCategory,
   PostFrontmatter,
-} from "@/lib/blog"; // Server-side functions
+} from "@/lib/blog";
 
 interface CategoryPageProps {
   posts: (PostFrontmatter & { slug: string })[];
@@ -19,6 +19,7 @@ const CategoryPage = ({ posts, category }: CategoryPageProps) => {
   const formattedCategory = category
     .replace(/-/g, " ")
     .replace(/\b\w/g, (l) => l.toUpperCase());
+
   return (
     <Box sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
       <Box sx={{ textAlign: "center", mb: 6 }}>
@@ -47,14 +48,16 @@ const CategoryPage = ({ posts, category }: CategoryPageProps) => {
 };
 
 export default CategoryPage;
-
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = getAllCategories();
   return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  if (!params?.category) return { notFound: true };
-  const posts = getPostsByCategory(params.category as string);
+  if (!params?.category || typeof params.category !== "string") {
+    return { notFound: true };
+  }
+
+  const posts = getPostsByCategory(params.category);
   return { props: { posts, category: params.category } };
 };

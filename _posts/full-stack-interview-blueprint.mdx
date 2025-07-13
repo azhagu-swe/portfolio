@@ -3,11 +3,10 @@ title: "The Full-Stack Developer's Interview Blueprint"
 date: "2025-07-08"
 excerpt: "A deep dive into the essential Java, Spring, React, Database, and System Design concepts for technical interviews."
 coverImage: "https://placehold.co/600x400/1E1E1E/32CD32?text=Interview+Blueprint"
-category: "Technical Guides"
+category: ["Technical Guides", "Interviews"]
 tags: ["Java", "React", "Spring Boot", "System Design", "Interview"]
 readTime: "25 min"
 ---
-
 
 Navigating the technical interview for a Java Full-Stack Developer role with a React frontend can be demanding. This guide provides a comprehensive blueprint of the essential topics and specific questions you're likely to encounter. Let's dive into the core areas to ensure you're fully prepared.
 
@@ -134,8 +133,7 @@ public int[] twoSum(int[] nums, int target) {
     }
     throw new IllegalArgumentException("No two sum solution");
 }
-````
-
+```
 This solution has a time complexity of $O(n)$ because we iterate through the array only once.
 
 ## 🏛️ System Design
@@ -143,33 +141,29 @@ This solution has a time complexity of $O(n)$ because we iterate through the arr
 The big picture. How do you design scalable, resilient, and maintainable systems?
 
 ### **How would you design a URL shortening service like TinyURL?**
-
 This question tests your ability to think about system components and scale. A high-level approach includes:
 
 1.  **API Design:** Define endpoints for creating a short URL (`POST /api/shorten`) and redirecting a short URL (`GET /{shortCode}`).
 2.  **Data Model:** A simple schema would include columns for `short_code`, `long_url`, `created_at`, and `user_id`. `short_code` should be the primary key and indexed for fast lookups.
-3.  **Hash Generation:** The core of the service. You need a function to convert a long URL into a short, unique alphanumeric code. A common approach is to use a base-62 encoding on a unique counter or to take a hash (like MD5) of the long URL and take the first few characters.
+3.  **Hash Generation:** The core of the service. You need a function to convert a long URL into a short, unique alphanumeric code. A common approach is to use a base-62 encoding on a unique counter.
 4.  **Scalability:**
-      * **Database:** Use a distributed database like Cassandra or shard a relational database to handle write-heavy loads.
-      * **Caching:** Use a cache like Redis to store popular short URL to long URL mappings to reduce database reads.
-      * **Load Balancing:** Place a load balancer in front of your web servers to distribute traffic.
+    * **Database:** Use a distributed NoSQL database like DynamoDB or Cassandra for write-heavy loads.
+    * **Caching:** Use a cache like Redis to store popular short URL mappings to reduce database reads.
+    * **Load Balancing:** Place a load balancer in front of your web servers to distribute traffic.
 
 ## 🛠️ Development Tools & Practices
 
 The tools of the trade. Proficiency with Git, build tools, and CI/CD is expected.
 
 ### **Explain the Gitflow workflow.**
-
 Gitflow is a branching model for Git. It defines a strict branching model designed around the project release. It uses several types of branches:
-
-  * **`main` (or `master`):** Stores the official release history.
-  * **`develop`:** Serves as an integration branch for features.
-  * **Feature branches (`feature/*`):** Used to develop new features. They branch off `develop` and are merged back into `develop`.
-  * **Release branches (`release/*`):** Support preparation of a new production release. They branch from `develop` and are merged into both `main` and `develop`.
-  * **Hotfix branches (`hotfix/*`):** Used to quickly patch production releases. They branch from `main` and are merged into both `main` and `develop`.
+ * **`main` (or `master`):** Stores the official release history.
+ * **`develop`:** Serves as an integration branch for features.
+ * **Feature branches (`feature/*`):** Used to develop new features.
+ * **Release branches (`release/*`):** Support preparation of a new production release.
+ * **Hotfix branches (`hotfix/*`):** Used to quickly patch production releases.
 
 ### **What is CI/CD?**
-
 **Continuous Integration (CI)** is the practice of automatically building and testing your code every time a developer commits a change to version control.
 
 **Continuous Delivery/Deployment (CD)** is the practice of automatically deploying all code changes to a testing and/or production environment after the build and test stages.

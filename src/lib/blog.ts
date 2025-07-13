@@ -10,7 +10,7 @@ export interface PostFrontmatter {
   title: string;
   excerpt: string;
   coverImage: string;
-  category: string;
+  category: string[];
   tags: string[];
   readTime: string;
 }
@@ -34,7 +34,6 @@ function getAllPostsData() {
 
 export function getSortedPostsData() {
   const allPosts = getAllPostsData();
-  // Sort posts by date
   return allPosts.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
@@ -56,16 +55,25 @@ export function getPostsByTag(tag: string) {
 
 export function getAllCategories() {
   const allPosts = getAllPostsData();
-  const allCategories = new Set(allPosts.map(post => post.category));
+
+  const allCategories = new Set(
+    allPosts.flatMap(post =>
+      post.category.map(cat => cat.toLowerCase().replace(/\s+/g, "-"))
+    )
+  );
+
   return Array.from(allCategories).map(category => ({
-    params: { category: category.toLowerCase().replace(/\s+/g, '-') },
+    params: { category },
   }));
 }
 
 export function getPostsByCategory(category: string) {
   const allPosts = getSortedPostsData();
-  return allPosts.filter(post => 
-    post.category.toLowerCase().replace(/\s+/g, '-') === category
+
+  return allPosts.filter(post =>
+    post.category
+      .map(c => c.toLowerCase().replace(/\s+/g, "-"))
+      .includes(category)
   );
 }
 
