@@ -13,11 +13,12 @@ import {
   useTheme,
   Chip,
   TextField,
+  Stack,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
-import BlogCard from "@/components/blog/BlogCard"; // Import the reusable BlogCard
+import BlogCard from "@/components/blog/BlogCard";
 
 // --- TYPE DEFINITIONS ---
 interface BlogIndexProps {
@@ -52,11 +53,16 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
     (post) =>
       post.title.toLowerCase().includes(searchQuery) ||
       post.excerpt.toLowerCase().includes(searchQuery) ||
-      post.tags.some((tag:string) => tag.toLowerCase().includes(searchQuery))
+      post.tags.some((tag) => tag.toLowerCase().includes(searchQuery))
   );
 
   const featuredPost = filteredPosts[0];
   const otherPosts = filteredPosts.slice(1);
+
+  const handleChipClick = (e: React.MouseEvent, path: string) => {
+    e.stopPropagation();
+    router.push(path);
+  };
 
   return (
     <Box
@@ -64,18 +70,21 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
+      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}
+    >
       <Box
         sx={{ textAlign: "center", mb: 6 }}
         component={motion.div}
-        variants={itemVariants}>
+        variants={itemVariants}
+      >
         <Typography
           variant="h3"
           sx={{
             fontWeight: "bold",
             color: theme.palette.primary.main,
             fontFamily: "Orbitron, sans-serif",
-          }}>
+          }}
+        >
           My Blog
         </Typography>
         <Typography variant="h6" color="text.secondary">
@@ -102,13 +111,15 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
         <Box sx={{ mb: 6 }} component={motion.div} variants={itemVariants}>
           <Typography
             variant="h4"
-            sx={{ mb: 2, fontFamily: "Orbitron, sans-serif" }}>
+            sx={{ mb: 2, fontFamily: "Orbitron, sans-serif" }}
+          >
             Latest Post
           </Typography>
-          {/* <Link
+          <Link
             href={`/blog/${featuredPost.slug}`}
             passHref
-            style={{ textDecoration: "none" }}> */}
+            style={{ textDecoration: "none" }}
+          >
             <Card
               sx={{
                 display: { xs: "flex", md: "flex" },
@@ -121,7 +132,8 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
                   transform: "translateY(-5px)",
                   boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
                 },
-              }}>
+              }}
+            >
               <CardMedia
                 component="img"
                 sx={{
@@ -137,35 +149,40 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
-                }}>
-                <Chip
-                  label={featuredPost.category}
-                  color="primary"
-                  size="small"
-                  sx={{ mb: 1, alignSelf: "flex-start" }}
-                  component="a" 
-                  href={`/categories/${featuredPost.category
-                    .toLowerCase()
-                    .replace(/\s+/g, "-")}`}
-                  onClick={(e) => e.stopPropagation()}
-                  clickable
-                />
+                }}
+              >
+                <Stack direction="row" spacing={1} sx={{ mb: 2, alignSelf: "flex-start" }}>
+                  {(Array.isArray(featuredPost.category) ? featuredPost.category : [featuredPost.category]).map((cat) => (
+                    <Chip
+                      key={cat}
+                      label={cat}
+                      color="primary"
+                      size="small"
+                      variant="outlined"
+                      clickable
+                      onClick={(e) => handleChipClick(e, `/categories/${cat.toLowerCase().replace(/\s+/g, '-')}`)}
+                    />
+                  ))}
+                </Stack>
+
                 <Typography
                   variant="h5"
                   component="h2"
-                  sx={{ fontWeight: "bold", mb: 1 }}>
+                  sx={{ fontWeight: "bold", mb: 1 }}
+                >
                   {featuredPost.title}
                 </Typography>
                 <Typography
                   variant="body1"
                   color="text.secondary"
-                  sx={{ mb: 2 }}>
+                  sx={{ mb: 2 }}
+                >
                   {featuredPost.excerpt}
                 </Typography>
                 <Button variant="contained">Start Reading</Button>
               </CardContent>
             </Card>
-          {/* </Link> */}
+          </Link>
         </Box>
       )}
 

@@ -163,7 +163,7 @@ const ProjectCaseStudyPage = ({
                   px: "4px",
                   py: "2px",
                   borderRadius: "4px",
-                  color: "#000000", // <-- custom color instead of theme
+                  color: theme.palette.text.primary,
                 },
                 "& pre > code": {
                   backgroundColor: "transparent",

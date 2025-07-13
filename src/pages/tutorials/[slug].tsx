@@ -274,7 +274,7 @@ const TutorialPage = ({
                     px: "4px",
                     py: "2px",
                     borderRadius: "4px",
-                    color: "#000000",
+                    color: theme.palette.text.primary,
                   },
                   "& pre > code": { backgroundColor: "transparent", p: 0 },
                 }}>

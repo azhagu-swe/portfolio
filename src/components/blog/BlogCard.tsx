@@ -27,16 +27,14 @@ const itemVariants = {
 
 const BlogCard = ({ post, basePath }: BlogCardProps) => {
   const theme = useTheme();
-  const router = useRouter(); 
+  const router = useRouter();
   const imageUrl = post.coverImage.startsWith("http")
     ? post.coverImage
     : `${basePath}${post.coverImage}`;
 
-  const handleCategoryClick = (e: React.MouseEvent) => {
+  const handleCategoryClick = (e: React.MouseEvent, cat: string) => {
     e.stopPropagation();
-    router.push(
-      `/categories/${post.category.toLowerCase().replace(/\s+/g, "-")}`
-    );
+    router.push(`/categories/${cat.toLowerCase().replace(/\s+/g, "-")}`);
   };
 
   const handleTagClick = (e: React.MouseEvent, tag: string) => {
@@ -45,10 +43,10 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
   };
 
   return (
-    <Link
-      href={`/blog/${post.slug}`}
-      passHref
-      style={{ textDecoration: "none", height: "100%" }}>
+    // <Link
+    //   href={`/blog/${post.slug}`}
+    //   passHref
+    //   style={{ textDecoration: "none", height: "100%" }}>
       <motion.div variants={itemVariants} style={{ height: "100%" }}>
         <Card
           sx={{
@@ -87,14 +85,17 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
               justifyContent="space-between"
               alignItems="center"
               sx={{ mb: 1 }}>
-              <Chip
-                label={post.category}
-                color="primary"
-                size="small"
-                variant="outlined"
-                clickable
-                onClick={handleCategoryClick} 
-              />
+              {(Array.isArray(post.category) ? post.category : [post.category]).map((cat: string) => (
+                <Chip
+                  key={cat}
+                  label={cat}
+                  color="primary"
+                  size="small"
+                  variant="outlined"
+                  clickable
+                  onClick={(e) => handleCategoryClick(e, cat)}
+                />
+              ))}
               <Typography variant="caption" color="text.secondary">
                 {post.readTime}
               </Typography>
@@ -115,7 +116,7 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
               useFlexGap
               flexWrap="wrap"
               sx={{ mt: "auto", mb: 2 }}>
-              {post.tags.map((tag:string) => (
+              {post.tags.map((tag: string) => (
                 <Chip
                   key={tag}
                   label={`#${tag}`}
@@ -135,7 +136,7 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
           </Box>
         </Card>
       </motion.div>
-    </Link>
+    // </Link>
   );
 };
 
