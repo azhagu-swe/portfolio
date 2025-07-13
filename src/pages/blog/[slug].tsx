@@ -256,7 +256,7 @@ const PostPage = ({
                     px: "4px",
                     py: "2px",
                     borderRadius: "4px",
-                    color: theme.palette.secondary.main,
+                    color: '#000000',
                   },
                   "& pre > code": { backgroundColor: "transparent", p: 0 },
                 }}>
@@ -349,7 +349,6 @@ const PostPage = ({
 
 export default PostPage;
 
-// --- DATA FETCHING FUNCTIONS ---
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = getAllPostSlugs();
   return { paths, fallback: false };

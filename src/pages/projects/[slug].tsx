@@ -1,6 +1,11 @@
 import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
-import { PROJECTS_DATA } from "@/utils/projectData";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import {
+  getAllProjectSlugs,
+  getProjectData,
+  ProjectFrontmatter,
+} from "@/lib/projects";
 import {
   Box,
   Typography,
@@ -9,117 +14,272 @@ import {
   Stack,
   Divider,
   Button,
+  useTheme,
+  Grid,
 } from "@mui/material";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { OpenInNew, Code } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 // --- TYPE DEFINITIONS ---
-interface Project {
-  slug: string;
-  title: string;
-  description: string;
-  technologies: string[];
-  thumbnail: string;
-  liveDemo?: string;
-  github: string;
+interface ProjectCaseStudyProps {
+  frontmatter: ProjectFrontmatter;
+  mdxSource: MDXRemoteSerializeResult;
 }
 
-interface ProjectCaseStudyPageProps {
-  project: Project | null;
-}
+// --- ANIMATION VARIANTS ---
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
 // --- MAIN COMPONENT ---
-const ProjectCaseStudyPage = ({ project }: ProjectCaseStudyPageProps) => {
-  if (!project) {
-    return <Typography>Project not found.</Typography>;
-  }
+const ProjectCaseStudyPage = ({
+  frontmatter,
+  mdxSource,
+}: ProjectCaseStudyProps) => {
+  const theme = useTheme();
+  const router = useRouter();
+  const { basePath } = router;
+
+  const imageUrl = frontmatter.thumbnail.startsWith("http")
+    ? frontmatter.thumbnail
+    : `${basePath}/${frontmatter.thumbnail}`;
 
   return (
-    <Box sx={{ p: { xs: 2, sm: 4 }, maxWidth: "900px", mx: "auto" }}>
-      <Paper
-        elevation={0}
-        sx={{ p: { xs: 2, sm: 4 }, backgroundColor: "transparent" }}>
-        <Box component="header" sx={{ textAlign: "center", mb: 4 }}>
-          <Typography variant="h3" component="h1" sx={{ fontWeight: "bold" }}>
-            {project.title}
+    <Box
+      component={motion.div}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
+      <Box
+        component={motion.div}
+        variants={itemVariants}
+        sx={{
+          position: "relative",
+          height: { xs: "30vh", sm: "40vh" },
+          width: "100%",
+          borderRadius: "16px",
+          overflow: "hidden",
+          color: "white",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+          p: 4,
+          mb: 6,
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `url(${imageUrl})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "brightness(0.4)",
+            zIndex: 1,
+          },
+        }}>
+        <Box sx={{ position: "relative", zIndex: 2 }}>
+          <Typography
+            variant="h3"
+            component="h1"
+            sx={{
+              fontWeight: "bold",
+              textShadow: "2px 2px 6px rgba(0,0,0,0.8)",
+            }}>
+            {frontmatter.title}
           </Typography>
-          <Typography variant="h6" color="text.secondary" sx={{ mt: 1 }}>
+          <Typography
+            variant="h6"
+            sx={{ mt: 1, color: "rgba(255, 255, 255, 0.8)" }}>
             Case Study
           </Typography>
         </Box>
+      </Box>
 
-        <Divider sx={{ my: 4 }} />
+      <Grid container spacing={5}>
+        <Grid
+          item
+          xs={12}
+          md={8}
+          component={motion.div}
+          variants={itemVariants}>
+          <Paper elevation={0} sx={{ backgroundColor: "transparent" }}>
+            <Box
+              component="article"
+              sx={{
+                color: theme.palette.text.primary,
+                fontSize: "1.1rem",
+                "& h2, & h3": { scrollMarginTop: "80px" },
+                "& h2": {
+                  ...theme.typography.h4,
+                  fontWeight: "bold",
+                  mt: 5,
+                  mb: 2,
+                  color: theme.palette.primary.main,
+                  borderLeft: `4px solid ${theme.palette.secondary.main}`,
+                  paddingLeft: 2,
+                },
+                "& h3": {
+                  ...theme.typography.h5,
+                  fontWeight: "bold",
+                  mt: 4,
+                  mb: 1,
+                  color: theme.palette.secondary.dark,
+                },
+                "& p": { ...theme.typography.body1, lineHeight: 1.8, mb: 2 },
+                "& a": {
+                  color: theme.palette.primary.main,
+                  textDecoration: "none",
+                  fontWeight: "bold",
+                  "&:hover": { textDecoration: "underline" },
+                },
+                "& ul, & ol": { pl: 3, mb: 2 },
+                "& li": { mb: 1, lineHeight: 1.8 },
+                "& pre": {
+                  backgroundColor:
+                    theme.palette.mode === "dark" ? "#1A202C" : "#F7FAFC",
+                  border: `1px solid ${theme.palette.divider}`,
+                  borderRadius: "8px",
+                  p: 2,
+                  overflowX: "auto",
+                  my: 3,
+                },
+                "& code": {
+                  fontFamily: "monospace",
+                  backgroundColor: "rgba(135, 131, 120, 0.15)",
+                  px: "4px",
+                  py: "2px",
+                  borderRadius: "4px",
+                  color: "#000000", // <-- custom color instead of theme
+                },
+                "& pre > code": {
+                  backgroundColor: "transparent",
+                  p: 0,
+                },
+              }}>
+              <MDXRemote {...mdxSource} />
+            </Box>
+          </Paper>
+        </Grid>
 
-        {/* You can add more detailed content here */}
-        <Box component="section" sx={{ mb: 4 }}>
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
-            The Problem
-          </Typography>
-          <Typography variant="body1" paragraph>
-            This is where you would describe the challenge or opportunity that
-            led to the creation of this project. For example, for FarmConnect,
-            the problem might have been the disconnect between local farmers and
-            consumers in the digital marketplace.
-          </Typography>
-        </Box>
+        {/* Sticky Sidebar */}
+        <Grid
+          item
+          xs={12}
+          md={4}
+          component={motion.div}
+          variants={itemVariants}>
+          <Box sx={{ position: "sticky", top: "80px" }}>
+            <Paper
+              elevation={2}
+              sx={{
+                p: 3,
+                borderRadius: "12px",
+                border: `1px solid ${theme.palette.divider}`,
+              }}>
+              <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
+                Project Info
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
 
-        <Box component="section" sx={{ mb: 4 }}>
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
-            My Solution
-          </Typography>
-          <Typography variant="body1" paragraph>
-            {`Here, you can detail the architecture, key features, and the steps you took to build the application. Mention specific technologies and why you chose them. For example: "I architected a full-stack solution using Spring Boot for the backend to ensure robustness and React for the frontend to create a dynamic user experience."`}
-          </Typography>
-        </Box>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "bold", mb: 1 }}>
+                Tech Stack
+              </Typography>
+              <Stack
+                direction="row"
+                spacing={1}
+                useFlexGap
+                flexWrap="wrap"
+                sx={{ mb: 3 }}>
+                {frontmatter.technologies.map((tech) => (
+                  <Chip
+                    key={tech}
+                    label={tech}
+                    color="primary"
+                    variant="outlined"
+                    size="small"
+                  />
+                ))}
+              </Stack>
 
-        <Box component="section">
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
-            Tech Stack
-          </Typography>
-          <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-            {project.technologies.map((tech) => (
-              <Chip key={tech} label={tech} color="primary" />
-            ))}
-          </Stack>
-        </Box>
+              <Typography
+                variant="subtitle1"
+                sx={{ fontWeight: "bold", mb: 1 }}>
+                Links
+              </Typography>
+              <Stack spacing={1}>
+                {frontmatter.liveDemo && (
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="secondary"
+                    href={frontmatter.liveDemo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    startIcon={<OpenInNew />}>
+                    Live Demo
+                  </Button>
+                )}
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="primary"
+                  href={frontmatter.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  startIcon={<Code />}>
+                  GitHub
+                </Button>
+              </Stack>
+            </Paper>
+          </Box>
+        </Grid>
+      </Grid>
 
-        <Divider sx={{ my: 4 }} />
+      <Divider sx={{ my: 6 }} />
 
-        <Box sx={{ textAlign: "center" }}>
-          <Button
-            component={Link}
-            href="/projects"
-            variant="outlined"
-            startIcon={<ArrowBackIcon />}>
-            Back to All Projects
-          </Button>
-        </Box>
-      </Paper>
+      <Box sx={{ textAlign: "center" }}>
+        <Button
+          component={Link}
+          href="/projects"
+          variant="outlined"
+          startIcon={<ArrowBackIcon />}>
+          Back to All Projects
+        </Button>
+      </Box>
     </Box>
   );
 };
 
 export default ProjectCaseStudyPage;
 
-
+// --- DATA FETCHING FUNCTIONS ---
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = PROJECTS_DATA.projects.map((project) => ({
-    params: { slug: project.slug },
-  }));
+  const paths = getAllProjectSlugs();
   return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!params?.slug) {
-    return {
-      props: { project: null },
-    };
+    return { notFound: true };
   }
-
-  const project =
-    PROJECTS_DATA.projects.find((p) => p.slug === params.slug) || null;
-
+  const projectData = await getProjectData(params.slug as string);
   return {
-    props: { project },
+    props: { ...projectData },
   };
 };

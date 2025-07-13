@@ -1,4 +1,5 @@
 import React from "react";
+import { GetStaticProps } from "next";
 import {
   Box,
   Typography,
@@ -18,19 +19,20 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
-import { PROJECTS_DATA } from "@/utils/projectData";
+import { getSortedProjectsData, ProjectFrontmatter } from "@/lib/projects";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { OpenInNew, Code } from "@mui/icons-material";
 
-// --- ANIMATION VARIANTS ---
+interface ProjectPageProps {
+  allProjectsData: (ProjectFrontmatter & { slug: string })[];
+}
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.1 },
   },
 };
 
@@ -39,14 +41,11 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.5,
-    },
+    transition: { duration: 0.5 },
   },
 };
 
-// --- MAIN COMPONENT ---
-const ProjectPage = () => {
+const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
   const theme = useTheme();
   const [filter, setFilter] = React.useState("All");
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -63,13 +62,16 @@ const ProjectPage = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredProjects = PROJECTS_DATA.projects
+  const filteredProjects = allProjectsData
     .filter((project) =>
       filter === "All" ? true : project.technologies.includes(filter)
     )
     .filter((project) =>
       project.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
+  
+  const featuredProject = filteredProjects[0];
+  const otherProjects = filteredProjects.slice(1);
 
   return (
     <Box
@@ -77,27 +79,28 @@ const ProjectPage = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
-      {/* --- HEADER --- */}
+      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}
+    >
       <Box
         sx={{ textAlign: "center", mb: 6 }}
         component={motion.div}
-        variants={itemVariants}>
+        variants={itemVariants}
+      >
         <Typography
           variant="h3"
           sx={{
             fontWeight: "bold",
             color: theme.palette.primary.main,
             fontFamily: "Orbitron, sans-serif",
-          }}>
-          {PROJECTS_DATA.header.title}
+          }}
+        >
+          My Projects
         </Typography>
         <Typography variant="h6" color="text.secondary">
-          {PROJECTS_DATA.header.subtitle}
+          A showcase of innovation, creativity, and technical expertise.
         </Typography>
       </Box>
 
-      {/* --- FILTER & SEARCH PANEL --- */}
       <Box
         component={motion.div}
         variants={itemVariants}
@@ -111,7 +114,8 @@ const ProjectPage = () => {
           backdropFilter: "blur(10px)",
           borderRadius: "16px",
           border: `1px solid ${theme.palette.divider}`,
-        }}>
+        }}
+      >
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={4}>
             <TextField
@@ -137,7 +141,8 @@ const ProjectPage = () => {
               variant="scrollable"
               scrollButtons="auto"
               allowScrollButtonsMobile
-              aria-label="Project filter tabs">
+              aria-label="Project filter tabs"
+            >
               <Tab label="All" value="All" />
               <Tab label="Java" value="Java" />
               <Tab label="Next.js" value="Next.js" />
@@ -148,9 +153,48 @@ const ProjectPage = () => {
         </Grid>
       </Box>
 
-      {/* --- PROJECTS GRID --- */}
+      {featuredProject && (
+        <Box sx={{ mb: 6 }} component={motion.div} variants={itemVariants}>
+            <Typography variant="h4" sx={{ mb: 2, fontFamily: 'Orbitron, sans-serif' }}>Featured Project</Typography>
+            <Link href={`/projects/${featuredProject.slug}`} passHref style={{ textDecoration: 'none' }}>
+              <Card
+                  sx={{
+                      display: { xs: 'flex', md: 'flex' },
+                      flexDirection: { xs: 'column', md: 'row' },
+                      borderRadius: '16px',
+                      boxShadow: 3,
+                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                      cursor: 'pointer',
+                      '&:hover': {
+                          transform: 'translateY(-5px)',
+                          boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
+                      }
+                  }}
+              >
+                  <CardMedia
+                      component="img"
+                      sx={{ width: { xs: '100%', md: 400 }, height: { xs: 250, md: 'auto' } }}
+                      image={featuredProject.thumbnail.startsWith("http") ? featuredProject.thumbnail : `${basePath}${featuredProject.thumbnail}`}
+                      alt={featuredProject.title}
+                  />
+                  <CardContent sx={{ p: 4, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                      <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                          {featuredProject.title}
+                      </Typography>
+                      <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                          {featuredProject.description}
+                      </Typography>
+                      <Button variant="contained">
+                          View Case Study
+                      </Button>
+                  </CardContent>
+              </Card>
+            </Link>
+        </Box>
+      )}
+
       <Grid container spacing={4}>
-        {filteredProjects.map((project) => {
+        {otherProjects.map((project) => {
           const imageUrl = project.thumbnail.startsWith("http")
             ? project.thumbnail
             : `${basePath}/${project.thumbnail}`;
@@ -163,7 +207,8 @@ const ProjectPage = () => {
               md={4}
               key={project.slug}
               component={motion.div}
-              variants={itemVariants}>
+              variants={itemVariants}
+            >
               <Card
                 sx={{
                   height: "100%",
@@ -181,7 +226,8 @@ const ProjectPage = () => {
                     transform: "translateY(-8px)",
                     boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
                   },
-                }}>
+                }}
+              >
                 <CardMedia
                   component="img"
                   height="200"
@@ -194,13 +240,15 @@ const ProjectPage = () => {
                     variant="h6"
                     component="h2"
                     gutterBottom
-                    sx={{ fontWeight: "bold" }}>
+                    sx={{ fontWeight: "bold" }}
+                  >
                     {project.title}
                   </Typography>
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    sx={{ flexGrow: 1, minHeight: "60px" }}>
+                    sx={{ flexGrow: 1, minHeight: "60px" }}
+                  >
                     {project.description}
                   </Typography>
                 </CardContent>
@@ -210,7 +258,8 @@ const ProjectPage = () => {
                     spacing={1}
                     useFlexGap
                     flexWrap="wrap"
-                    sx={{ mb: 2 }}>
+                    sx={{ mb: 2 }}
+                  >
                     {project.technologies.map((tech, i) => (
                       <Chip
                         key={i}
@@ -227,12 +276,14 @@ const ProjectPage = () => {
                     pt: 0,
                     mt: "auto",
                     justifyContent: "space-between",
-                  }}>
+                  }}
+                >
                   <Button
                     component={Link}
                     href={`/projects/${project.slug}`}
                     size="small"
-                    variant="contained">
+                    variant="contained"
+                  >
                     Case Study
                   </Button>
                   <Stack direction="row" spacing={1}>
@@ -242,7 +293,8 @@ const ProjectPage = () => {
                         href={project.liveDemo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        startIcon={<OpenInNew />}>
+                        startIcon={<OpenInNew />}
+                      >
                         Demo
                       </Button>
                     )}
@@ -252,7 +304,8 @@ const ProjectPage = () => {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      startIcon={<Code />}>
+                      startIcon={<Code />}
+                    >
                       Code
                     </Button>
                   </Stack>
@@ -267,3 +320,12 @@ const ProjectPage = () => {
 };
 
 export default ProjectPage;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const allProjectsData = getSortedProjectsData();
+  return {
+    props: {
+      allProjectsData,
+    },
+  };
+};

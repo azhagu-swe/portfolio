@@ -113,7 +113,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
                   : "transparent",
                 "&:hover": {
                   backgroundColor: theme.palette.action.hover,
-                  color: theme.palette.primary.light,
+                  color: theme.palette.primary.dark,
                 },
               }}>
               <ListItemIcon

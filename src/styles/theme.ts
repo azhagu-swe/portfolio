@@ -1,17 +1,18 @@
 import { createTheme, responsiveFontSizes, Theme } from "@mui/material/styles";
 
-const mintGreen = {
+
+const neonGreen = {
   light: "#9AE6B4",
   main: "#68D391", 
   dark: "#48BB78",
   contrastText: "#1A202C", 
 };
 
-const neutralGray = {
-  light: "#E2E8F0",
-  main: "#A0AEC0",
-  dark: "#718096",
-  contrastText: "#1A202C",
+const goldenYellow = {
+  light: "#FFECB3",
+  main: "#FFC107",
+  dark: "#FFA000",
+  contrastText: "#000000",
 };
 
 const typography = {
@@ -27,12 +28,12 @@ const typography = {
     fontWeight: 600,
   },
   h3: {
-    fontFamily: "Poppins, Arial,sans-serif",
+    fontFamily: "Orbitron, sans-serif",
     fontSize: "1.8rem",
     fontWeight: 600,
   },
   h4: {
-    fontFamily: "Poppins, Arial, sans-serif",
+    fontFamily: "Orbitron, Arial, sans-serif",
     fontSize: "1.5rem",
     fontWeight: 500,
   },
@@ -48,6 +49,7 @@ const typography = {
   },
 };
 
+// --- COMPONENT OVERRIDES ---
 const components = {
   MuiCssBaseline: {
     styleOverrides: (theme: Theme) => ({
@@ -64,7 +66,6 @@ const components = {
           color: theme.palette.primary.light,
         },
       },
-      // ADDED: Custom scrollbar that matches the theme
       '*::-webkit-scrollbar': {
         width: '12px',
       },
@@ -72,7 +73,7 @@ const components = {
         background: theme.palette.background.paper, 
       },
       '*::-webkit-scrollbar-thumb': {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.dark,
         borderRadius: '10px',
         border: `3px solid ${theme.palette.background.paper}`,
       },
@@ -85,22 +86,31 @@ const components = {
         borderRadius: "8px",
         padding: "8px 20px",
         fontWeight: "bold",
-        variants: [],
-      },
-      containedPrimary: {
-        transition: "transform 0.2s ease-in-out, background-color 0.2s ease",
+        transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease",
         "&:hover": {
           transform: "translateY(-2px)",
-          backgroundColor: mintGreen.light,
         },
+        // FIX: Added the required 'variants' property
+        variants: [],
       },
+      containedPrimary: ({ theme }: { theme: Theme }) => ({
+        boxShadow: `0 4px 15px -5px ${theme.palette.primary.main}99`,
+        "&:hover": {
+          boxShadow: `0 6px 20px -5px ${theme.palette.primary.main}bb`,
+        },
+      }),
+      containedSecondary: ({ theme }: { theme: Theme }) => ({
+        boxShadow: `0 4px 15px -5px ${theme.palette.secondary.main}99`,
+        "&:hover": {
+          boxShadow: `0 6px 20px -5px ${theme.palette.secondary.main}bb`,
+        },
+      }),
     },
   },
   MuiCard: {
     styleOverrides: {
       root: (props: { theme: Theme }) => ({
         borderRadius: "16px",
-        padding: "16px",
         border: `1px solid ${props.theme.palette.divider}`,
         backgroundColor: props.theme.palette.background.paper,
         boxShadow: "none",
@@ -111,9 +121,6 @@ const components = {
     styleOverrides: {
       h1: ({ theme }: { theme: Theme }) => ({
         color: theme.palette.primary.main,
-      }),
-      h2: ({ theme }: { theme: Theme }) => ({
-        color: theme.palette.text.primary, 
       }),
     },
   },
@@ -132,8 +139,8 @@ export const lightTheme = responsiveFontSizes(
     ...baseTheme,
     palette: {
       mode: "light",
-      primary: mintGreen,
-      secondary: neutralGray,
+      primary: neonGreen,
+      secondary: goldenYellow,
       background: { default: "#F7FAFC", paper: "#FFFFFF" },
       text: { primary: "#2D3748", secondary: "#718096" },
       divider: "rgba(0, 0, 0, 0.12)",
@@ -146,8 +153,8 @@ export const darkTheme = responsiveFontSizes(
     ...baseTheme,
     palette: {
       mode: "dark",
-      primary: mintGreen,
-      secondary: neutralGray,
+      primary: neonGreen,
+      secondary: goldenYellow,
       background: { default: "#1A202C", paper: "#2D3748" }, 
       text: { primary: "#F7FAFC", secondary: "#A0AEC0" },
       divider: "rgba(255, 255, 255, 0.12)",
