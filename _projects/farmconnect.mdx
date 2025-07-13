@@ -1,0 +1,39 @@
+---
+title: "FarmConnect: E-Commerce Platform"
+description: "A comprehensive, role-based e-commerce app connecting farmers and consumers. Features distinct dashboards, Spring Security for RBAC, and a full shopping cart and checkout process."
+technologies:
+  [
+    "Java",
+    "Spring Boot",
+    "Spring Security",
+    "PostgreSQL",
+    "React",
+    "TypeScript",
+    "Docker",
+  ]
+thumbnail: "/image/FarmConnect-home.png"
+liveDemo: "https://farm-ui-pi.vercel.app/"
+github: "https://github.com/azhagu-swe/farmconnect"
+---
+
+### The Problem
+
+In today's market, local farmers often struggle to connect directly with consumers, leading to reliance on intermediaries which reduces their profits and increases prices for the end customer. There was a clear need for a digital platform that could bridge this gap, creating a transparent and efficient marketplace for fresh, local produce. The challenge was to build a comprehensive e-commerce solution that catered to the distinct needs of three user groups: consumers (Buyers), producers (Farmers), and platform administrators (Admins).
+
+### My Solution
+
+I architected and developed **FarmConnect**, a full-stack, role-based e-commerce application from the ground up. The solution was designed to be secure, scalable, and user-friendly.
+
+1.  **Backend Architecture:** I built a robust backend using **Java** and **Spring Boot**, creating a set of RESTful APIs to handle all business logic. To ensure security, I implemented **Spring Security** to manage authentication and Role-Based Access Control (RBAC), ensuring that users could only access features relevant to their role (e.g., a farmer cannot see an admin dashboard). Data persistence was handled by a **PostgreSQL** database.
+
+2.  **Frontend Experience:** The frontend was crafted with **React** and **TypeScript**, providing a modern, type-safe, and responsive user experience. I designed and built distinct, intuitive dashboards for each user role:
+
+    - **Buyers:** Can browse products, filter by category, add items to a shopping cart, and complete a secure, multi-step checkout process.
+    - **Farmers:** Can manage their product listings (create, update, delete), view orders, and track their sales.
+    - **Admins:** Have a comprehensive overview of the platform, with the ability to manage users and monitor all platform activity.
+
+3.  **Deployment:** The entire application was containerized using **Docker**, ensuring a consistent and reproducible environment for both development and production deployment.
+
+### Outcome
+
+The result is a fully functional e-commerce platform that successfully empowers local farmers by providing them with a direct sales channel, while offering consumers access to fresh produce at fair prices. The role-based architecture ensures the system is secure and easy to manage, providing a solid foundation for future growth and feature additions.
