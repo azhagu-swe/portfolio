@@ -24,6 +24,7 @@ import {
 import Link from "next/link";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowBack } from "@mui/icons-material";
+import CodeBlock from "@/components/mdx/CodeBlock";
 
 // --- TYPE DEFINITIONS ---
 interface Heading {
@@ -132,11 +133,11 @@ const TutorialPage = ({
 }: TutorialPageProps) => {
   const theme = useTheme();
 
-  const components = {
+ const components = {
     h2: H2,
     h3: H3,
+    pre: CodeBlock,
   };
-
   return (
     <>
       <ReadingProgressBar />
