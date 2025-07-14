@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { OpenInNew, Code } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import CodeBlock from "@/components/mdx/CodeBlock";
 
 // --- TYPE DEFINITIONS ---
 interface ProjectCaseStudyProps {
@@ -39,8 +40,33 @@ const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
+const generateSlug = (node: React.ReactNode): string => {
+  if (typeof node === "string") {
+    return node
+      .toLowerCase()
+      .replace(/^\d+\.\s/, "")
+      .replace(/\s/g, "-")
+      .replace(/[^\w-]+/g, "");
+  }
+  if (Array.isArray(node)) {
+    const firstString = node.find((child) => typeof child === "string");
+    if (firstString) {
+      return generateSlug(firstString);
+    }
+  }
+  return "";
+};
 
-// --- MAIN COMPONENT ---
+const H2 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
+  const slug = generateSlug(props.children);
+  return <h2 id={slug} {...props}></h2>;
+};
+
+const H3 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
+  const slug = generateSlug(props.children);
+  return <h3 id={slug} {...props}></h3>;
+};
+
 const ProjectCaseStudyPage = ({
   frontmatter,
   mdxSource,
@@ -52,6 +78,11 @@ const ProjectCaseStudyPage = ({
   const imageUrl = frontmatter.thumbnail.startsWith("http")
     ? frontmatter.thumbnail
     : `${basePath}/${frontmatter.thumbnail}`;
+  const components = {
+    h2: H2,
+    h3: H3,
+    pre: CodeBlock,
+  };
 
   return (
     <Box
@@ -129,7 +160,7 @@ const ProjectCaseStudyPage = ({
                   mt: 5,
                   mb: 2,
                   color: theme.palette.primary.main,
-                  borderLeft: `4px solid ${theme.palette.secondary.main}`,
+                  borderLeft: `4px solid ${theme.palette.primary.dark}`,
                   paddingLeft: 2,
                 },
                 "& h3": {
@@ -137,7 +168,7 @@ const ProjectCaseStudyPage = ({
                   fontWeight: "bold",
                   mt: 4,
                   mb: 1,
-                  color: theme.palette.secondary.dark,
+                  color: theme.palette.primary.light,
                 },
                 "& p": { ...theme.typography.body1, lineHeight: 1.8, mb: 2 },
                 "& a": {
@@ -165,12 +196,9 @@ const ProjectCaseStudyPage = ({
                   borderRadius: "4px",
                   color: theme.palette.text.primary,
                 },
-                "& pre > code": {
-                  backgroundColor: "transparent",
-                  p: 0,
-                },
+                "& pre > code": { backgroundColor: "transparent", p: 0 },
               }}>
-              <MDXRemote {...mdxSource} />
+              <MDXRemote {...mdxSource} components={components} />
             </Box>
           </Paper>
         </Grid>

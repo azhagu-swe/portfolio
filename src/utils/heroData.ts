@@ -7,7 +7,7 @@ export const HERO_DATA = {
     "Software Engineer 🌐",
     "Java Specialist ☕",
     "Spring Boot Developer 🌱",
-    "Full Stack Developer 🛠️",
+    "Java Full Stack Developer 🛠️",
     "Web Developer 🌐",
     
   ],
