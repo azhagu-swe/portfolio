@@ -1,16 +1,23 @@
 import React from "react";
-import { Box, Typography, Chip, Paper, useTheme, Stack } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Chip,
+  Paper,
+  useTheme,
+  Stack,
+  Grid,
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { EXPERIENCE_DATA } from "@/utils/experienceData";
 import WorkIcon from "@mui/icons-material/Work";
 
+// --- ANIMATION VARIANTS ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-    },
+    transition: { staggerChildren: 0.15 },
   },
 };
 
@@ -19,12 +26,11 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.5,
-    },
+    transition: { duration: 0.5 },
   },
 };
 
+// --- MAIN COMPONENT ---
 const ExperiencePage = () => {
   const theme = useTheme();
 
@@ -34,21 +40,19 @@ const ExperiencePage = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{
-        padding: { xs: 2, sm: 4 },
-        borderRadius: "15px",
-        boxShadow: `0 8px 30px ${theme.palette.primary.light}33`,
-        maxWidth: "1200px",
-        margin: "0 auto",
-        backgroundColor: theme.palette.background.paper,
-      }}>
+      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
+      {/* --- HEADER --- */}
       <Box
         sx={{ textAlign: "center", mb: 6 }}
         component={motion.div}
         variants={itemVariants}>
         <Typography
-          variant="h4"
-          sx={{ fontWeight: "bold", color: theme.palette.primary.main }}>
+          variant="h3"
+          sx={{
+            fontWeight: "bold",
+            color: theme.palette.primary.main,
+            fontFamily: "Orbitron, sans-serif",
+          }}>
           {EXPERIENCE_DATA.header.title}
         </Typography>
         <Typography variant="h6" color="text.secondary" sx={{ mt: 1 }}>
@@ -56,11 +60,13 @@ const ExperiencePage = () => {
         </Typography>
       </Box>
 
+      {/* --- TIMELINE SECTION --- */}
       <Box sx={{ position: "relative" }}>
+        {/* The vertical line of the timeline */}
         <Box
           sx={{
             position: "absolute",
-            left: { xs: "20px", md: "28px" },
+            left: { xs: "18px", md: "28px" },
             top: 0,
             bottom: 0,
             width: "4px",
@@ -70,10 +76,7 @@ const ExperiencePage = () => {
         />
 
         {EXPERIENCE_DATA.roles.map((role, index) => (
-          <motion.div
-            key={index}
-            variants={itemVariants}
-            whileHover={{ scale: 1.02 }}>
+          <motion.div key={index} variants={itemVariants}>
             <Box
               sx={{
                 display: "flex",
@@ -81,25 +84,33 @@ const ExperiencePage = () => {
                 mb: 4,
                 "&:last-child": { mb: 0 },
               }}>
-              <Box
-                sx={{
+              {/* The glowing icon on the timeline */}
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                style={{
                   position: "absolute",
                   left: 0,
                   top: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: { xs: "44px", md: "60px" },
-                  height: { xs: "44px", md: "60px" },
-                  borderRadius: "50%",
-                  bgcolor: theme.palette.primary.main,
-                  border: `4px solid ${theme.palette.background.paper}`,
                   zIndex: 1,
-                  color: theme.palette.primary.contrastText,
                 }}>
-                <WorkIcon />
-              </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: { xs: "40px", md: "60px" },
+                    height: { xs: "40px", md: "60px" },
+                    borderRadius: "50%",
+                    bgcolor: theme.palette.primary.main,
+                    border: `4px solid ${theme.palette.background.paper}`,
+                    color: theme.palette.primary.contrastText,
+                    boxShadow: `0 0 15px ${theme.palette.primary.main}`,
+                  }}>
+                  <WorkIcon />
+                </Box>
+              </motion.div>
 
+              {/* The main content card for the role */}
               <Paper
                 elevation={0}
                 sx={{
@@ -107,11 +118,11 @@ const ExperiencePage = () => {
                   flexGrow: 1,
                   border: `1px solid ${theme.palette.divider}`,
                   borderRadius: "16px",
-                  ml: { xs: "60px", md: "88px" },
+                  ml: { xs: "56px", md: "88px" },
                   transition: "box-shadow 0.3s, border-color 0.3s",
                   "&:hover": {
                     borderColor: theme.palette.primary.main,
-                    boxShadow: `0 0 20px ${theme.palette.primary.light}55`,
+                    boxShadow: `0 0 25px ${theme.palette.primary.light}55`,
                   },
                 }}>
                 <Typography variant="h5" sx={{ fontWeight: "bold" }}>
@@ -161,71 +172,50 @@ const ExperiencePage = () => {
         ))}
       </Box>
 
-      <Box sx={{ mt: 6 }} component={motion.div} variants={itemVariants}>
+      {/* --- KEY ACHIEVEMENTS SECTION --- */}
+      <Box sx={{ mt: 8 }} component={motion.div} variants={itemVariants}>
         <Typography
-          variant="h5"
+          variant="h4"
           sx={{
             fontWeight: "bold",
-            mb: 2,
-            color: "text.primary",
+            mb: 4,
+            color: theme.palette.primary.main,
             textAlign: "center",
+            fontFamily: "Orbitron, sans-serif",
           }}>
           Key Achievements
         </Typography>
-        <Paper
-          elevation={0}
-          sx={{
-            p: 3,
-            border: `1px solid ${theme.palette.divider}`,
-            borderRadius: "16px",
-          }}>
-          <Typography component="ul" sx={{ pl: 2, textAlign: "justify" }}>
-            {EXPERIENCE_DATA.achievements.map((achievement, index) => (
-              <li
-                key={index}
-                dangerouslySetInnerHTML={{ __html: achievement }}
-                style={{ marginBottom: "8px" }}
-              />
-            ))}
-          </Typography>
-        </Paper>
-      </Box>
-
-      <Box sx={{ mt: 4 }} component={motion.div} variants={itemVariants}>
-        <Typography
-          variant="h5"
-          sx={{
-            fontWeight: "bold",
-            mb: 2,
-            color: "text.primary",
-            textAlign: "center",
-          }}>
-          Skills Gained
-        </Typography>
-        <Paper
-          elevation={0}
-          sx={{
-            p: 3,
-            border: `1px solid ${theme.palette.divider}`,
-            borderRadius: "16px",
-          }}>
-          <Stack
-            direction="row"
-            spacing={1}
-            useFlexGap
-            flexWrap="wrap"
-            justifyContent="center">
-            {EXPERIENCE_DATA.skills.map((skill, index) => (
-              <Chip
-                key={index}
-                label={skill}
-                color="primary"
-                variant="outlined"
-                sx={{ m: 0.5 }}
-              />
-            ))}
-          </Stack>
-        </Paper>
+        {/* UPDATED: The Grid now renders the new list of achievements */}
+        <Grid container spacing={2}>
+          {EXPERIENCE_DATA.achievements.map((achievement, index) => (
+            <Grid item xs={12} sm={6} key={index}>
+              <motion.div whileHover={{ y: -5 }} style={{ height: "100%" }}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 2,
+                    height: "100%",
+                    borderRadius: "16px",
+                    border: `1px solid ${theme.palette.divider}`,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2,
+                  }}>
+                  <Typography variant="h4">
+                    {achievement.substring(0, 2)}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    dangerouslySetInnerHTML={{
+                      __html: achievement.substring(2),
+                    }}
+                  />
+                </Paper>
+              </motion.div>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
     </Box>
   );

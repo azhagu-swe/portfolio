@@ -125,7 +125,6 @@ const H3 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
   return <h3 id={slug} {...props}></h3>;
 };
 
-// --- MAIN TUTORIAL PAGE COMPONENT ---
 const TutorialPage = ({
   frontmatter,
   mdxSource,
@@ -142,7 +141,6 @@ const TutorialPage = ({
     <>
       <ReadingProgressBar />
       <Box sx={{ maxWidth: "1200px", mx: "auto", p: { xs: 2, sm: 4 } }}>
-        {/* --- IMMERSIVE HEADER --- */}
         <Box
           sx={{
             position: "relative",

@@ -1,10 +1,10 @@
 // File: src/pages/tags/[tag].tsx
-import React from 'react';
-import { GetStaticProps, GetStaticPaths } from 'next';
-import { Box, Typography, Grid } from '@mui/material';
-import BlogCard from '@/components/blog/BlogCard';
-import { useRouter } from 'next/router';
-import { getAllTags, getPostsByTag, PostFrontmatter } from '@/lib/blog';
+import React from "react";
+import { GetStaticProps, GetStaticPaths } from "next";
+import { Box, Typography, Grid } from "@mui/material";
+import BlogCard from "@/components/blog/BlogCard";
+import { useRouter } from "next/router";
+import { getAllTags, getPostsByTag, PostFrontmatter } from "@/lib/blog";
 
 interface TagPageProps {
   posts: (PostFrontmatter & { slug: string })[];
@@ -14,11 +14,19 @@ interface TagPageProps {
 const TagPage = ({ posts, tag }: TagPageProps) => {
   const router = useRouter();
   return (
-    <Box sx={{ p: { xs: 2, sm: 4 }, maxWidth: '1200px', mx: 'auto' }}>
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
-        <Typography variant="h6" color="text.secondary">Posts tagged with</Typography>
-        <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'primary.main', fontFamily: 'Orbitron, sans-serif' }}>
-          #{tag.replace(/-/g, ' ')}
+    <Box sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
+      <Box sx={{ textAlign: "center", mb: 6 }}>
+        <Typography variant="h6" color="text.secondary">
+          Posts tagged with
+        </Typography>
+        <Typography
+          variant="h3"
+          sx={{
+            fontWeight: "bold",
+            color: "primary.main",
+            fontFamily: "Orbitron, sans-serif",
+          }}>
+          #{tag.replace(/-/g, " ")}
         </Typography>
       </Box>
       <Grid container spacing={4}>
@@ -46,4 +54,3 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const posts = getPostsByTag(params.tag as string);
   return { props: { posts, tag: params.tag } };
 };
-
