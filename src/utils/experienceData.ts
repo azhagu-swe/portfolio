@@ -51,9 +51,12 @@ export const EXPERIENCE_DATA = {
     },
   ],
   achievements: [
-    "Cut API latency by <strong>20%</strong> through <strong>Redis</strong> caching strategies.",
-    "Improved database performance by <strong>10%</strong> using <strong>PostgreSQL</strong> indexing and query optimization.",
-    "Enhanced geospatial targeting accuracy by <strong>15%</strong> with a custom Java proximity hash algorithm.",
+    "🏆 Secured Second Prize in a national-level Debugging Competition, demonstrating exceptional problem-solving and code analysis skills.",
+    "🚀 Architected and implemented a unified audience management service to seamlessly integrate with multiple marketing platforms, including Meta, Snapchat, and Tik Tok.",
+    "⚡ Significantly reduced API latency by implementing a targeted Redis caching strategy for high-throughput microservices.",
+    "⚙️ Enhanced database performance through strategic PostgreSQL indexing and advanced query optimization.",
+    "🎯 Developed a custom Java proximity hash algorithm, leading to more accurate and efficient location-based targeting.",
+    "🔄 Contributed to the modernization of a legacy system by re-architecting critical APIs and enhancing the UI with Next.js, improving overall system speed.",
   ],
   skills: [
     "Java",

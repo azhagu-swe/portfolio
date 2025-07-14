@@ -237,7 +237,7 @@ const PostPage = ({
                     mt: 5,
                     mb: 2,
                     color: theme.palette.primary.main,
-                    borderLeft: `4px solid ${theme.palette.secondary.main}`,
+                    borderLeft: `4px solid ${theme.palette.primary.light}`,
                     paddingLeft: 2,
                   },
                   "& h3": {
@@ -245,7 +245,7 @@ const PostPage = ({
                     fontWeight: "bold",
                     mt: 4,
                     mb: 1,
-                    color: theme.palette.secondary.light,
+                    color: theme.palette.primary.light,
                   },
                   "& p": { ...theme.typography.body1, lineHeight: 1.8, mb: 2 },
                   "& a": {

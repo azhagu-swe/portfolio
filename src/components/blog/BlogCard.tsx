@@ -41,101 +41,112 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
     e.stopPropagation();
     router.push(`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`);
   };
+  const handleReadMoreClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); 
+    router.push(`/blog/${post.slug}`);
+  };
 
   return (
     // <Link
     //   href={`/blog/${post.slug}`}
     //   passHref
     //   style={{ textDecoration: "none", height: "100%" }}>
-      <motion.div variants={itemVariants} style={{ height: "100%" }}>
-        <Card
+    <motion.div variants={itemVariants} style={{ height: "100%" }}>
+      <Card
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          borderRadius: "16px",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          backgroundColor:
+            theme.palette.mode === "dark"
+              ? "rgba(255, 255, 255, 0.05)"
+              : "rgba(0, 0, 0, 0.02)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
+          cursor: "pointer",
+          "&:hover": {
+            transform: "translateY(-8px)",
+            boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
+          },
+        }}>
+        <CardMedia
+          component="img"
+          height="200"
+          image={imageUrl}
+          alt={post.title}
+        />
+        <CardContent
           sx={{
-            height: "100%",
+            flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            borderRadius: "16px",
-            transition: "transform 0.3s ease, box-shadow 0.3s ease",
-            backgroundColor:
-              theme.palette.mode === "dark"
-                ? "rgba(255, 255, 255, 0.05)"
-                : "rgba(0, 0, 0, 0.02)",
-            backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            cursor: "pointer",
-            "&:hover": {
-              transform: "translateY(-8px)",
-              boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
-            },
+            p: 3,
           }}>
-          <CardMedia
-            component="img"
-            height="200"
-            image={imageUrl}
-            alt={post.title}
-          />
-          <CardContent
-            sx={{
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-              p: 3,
-            }}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{ mb: 1 }}>
-              {(Array.isArray(post.category) ? post.category : [post.category]).map((cat: string) => (
-                <Chip
-                  key={cat}
-                  label={cat}
-                  color="primary"
-                  size="small"
-                  variant="outlined"
-                  clickable
-                  onClick={(e) => handleCategoryClick(e, cat)}
-                />
-              ))}
-              <Typography variant="caption" color="text.secondary">
-                {post.readTime}
-              </Typography>
-            </Stack>
-            <Typography
-              variant="h6"
-              component="h2"
-              gutterBottom
-              sx={{ fontWeight: "bold", flexGrow: 1, mt: 1 }}>
-              {post.title}
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 1 }}>
+            {(Array.isArray(post.category)
+              ? post.category
+              : [post.category]
+            ).map((cat: string) => (
+              <Chip
+                key={cat}
+                label={cat}
+                color="primary"
+                size="small"
+                variant="outlined"
+                clickable
+                onClick={(e) => handleCategoryClick(e, cat)}
+              />
+            ))}
+            <Typography variant="caption" color="text.secondary">
+              {post.readTime}
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              {post.excerpt}
-            </Typography>
-            <Stack
-              direction="row"
-              spacing={1}
-              useFlexGap
-              flexWrap="wrap"
-              sx={{ mt: "auto", mb: 2 }}>
-              {post.tags.map((tag: string) => (
-                <Chip
-                  key={tag}
-                  label={`#${tag}`}
-                  size="small"
-                  variant="filled"
-                  clickable
-                  sx={{ backgroundColor: "action.hover" }}
-                  onClick={(e) => handleTagClick(e, tag)} // Use the new handler
-                />
-              ))}
-            </Stack>
-          </CardContent>
-          <Box sx={{ p: 2, pt: 0, mt: "auto" }}>
-            <Button fullWidth variant="contained" color="secondary">
-              Read More
-            </Button>
-          </Box>
-        </Card>
-      </motion.div>
+          </Stack>
+          <Typography
+            variant="h6"
+            component="h2"
+            gutterBottom
+            sx={{ fontWeight: "bold", flexGrow: 1, mt: 1 }}>
+            {post.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            {post.excerpt}
+          </Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            flexWrap="wrap"
+            sx={{ mt: "auto", mb: 2 }}>
+            {post.tags.map((tag: string) => (
+              <Chip
+                key={tag}
+                label={`#${tag}`}
+                size="small"
+                variant="filled"
+                clickable
+                sx={{ backgroundColor: "action.hover" }}
+                onClick={(e) => handleTagClick(e, tag)} // Use the new handler
+              />
+            ))}
+          </Stack>
+        </CardContent>
+        <Box sx={{ p: 2, pt: 0, mt: "auto" }}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="secondary"
+            onClick={handleReadMoreClick}>
+            Read More
+          </Button>
+        </Box>
+      </Card>
+    </motion.div>
     // </Link>
   );
 };

@@ -53,7 +53,6 @@ export const ACHIEVEMENTS_DATA = (basePath: string) => [
   },
 ];
 
-// NOTE: The 'Participations' data could not be updated as it was not present in the provided resume.
 export const PARTICIPATIONS_DATA = (basePath: string) => [
   {
     description:
