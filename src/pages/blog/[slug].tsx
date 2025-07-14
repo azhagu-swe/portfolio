@@ -29,7 +29,9 @@ import {
 } from "@mui/icons-material";
 import { HERO_DATA } from "@/utils/heroData";
 import { useRouter } from "next/router";
+import CodeBlock from "@/components/mdx/CodeBlock";
 
+// --- TYPE DEFINITIONS ---
 interface Heading {
   text: string;
   level: number;
@@ -44,6 +46,7 @@ interface PostPageProps {
   slug: string;
 }
 
+// --- READING PROGRESS BAR COMPONENT ---
 const ReadingProgressBar = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -69,8 +72,8 @@ const ReadingProgressBar = () => {
   );
 };
 
+// --- TABLE OF CONTENTS COMPONENT ---
 const TableOfContents = ({ headings }: { headings: Heading[] }) => {
-  const theme = useTheme();
   return (
     <List dense>
       {headings.map((heading) => (
@@ -87,6 +90,7 @@ const TableOfContents = ({ headings }: { headings: Heading[] }) => {
   );
 };
 
+// --- CUSTOM HEADING COMPONENTS TO ADD IDs ---
 const generateSlug = (node: React.ReactNode): string => {
   if (typeof node === "string") {
     return node
@@ -114,6 +118,7 @@ const H3 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
   return <h3 id={slug} {...props} />;
 };
 
+// --- MAIN PAGE COMPONENT ---
 const PostPage = ({
   frontmatter,
   mdxSource,
@@ -128,12 +133,14 @@ const PostPage = ({
   const components = {
     h2: H2,
     h3: H3,
+    pre: CodeBlock,
   };
 
   return (
     <>
       <ReadingProgressBar />
       <Box sx={{ maxWidth: "1200px", mx: "auto", p: { xs: 2, sm: 4 } }}>
+        {/* --- IMMERSIVE HEADER --- */}
         <Box
           sx={{
             position: "relative",
@@ -173,16 +180,24 @@ const PostPage = ({
             },
           }}>
           <Box sx={{ position: "relative", zIndex: 2 }}>
-            <Chip
-              label={frontmatter.category}
-              color="primary"
-              sx={{
-                mb: 1,
-                backgroundColor: "rgba(50, 205, 50, 0.2)",
-                color: "#76FF7A",
-                border: "1px solid #76FF7A",
-              }}
-            />
+            {/* UPDATED: Map over categories */}
+            <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+              {(Array.isArray(frontmatter.category)
+                ? frontmatter.category
+                : [frontmatter.category]
+              ).map((cat) => (
+                <Chip
+                  key={cat}
+                  label={cat}
+                  color="primary"
+                  sx={{
+                    backgroundColor: "rgba(50, 205, 50, 0.2)",
+                    color: "#76FF7A",
+                    border: "1px solid #76FF7A",
+                  }}
+                />
+              ))}
+            </Stack>
             <Typography
               variant="h3"
               component="h1"
@@ -230,7 +245,7 @@ const PostPage = ({
                     fontWeight: "bold",
                     mt: 4,
                     mb: 1,
-                    color: theme.palette.primary.dark,
+                    color: theme.palette.secondary.light,
                   },
                   "& p": { ...theme.typography.body1, lineHeight: 1.8, mb: 2 },
                   "& a": {
@@ -241,15 +256,6 @@ const PostPage = ({
                   },
                   "& ul, & ol": { pl: 3, mb: 2 },
                   "& li": { mb: 1, lineHeight: 1.8 },
-                  "& pre": {
-                    backgroundColor:
-                      theme.palette.mode === "dark" ? "#1A202C" : "#F7FAFC",
-                    border: `1px solid ${theme.palette.divider}`,
-                    borderRadius: "8px",
-                    p: 2,
-                    overflowX: "auto",
-                    my: 3,
-                  },
                   "& code": {
                     fontFamily: "monospace",
                     backgroundColor: "rgba(135, 131, 120, 0.15)",
@@ -258,13 +264,18 @@ const PostPage = ({
                     borderRadius: "4px",
                     color: theme.palette.text.primary,
                   },
-                  "& pre > code": { backgroundColor: "transparent", p: 0 },
+                  "& pre > code": {
+                    backgroundColor: "transparent",
+                    p: 0,
+                    color: "inherit",
+                  },
                 }}>
                 <MDXRemote {...mdxSource} components={components} />
               </Box>
             </Paper>
           </Grid>
 
+          {/* Sticky Sidebar */}
           <Grid
             item
             xs={12}
