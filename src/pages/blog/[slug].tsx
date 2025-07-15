@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import { getAllPostSlugs, getPostData, PostFrontmatter } from "../../lib/blog";
@@ -31,6 +31,7 @@ import { HERO_DATA } from "@/utils/heroData";
 import { useRouter } from "next/router";
 import CodeBlock from "@/components/mdx/CodeBlock";
 import ChartJSBlock from "@/components/mdx/ChartJSBlock";
+import AudioPlayer from "@/components/blog/AudioPlayer";
 
 // --- TYPE DEFINITIONS ---
 interface Heading {
@@ -118,7 +119,6 @@ const H3 = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
   return <h3 id={slug} {...props} />;
 };
 
-// --- MAIN PAGE COMPONENT ---
 const PostPage = ({
   frontmatter,
   mdxSource,
@@ -129,6 +129,14 @@ const PostPage = ({
   const router = useRouter();
   const { basePath } = router;
   const postUrl = `https://azhagu-swe.github.io/portfolio/blog/${slug}`;
+  const articleRef = useRef<HTMLElement>(null);
+  const [articleText, setArticleText] = useState("");
+
+  useEffect(() => {
+    if (articleRef.current) {
+      setArticleText(articleRef.current.innerText);
+    }
+  }, [mdxSource]);
 
   const components = {
     h2: H2,
@@ -227,7 +235,12 @@ const PostPage = ({
         <Grid container spacing={5}>
           <Grid item xs={12} md={8}>
             <Paper elevation={0} sx={{ backgroundColor: "transparent" }}>
+              <Box sx={{ mb: 3 }}>
+                {articleText && <AudioPlayer text={articleText} />}
+              </Box>
+              <Divider sx={{ mb: 3 }} />
               <Box
+                ref={articleRef}
                 component="article"
                 sx={{
                   color: theme.palette.text.primary,
