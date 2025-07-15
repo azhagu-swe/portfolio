@@ -30,6 +30,7 @@ import {
 import { HERO_DATA } from "@/utils/heroData";
 import { useRouter } from "next/router";
 import CodeBlock from "@/components/mdx/CodeBlock";
+import ChartJSBlock from "@/components/mdx/ChartJSBlock";
 
 // --- TYPE DEFINITIONS ---
 interface Heading {
@@ -132,14 +133,19 @@ const PostPage = ({
   const components = {
     h2: H2,
     h3: H3,
-    pre: CodeBlock,
+    pre: (props: any) => {
+      const isChartJS = props.children?.props?.className === "language-chartjs";
+      if (isChartJS) {
+        return <ChartJSBlock>{props.children.props.children}</ChartJSBlock>;
+      }
+      return <CodeBlock {...props} />;
+    },
   };
 
   return (
     <>
       <ReadingProgressBar />
       <Box sx={{ maxWidth: "1200px", mx: "auto", p: { xs: 2, sm: 4 } }}>
-        {/* --- IMMERSIVE HEADER --- */}
         <Box
           sx={{
             position: "relative",
@@ -179,7 +185,6 @@ const PostPage = ({
             },
           }}>
           <Box sx={{ position: "relative", zIndex: 2 }}>
-            {/* UPDATED: Map over categories */}
             <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
               {(Array.isArray(frontmatter.category)
                 ? frontmatter.category
@@ -219,9 +224,7 @@ const PostPage = ({
           </Box>
         </Box>
 
-        {/* --- TWO-COLUMN LAYOUT --- */}
         <Grid container spacing={5}>
-          {/* Main Content */}
           <Grid item xs={12} md={8}>
             <Paper elevation={0} sx={{ backgroundColor: "transparent" }}>
               <Box
@@ -274,7 +277,6 @@ const PostPage = ({
             </Paper>
           </Grid>
 
-          {/* Sticky Sidebar */}
           <Grid
             item
             xs={12}
@@ -359,7 +361,6 @@ const PostPage = ({
 
 export default PostPage;
 
-// --- DATA FETCHING FUNCTIONS ---
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = getAllPostSlugs();
   return { paths, fallback: false };
