@@ -50,6 +50,12 @@ export const CONTACT_DATA = {
       username: "@azhagu.swe",
       color: "#E4405F",
     },
-
+    {
+      platform: "YouTube",
+      icon: "mdi:youtube",
+      link: "https://www.youtube.com/channel/UCuA9qjEfLAk6hmiNPYvZEvQ", 
+      username: "@azhagu-dev", 
+      color: "#FF0000",
+    },
   ],
 };
