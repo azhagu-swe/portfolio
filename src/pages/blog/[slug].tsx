@@ -90,7 +90,6 @@ const TableOfContents = ({ headings }: { headings: Heading[] }) => {
   );
 };
 
-// --- CUSTOM HEADING COMPONENTS TO ADD IDs ---
 const generateSlug = (node: React.ReactNode): string => {
   if (typeof node === "string") {
     return node

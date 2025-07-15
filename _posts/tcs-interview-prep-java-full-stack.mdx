@@ -1,0 +1,851 @@
+---
+title: "TCS Java Full Stack Developer Interview Guide: 3+ Years Experience"
+date: "2025-07-14"
+excerpt: "A comprehensive guide with code examples to prepare for TCS Java Full Stack Developer interviews, covering Java, Spring Boot, databases, microservices, DSA, and more in simple Indian English."
+coverImage: "https://placehold.co/600x400/1E1E1E/32CD32?text=TCS+Interview+Guide"
+category: ["Technical Guides", "Interviews"]
+tags: ["Java", "Spring Boot", "React", "Microservices", "Interview", "Databases", "TCS"]
+readTime: "35 min"
+---
+
+Preparing for a TCS Java Full Stack Developer interview with 3+ years of experience can feel overwhelming, but don’t worry! This guide is written in simple Indian English to make it easy for everyone to understand. It covers all the key topics like Java, Spring Boot, microservices, databases, DSA, and a special section on connecting two databases in Spring Boot. Each topic includes detailed explanations, code examples, and practical tips tied to your experience (e.g., FarmConnect, Memob Plus) to help you remember everything. Let’s dive in and get you ready to ace your TCS interview!
+
+## Core Java
+
+Java is the foundation of full-stack development. TCS tests your basics and advanced concepts to check your depth.
+
+### 1. Difference Between HashSet and HashMap
+
+- **HashSet**: Stores unique objects, no duplicates. It’s like a bag where each item is unique, using a hash table for fast lookups (O(1) average).  
+- **HashMap**: Stores key-value pairs, where keys are unique. It’s like a dictionary mapping keys to values, also using a hash table.  
+- **Key Difference**: `HashSet` holds only values; `HashMap` holds key-value pairs. `HashSet` uses `add()`, `HashMap` uses `put()`.  
+- **Example**: In FarmConnect, use `HashSet` for unique product categories and `HashMap` to map user IDs to cart details.  
+- **Code Sample**:
+  ```java
+  import java.util.HashMap;
+  import java.util.HashSet;
+
+  public class HashSetVsHashMap {
+      public static void main(String[] args) {
+          // HashSet: Unique categories
+          HashSet<String> categories = new HashSet<>();
+          categories.add("Fruits");
+          categories.add("Fruits"); // Duplicate ignored
+          System.out.println("Categories: " + categories); // Output: [Fruits]
+
+          // HashMap: User ID to name
+          HashMap<Long, String> userMap = new HashMap<>();
+          userMap.put(1L, "Azhagu");
+          userMap.put(2L, "Mani");
+          System.out.println("User Map: " + userMap); // Output: {1=Azhagu, 2=Mani}
+      }
+  }
+  ```
+- **Practical Tip**: Explain how you used `HashMap` in Memob Plus for mapping user data to marketing platforms.
+
+### 2. Threads and Multithreading
+
+- **Thread**: A single execution path in a program. Java supports threads via the `Thread` class or `Runnable` interface.  
+- **Multithreading**: Running multiple threads to handle tasks like API calls or background jobs.  
+- **Key Concepts**: Use `synchronized` for thread safety, `ExecutorService` for thread pools.  
+- **Example**: In FarmConnect, one thread could process user orders, another updates inventory.  
+- **Code Sample**:
+  ```java
+  import java.util.concurrent.ExecutorService;
+  import java.util.concurrent.Executors;
+
+  public class MultiThreadExample {
+      public static void main(String[] args) {
+          ExecutorService executor = Executors.newFixedThreadPool(2);
+          executor.submit(() -> System.out.println("Processing order: " + Thread.currentThread().getName()));
+          executor.submit(() -> System.out.println("Updating inventory: " + Thread.currentThread().getName()));
+          executor.shutdown();
+      }
+  }
+  ```
+- **Practical Tip**: Relate this to your Memob Plus work, where you handled background tasks.
+
+### 3. If Two Requests (GET and POST) Come to a Controller, Which Processes First?
+
+- **Answer**: Spring Boot’s default server (Tomcat) processes requests based on arrival time, not type (GET or POST). The thread pool assigns threads from a queue. For same-user updates (e.g., POST to update cart), use `@Transactional` for data consistency.  
+- **Example**: In FarmConnect, if a user fetches (GET) and updates (POST) their cart, requests are processed in order of arrival.  
+- **Code Sample**:
+  ```java
+  import org.springframework.transaction.annotation.Transactional;
+  import org.springframework.web.bind.annotation.*;
+
+  @RestController
+  @RequestMapping("/cart")
+  public class CartController {
+      @GetMapping("/{userId}")
+      public String getCart(@PathVariable Long userId) {
+          return "Cart for user " + userId;
+      }
+
+      @PostMapping("/{userId}")
+      @Transactional
+      public String updateCart(@PathVariable Long userId, @RequestBody String item) {
+          return "Updated cart for user " + userId + " with " + item;
+      }
+  }
+  ```
+- **Practical Tip**: Explain how `@Transactional` ensures no partial updates in FarmConnect.
+
+### 4. Thread Logging
+
+- **What**: Logging in multithreaded apps to track thread actions. Use SLF4J with Logback and MDC for unique thread IDs.  
+- **Example**: Log user actions in Memob Plus to debug microservices.  
+- **Code Sample**:
+  ```java
+  import org.slf4j.Logger;
+  import org.slf4j.LoggerFactory;
+  import org.slf4j.MDC;
+
+  public class ThreadLoggingExample {
+      private static final Logger logger = LoggerFactory.getLogger(ThreadLoggingExample.class);
+
+      public void processRequest(String userId) {
+          MDC.put("userId", userId);
+          logger.info("Processing request for user");
+          MDC.clear();
+      }
+  }
+  ```
+- **Practical Tip**: Mention how MDC helped you trace issues in Memob Plus microservices.
+
+## Spring Boot
+
+Spring Boot is the heart of backend development. TCS asks about its features, configurations, and integrations.
+
+### 5. Spring Boot 2.0 vs. Spring Boot 3.0 Features
+
+- **Spring Boot 2.0** (2018):  
+  - Supports Java 8 and 11.  
+  - Reactive programming with WebFlux.  
+  - Auto-configuration for starters (e.g., `spring-boot-starter-web`).  
+  - Basic Actuator endpoints (e.g., `/health`).  
+- **Spring Boot 3.0** (2022):  
+  - Requires Java 17.  
+  - Native images with GraalVM for faster startup.  
+  - Micrometer Tracing for better observability.  
+  - Jakarta EE (e.g., `jakarta.*` packages) instead of Java EE.  
+  - AOT compilation for performance.  
+- **Example**: In Memob Plus, you used Spring Boot 2.0 for REST APIs; Spring Boot 3.0 could optimize startup time.  
+- **Code Sample**: Basic Spring Boot 3.0 app:
+  ```java
+  import org.springframework.boot.SpringApplication;
+  import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+  @SpringBootApplication
+  public class Application {
+      public static void main(String[] args) {
+          SpringApplication.run(Application.class, args);
+      }
+  }
+  ```
+- **Practical Tip**: Highlight your readiness for Java 17 if TCS uses Spring Boot 3.0.
+
+### 6. How @ControllerAdvice Works Internally
+
+- **What**: Global exception handling for all controllers.  
+- **How It Works**:  
+  - Spring scans `@ControllerAdvice` beans at startup.  
+  - `@ExceptionHandler` methods catch specific exceptions.  
+  - Returns custom responses (e.g., JSON).  
+- **Example**: Handle invalid inputs in FarmConnect APIs.  
+- **Code Sample**:
+  ```java
+  import org.springframework.http.HttpStatus;
+  import org.springframework.http.ResponseEntity;
+  import org.springframework.web.bind.annotation.ControllerAdvice;
+  import org.springframework.web.bind.annotation.ExceptionHandler;
+
+  @ControllerAdvice
+  public class GlobalExceptionHandler {
+      @ExceptionHandler(IllegalArgumentException.class)
+      public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+          return new ResponseEntity<>("Error: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+      }
+  }
+  ```
+- **Practical Tip**: Relate to FarmConnect’s error handling for user inputs.
+
+### 7. Spring Boot Auto-Configuration
+
+- **What**: Automatically configures your app based on classpath dependencies.  
+- **How It Works**:  
+  - `@EnableAutoConfiguration` checks for libraries (e.g., `spring-boot-starter-web`).  
+  - Configures beans like Tomcat or DataSource if not defined manually.  
+- **Example**: In Memob Plus, auto-configuration set up PostgreSQL.  
+- **Code Sample**:
+  ```java
+  import org.springframework.boot.autoconfigure.SpringBootApplication;
+  import org.springframework.boot.SpringApplication;
+
+  @SpringBootApplication
+  public class Application {
+      public static void main(String[] args) {
+          SpringApplication.run(Application.class, args); // Auto-configures based on dependencies
+      }
+  }
+  ```
+- **Practical Tip**: Mention how you excluded auto-configuration in projects if needed.
+
+### 8. @Controller vs. @RestController
+
+- **@Controller**: Handles web requests, returns views (e.g., HTML).  
+- **@RestController**: Returns data (e.g., JSON) for APIs.  
+- **Example**: Use `@RestController` for FarmConnect’s product APIs.  
+- **Code Sample**:
+  ```java
+  import org.springframework.web.bind.annotation.GetMapping;
+  import org.springframework.web.bind.annotation.RestController;
+
+  @RestController
+  public class ProductController {
+      @GetMapping("/products")
+      public String getProducts() {
+          return "{\"products\": []}";
+      }
+  }
+  ```
+- **Practical Tip**: Explain why you chose `@RestController` for Memob Plus APIs.
+
+### 9. @RequestMapping vs. @GetMapping
+
+- **@RequestMapping**: Maps any HTTP request (GET, POST, etc.).  
+- **@GetMapping**: Shortcut for GET requests.  
+- **Example**: Use `@GetMapping` for fetching products in FarmConnect.  
+- **Code Sample**:
+  ```java
+  import org.springframework.web.bind.annotation.GetMapping;
+  import org.springframework.web.bind.annotation.RequestMapping;
+  import org.springframework.web.bind.annotation.RestController;
+
+  @RestController
+  public class ProductController {
+      @GetMapping("/products")
+      public String getProducts() {
+          return "Product list";
+      }
+
+      @RequestMapping("/products/all")
+      public String getAllProducts() {
+          return "All products";
+      }
+  }
+  ```
+- **Practical Tip**: Highlight clean API design in your projects.
+
+### 10. RabbitMQ Implementation
+
+- **What**: Message broker for async communication in microservices.  
+- **Implementation**:  
+  - Add `spring-boot-starter-amqp`.  
+  - Configure in `application.properties`:
+    ```properties
+    spring.rabbitmq.host=localhost
+    spring.rabbitmq.port=5672
+    spring.rabbitmq.username=guest
+    spring.rabbitmq.password=guest
+    ```
+  - Use `@RabbitListener` and `AmqpTemplate`.  
+- **Example**: Used RabbitMQ in Memob Plus for marketing platform integration.  
+- **Code Sample**:
+  ```java
+  import org.springframework.amqp.rabbit.annotation.RabbitListener;
+  import org.springframework.amqp.rabbit.core.RabbitTemplate;
+  import org.springframework.beans.factory.annotation.Autowired;
+  import org.springframework.stereotype.Service;
+
+  @Service
+  public class RabbitMQService {
+      @Autowired
+      private RabbitTemplate rabbitTemplate;
+
+      public void sendMessage(String queue, String message) {
+          rabbitTemplate.convertAndSend(queue, message);
+      }
+
+      @RabbitListener(queues = "order-queue")
+      public void receiveMessage(String message) {
+          System.out.println("Received order: " + message);
+      }
+  }
+  ```
+- **Practical Tip**: Explain how RabbitMQ decoupled services in your projects.
+
+### 11. What If RabbitMQ Fails?
+
+- **Solutions**:  
+  - **Retry**: Use `@Retryable` for failed messages.  
+  - **Dead Letter Queue (DLQ)**: Store failed messages.  
+  - **Fallback**: Save to a database.  
+  - **Monitoring**: Use RabbitMQ’s management plugin.  
+- **Example**: If RabbitMQ fails in FarmConnect, store order messages in a database and retry.  
+- **Code Sample**:
+  ```java
+  import org.springframework.retry.annotation.Retryable;
+  import org.springframework.stereotype.Service;
+
+  @Service
+  public class RabbitMQRetryService {
+      @Retryable(maxAttempts = 3)
+      public void sendMessage(String queue, String message) {
+          // Simulate RabbitMQ send
+          throw new RuntimeException("RabbitMQ failed");
+      }
+  }
+  ```
+- **Practical Tip**: Mention DLQ setup in Memob Plus for reliability.
+
+### 12. Redis Caching Implementation
+
+- **What**: In-memory store for caching to speed up APIs.  
+- **Implementation**:  
+  - Add `spring-boot-starter-data-redis`.  
+  - Configure in `application.properties`:
+    ```properties
+    spring.redis.host=localhost
+    spring.redis.port=6379
+    ```
+  - Use `@Cacheable`.  
+- **Example**: Reduced latency in Memob Plus using Redis caching.  
+- **Code Sample**:
+  ```java
+  import org.springframework.cache.annotation.Cacheable;
+  import org.springframework.stereotype.Service;
+
+  @Service
+  public class UserService {
+      @Cacheable("users")
+      public String getUserById(Long id) {
+          // Simulate DB call
+          return "User" + id;
+      }
+  }
+  ```
+- **Practical Tip**: Explain caching benefits in your projects.
+
+### 13. Scheduler in Spring Boot
+
+- **What**: Runs tasks periodically (e.g., cleanup).  
+- **Implementation**:  
+  - Enable `@EnableScheduling`.  
+  - Use `@Scheduled`.  
+- **Example**: Scheduled inventory updates in FarmConnect.  
+- **Code Sample**:
+  ```java
+  import org.springframework.scheduling.annotation.EnableScheduling;
+  import org.springframework.scheduling.annotation.Scheduled;
+  import org.springframework.stereotype.Component;
+
+  @Component
+  @EnableScheduling
+  public class CleanupScheduler {
+      @Scheduled(cron = "0 0 * * * *")
+      public void cleanExpiredTokens() {
+          System.out.println("Cleaning tokens...");
+      }
+  }
+  ```
+- **Practical Tip**: Mention cron expressions for flexibility.
+
+### 14. Async Functions in Spring Boot
+
+- **What**: Run tasks in the background.  
+- **Implementation**:  
+  - Enable `@EnableAsync`.  
+  - Use `@Async`.  
+- **Example**: Async emails in FarmConnect.  
+- **Code Sample**:
+  ```java
+  import org.springframework.scheduling.annotation.Async;
+  import org.springframework.scheduling.annotation.EnableAsync;
+  import org.springframework.stereotype.Service;
+
+  @Service
+  @EnableAsync
+  public class EmailService {
+      @Async
+      public void sendEmail(String user) {
+          System.out.println("Sending email to " + user);
+      }
+  }
+  ```
+- **Practical Tip**: Explain performance improvements.
+
+### 15. Exception Handling
+
+- **What**: Handle errors for user-friendly responses.  
+- **Implementation**: Use `@ControllerAdvice` or `try-catch`.  
+- **Example**: Error handling in FarmConnect APIs.  
+- **Code Sample**:
+  ```java
+  import org.springframework.http.HttpStatus;
+  import org.springframework.http.ResponseEntity;
+  import org.springframework.web.bind.annotation.ControllerAdvice;
+  import org.springframework.web.bind.annotation.ExceptionHandler;
+
+  @ControllerAdvice
+  public class GlobalExceptionHandler {
+      @ExceptionHandler(IllegalArgumentException.class)
+      public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
+          return new ResponseEntity<>("Error: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
+      }
+  }
+  ```
+- **Practical Tip**: Highlight consistent error responses.
+
+### 16. SonarQube in Spring Boot
+
+- **What**: Checks code quality (bugs, smells).  
+- **Implementation**:  
+  - Add `sonar-maven-plugin`.  
+  - Configure `sonar.properties`.  
+  - Run `mvn sonar:sonar`.  
+- **Example**: Used in Memob Plus for clean code.  
+- **Code Sample** (Maven):
+  ```xml
+  <plugin>
+      <groupId>org.sonarsource.scanner.maven</groupId>
+      <artifactId>sonar-maven-plugin</artifactId>
+      <version>3.9.1.2184</version>
+  </plugin>
+  ```
+- **Practical Tip**: Mention code quality improvements.
+
+## Databases & Microservices
+
+Connecting services and managing data is a key full-stack skill.
+
+### 17. Connecting Two Databases in Spring Boot
+
+- **What**: Connect two databases (e.g., PostgreSQL for users, MySQL for products) in one app.  
+- **Approach**:  
+  1. Define two `DataSource` beans in a configuration class.  
+  2. Create two `EntityManagerFactory` beans, each linked to one `DataSource`.  
+  3. Create two `TransactionManager` beans.  
+  4. Use `@Primary` to mark the default beans.  
+  5. In your repository interfaces, specify which entity manager and transaction manager to use.  
+- **Example**: In FarmConnect, store user profiles in PostgreSQL and product inventory in MySQL.  
+- **Code Sample**:
+  ```java
+  package com.example.demo.config;
+
+  import org.springframework.beans.factory.annotation.Qualifier;
+  import org.springframework.boot.jdbc.DataSourceBuilder;
+  import org.springframework.context.annotation.Bean;
+  import org.springframework.context.annotation.Configuration;
+  import org.springframework.context.annotation.Primary;
+  import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+  import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+  import org.springframework.orm.jpa.JpaTransactionManager;
+  import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+
+  import javax.sql.DataSource;
+
+  @Configuration
+  public class DatabaseConfig {
+
+      @Bean(name = "primaryDataSource")
+      @Primary
+      public DataSource primaryDataSource() {
+          return DataSourceBuilder.create()
+                  .url("jdbc:postgresql://localhost:5432/userdb")
+                  .username("postgres")
+                  .password("password")
+                  .driverClassName("org.postgresql.Driver")
+                  .build();
+      }
+
+      @Bean(name = "secondaryDataSource")
+      public DataSource secondaryDataSource() {
+          return DataSourceBuilder.create()
+                  .url("jdbc:mysql://localhost:3306/productdb")
+                  .username("root")
+                  .password("password")
+                  .driverClassName("com.mysql.cj.jdbc.Driver")
+                  .build();
+      }
+
+      @Bean(name = "primaryEntityManagerFactory")
+      @Primary
+      public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(
+              @Qualifier("primaryDataSource") DataSource dataSource) {
+          LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+          em.setDataSource(dataSource);
+          em.setPackagesToScan("com.example.demo.user.entity");
+          em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+          return em;
+      }
+
+      @Bean(name = "secondaryEntityManagerFactory")
+      public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
+              @Qualifier("secondaryDataSource") DataSource dataSource) {
+          LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+          em.setDataSource(dataSource);
+          em.setPackagesToScan("com.example.demo.product.entity");
+          em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+          return em;
+      }
+
+      @Bean(name = "primaryTransactionManager")
+      @Primary
+      public JpaTransactionManager primaryTransactionManager(
+              @Qualifier("primaryEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+          return new JpaTransactionManager(emf.getObject());
+      }
+
+      @Bean(name = "secondaryTransactionManager")
+      public JpaTransactionManager secondaryTransactionManager(
+              @Qualifier("secondaryEntityManagerFactory") LocalContainerEntityManagerFactoryBean emf) {
+          return new JpaTransactionManager(emf.getObject());
+      }
+  }
+  ```
+  ```java
+  package com.example.demo.user.entity;
+
+  import javax.persistence.Entity;
+  import javax.persistence.Id;
+
+  @Entity
+  public class User {
+      @Id
+      private Long id;
+      private String name;
+      public Long getId() { return id; }
+      public void setId(Long id) { this.id = id; }
+      public String getName() { return name; }
+      public void setName(String name) { this.name = name; }
+  }
+  ```
+  ```java
+  package com.example.demo.product.entity;
+
+  import javax.persistence.Entity;
+  import javax.persistence.Id;
+
+  @Entity
+  public class Product {
+      @Id
+      private Long id;
+      private String name;
+      public Long getId() { return id; }
+      public void setId(Long id) { this.id = id; }
+      public String getName() { return name; }
+      public void setName(String name) { this.name = name; }
+  }
+  ```
+  ```java
+  package com.example.demo.user.repository;
+
+  import com.example.demo.user.entity.User;
+  import org.springframework.data.jpa.repository.JpaRepository;
+
+  @EnableJpaRepositories(
+          basePackages = "com.example.demo.user.repository",
+          entityManagerFactoryRef = "primaryEntityManagerFactory",
+          transactionManagerRef = "primaryTransactionManager")
+  public interface UserRepository extends JpaRepository<User, Long> {
+  }
+  ```
+  ```java
+  package com.example.demo.product.repository;
+
+  import com.example.demo.product.entity.Product;
+  import org.springframework.data.jpa.repository.JpaRepository;
+
+  @EnableJpaRepositories(
+          basePackages = "com.example.demo.product.repository",
+          entityManagerFactoryRef = "secondaryEntityManagerFactory",
+          transactionManagerRef = "secondaryTransactionManager")
+  public interface ProductRepository extends JpaRepository<Product, Long> {
+  }
+  ```
+  ```java
+  package com.example.demo.service;
+
+  import com.example.demo.user.entity.User;
+  import com.example.demo.user.repository.UserRepository;
+  import com.example.demo.product.entity.Product;
+  import com.example.demo.product.repository.ProductRepository;
+  import org.springframework.beans.factory.annotation.Autowired;
+  import org.springframework.stereotype.Service;
+  import org.springframework.transaction.annotation.Transactional;
+
+  @Service
+  public class AppService {
+      @Autowired
+      private UserRepository userRepository;
+      @Autowired
+      private ProductRepository productRepository;
+
+      @Transactional(transactionManager = "primaryTransactionManager")
+      public void saveUser(User user) {
+          userRepository.save(user);
+      }
+
+      @Transactional(transactionManager = "secondaryTransactionManager")
+      public void saveProduct(Product product) {
+          productRepository.save(product);
+      }
+  }
+  ```
+- **Practical Tip**: Explain the importance of separating configurations to avoid conflicts in FarmConnect.
+
+### 18. Microservices vs. Monolithic Architecture
+
+- **Monolithic**: A single, large application where all components are tightly coupled. Simple to develop but hard to scale.  
+- **Microservices**: Small, independent services that can be developed, deployed, and scaled separately.  
+- **Example**: FarmConnect uses a microservices-friendly approach with separate concerns; a simple app might be a monolith.  
+- **Code Sample**: A microservice in Spring Boot:
+  ```java
+  import org.springframework.boot.SpringApplication;
+  import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+  @SpringBootApplication
+  public class OrderService {
+      public static void main(String[] args) {
+          SpringApplication.run(OrderService.class, args);
+      }
+  }
+  ```
+- **Practical Tip**: Discuss how you designed microservices in Memob Plus for scalability.
+
+### 19. PostgreSQL Indexing
+
+- **What**: Indexes speed up queries by creating data structures (e.g., B-tree).  
+- **Types**: B-tree (default), GIN (JSONB), GiST (geospatial).  
+- **Example**: Optimized queries in Memob Plus with indexes.  
+- **Code Sample**:
+  ```sql
+  CREATE INDEX idx_user_id ON users(user_id);
+  ```
+- **Practical Tip**: Mention how indexes reduced query time in your projects.
+
+### 20. NoSQL Databases
+
+- **What**: Non-relational databases like MongoDB for flexible data.  
+- **When to Use**: Unstructured data, high scalability, evolving schemas.  
+- **Example**: Store product reviews in MongoDB for FarmConnect.  
+- **Code Sample**:
+  ```java
+  import org.springframework.data.mongodb.repository.MongoRepository;
+
+  public interface ProductRepository extends MongoRepository<Product, String> {
+  }
+  ```
+- **Practical Tip**: Compare SQL vs. NoSQL use cases.
+
+## React & Frontend
+
+A great backend needs a great frontend.
+
+### 21. What is the Virtual DOM?
+
+- **Answer**: The Virtual DOM is a lightweight in-memory representation of the real DOM. React updates it, compares changes (diffing), and efficiently updates the real DOM to improve performance.  
+- **Example**: In FarmConnect’s product list, React uses the Virtual DOM to update filters smoothly.  
+- **Code Sample**:
+  ```javascript
+  import React from 'react';
+
+  function ProductList() {
+      const [products, setProducts] = React.useState([]);
+      React.useEffect(() => {
+          setProducts(['Apple', 'Banana']); // Updates Virtual DOM
+      }, []);
+      return <div>{products.map(p => <p>{p}</p>)}</div>;
+  }
+  ```
+- **Practical Tip**: Explain how Virtual DOM improved UI performance in FarmConnect.
+
+### 22. Props vs. State
+
+- **Props**: Read-only data passed from parent to child components.  
+- **State**: Mutable data managed within a component, triggering re-renders on change.  
+- **Example**: In FarmConnect, the product list is a prop; the filter selection is state.  
+- **Code Sample**:
+  ```javascript
+  import React, { useState } from 'react';
+
+  function ProductList({ products }) { // Props
+      const [filter, setFilter] = useState(''); // State
+      return (
+          <div>
+              <input value={filter} onChange={e => setFilter(e.target.value)} />
+              {products.filter(p => p.includes(filter)).map(p => <p>{p}</p>)}
+          </div>
+      );
+  }
+  ```
+- **Practical Tip**: Relate to Memob Plus’s UI components.
+
+## Data Structures & Algorithms (DSA)
+
+TCS tests your problem-solving fundamentals.
+
+### 23. Reverse a String Without Using Inbuilt Functions
+
+- **Approach**: Use a two-pointer technique. Convert the string to a char array, swap characters from start and end, and move pointers inward.  
+- **Code Sample**:
+  ```java
+  public class StringReverse {
+      public String reverseString(String str) {
+          char[] charArray = str.toCharArray();
+          int left = 0;
+          int right = charArray.length - 1;
+          while (left < right) {
+              char temp = charArray[left];
+              charArray[left] = charArray[right];
+              charArray[right] = temp;
+              left++;
+              right--;
+          }
+          return new String(charArray);
+      }
+  }
+  ```
+- **Practical Tip**: Explain time complexity (O(n)) and space complexity (O(n)).
+
+### 24. Second Highest Value in Array Using Stream
+
+- **Problem**: Find the second-largest number.  
+- **Code Sample**:
+  ```java
+  import java.util.Arrays;
+
+  public class SecondHighest {
+      public int findSecondHighest(int[] arr) {
+          return Arrays.stream(arr)
+                       .distinct()
+                       .sorted()
+                       .skip(Math.max(0, arr.length - 2))
+                       .findFirst()
+                       .orElseThrow(() -> new IllegalArgumentException("Array too small"));
+      }
+  }
+  ```
+- **Practical Tip**: Explain O(n log n) complexity due to sorting.
+
+### 25. Maximum Subarray Problem
+
+- **Problem**: Find the subarray with the largest sum.  
+- **Code Sample**:
+  ```java
+  public class MaxSubArray {
+      public int maxSubArray(int[] nums) {
+          int maxSum = nums[0];
+          int currentSum = nums[0];
+          for (int i = 1; i < nums.length; i++) {
+              currentSum = Math.max(nums[i], currentSum + nums[i]);
+              maxSum = Math.max(maxSum, currentSum);
+          }
+          return maxSum;
+      }
+  }
+  ```
+- **Practical Tip**: Highlight Kadane’s efficiency (O(n)).
+
+### 26. Circuit Breaker
+
+- **What**: Stops calls to failing services (Closed, Open, Half-Open states).  
+- **Example**: Used Resilience4j in Memob Plus for fault tolerance.  
+- **Code Sample**:
+  ```java
+  import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+  import org.springframework.stereotype.Service;
+
+  @Service
+  public class ExternalService {
+      @CircuitBreaker(name = "api", fallbackMethod = "fallback")
+      public String callApi() {
+          return "Success";
+      }
+
+      public String fallback(Throwable t) {
+          return "Fallback: " + t.getMessage();
+      }
+  }
+  ```
+- **Practical Tip**: Relate to Memob Plus microservices.
+
+### 27. RESTful API Design
+
+- **Principles**: Use nouns (e.g., `/users`), HTTP methods, status codes, versioning.  
+- **Example**: Designed `/products` API in FarmConnect.  
+- **Code Sample**:
+  ```java
+  import org.springframework.web.bind.annotation.*;
+
+  @RestController
+  @RequestMapping("/v1/products")
+  public class ProductController {
+      @GetMapping
+      public String getProducts() {
+          return "Product list";
+      }
+
+      @PostMapping
+      public String createProduct(@RequestBody String product) {
+          return "Created: " + product;
+      }
+  }
+  ```
+- **Practical Tip**: Explain REST design in Memob Plus.
+
+### 28. JWT Token
+
+- **What**: JSON Web Token for secure authentication (Header, Payload, Signature).  
+- **Example**: Secured FarmConnect APIs with JWT.  
+- **Code Sample**:
+  ```java
+  import io.jsonwebtoken.Jwts;
+  import io.jsonwebtoken.SignatureAlgorithm;
+
+  public class JwtUtil {
+      private String secret = "mySecretKey";
+
+      public String generateToken(String username) {
+          return Jwts.builder()
+                  .setSubject(username)
+                  .signWith(SignatureAlgorithm.HS512, secret)
+                  .compact();
+      }
+  }
+  ```
+- **Practical Tip**: Explain token validation.
+
+### 29. Unit Test vs. Mockito
+
+- **Unit Test**: Tests single components (JUnit).  
+- **Mockito**: Mocks dependencies.  
+- **Example**: Tested APIs in FarmConnect.  
+- **Code Sample**:
+  ```java
+  import org.junit.jupiter.api.Test;
+  import org.mockito.Mockito;
+  import static org.junit.jupiter.api.Assertions.assertEquals;
+
+  public class UserServiceTest {
+      @Test
+      public void testGetUser() {
+          UserRepository mockRepo = Mockito.mock(UserRepository.class);
+          Mockito.when(mockRepo.findById(1L)).thenReturn(new User(1L, "Test"));
+          UserService service = new UserService(mockRepo);
+          assertEquals("Test", service.getUserById(1L).getName());
+      }
+  }
+  ```
+- **Practical Tip**: Mention testing in FarmConnect.
+
+## Tips for TCS Interview Success
+
+- **Practice Daily**: Solve 2-3 LeetCode problems (easy to medium) on arrays, strings, and trees.  
+- **Explain Clearly**: Use simple Indian English to describe complex ideas, like you’re teaching a friend.  
+- **Mock Interviews**: Practice with platforms like Pramp or friends to simulate TCS’s technical rounds.  
+- **Ask Smart Questions**: Show interest by asking about TCS’s tech stack, team size, or project challenges.  
+- **Revise Regularly**: Review this guide weekly to keep concepts fresh.  
+
+This guide is designed to be detailed yet simple to help you prepare for your TCS Java Full Stack Developer interview. Practice the code samples, relate answers to your experience, and stay confident. Best of luck, and go ace that interview!
