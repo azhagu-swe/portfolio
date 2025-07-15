@@ -1,96 +1,48 @@
 import React, { useEffect, useRef, useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
+import Head from "next/head";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { getAllPostSlugs, getPostData, PostFrontmatter } from "../../lib/blog";
+import {
+  getAllPostSlugs,
+  getPostData,
+  getSortedPostsData,
+  PostFrontmatter,
+} from "../../lib/blog";
 import {
   Box,
   Typography,
   Paper,
-  Chip,
-  Stack,
   Divider,
   useTheme,
   Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Avatar,
-  IconButton,
   Button,
 } from "@mui/material";
 import Link from "next/link";
-import { motion, useScroll, useSpring } from "framer-motion";
-import {
-  Twitter,
-  LinkedIn,
-  Link as LinkIcon,
-  ArrowBack,
-} from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import { HERO_DATA } from "@/utils/heroData";
-import { useRouter } from "next/router";
+import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
+import PostHeader from "@/components/blog/PostHeader";
+import PostSidebar from "@/components/blog/PostSidebar";
+import RelatedPosts from "@/components/blog/RelatedPosts";
+import AudioPlayer from "@/components/blog/AudioPlayer";
 import CodeBlock from "@/components/mdx/CodeBlock";
 import ChartJSBlock from "@/components/mdx/ChartJSBlock";
-import AudioPlayer from "@/components/blog/AudioPlayer";
 
-// --- TYPE DEFINITIONS ---
 interface Heading {
   text: string;
   level: number;
   slug: string;
   number: string;
 }
+type PostWithSlug = PostFrontmatter & { slug: string };
 
 interface PostPageProps {
   frontmatter: PostFrontmatter;
   mdxSource: MDXRemoteSerializeResult;
   headings: Heading[];
   slug: string;
+  relatedPosts: PostWithSlug[];
 }
-
-// --- READING PROGRESS BAR COMPONENT ---
-const ReadingProgressBar = () => {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  return (
-    <motion.div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: "4px",
-        background: "linear-gradient(90deg, #FFC107, #32CD32)",
-        transformOrigin: "0%",
-        scaleX,
-        zIndex: 1000,
-      }}
-    />
-  );
-};
-
-// --- TABLE OF CONTENTS COMPONENT ---
-const TableOfContents = ({ headings }: { headings: Heading[] }) => {
-  return (
-    <List dense>
-      {headings.map((heading) => (
-        <ListItem key={heading.slug} disablePadding>
-          <ListItemButton
-            component="a"
-            href={`#${heading.slug}`}
-            sx={{ pl: heading.level === 3 ? 4 : 2 }}>
-            <ListItemText primary={`${heading.number} ${heading.text}`} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  );
-};
 
 const generateSlug = (node: React.ReactNode): string => {
   if (typeof node === "string") {
@@ -102,9 +54,7 @@ const generateSlug = (node: React.ReactNode): string => {
   }
   if (Array.isArray(node)) {
     const firstString = node.find((child) => typeof child === "string");
-    if (firstString) {
-      return generateSlug(firstString);
-    }
+    if (firstString) return generateSlug(firstString);
   }
   return "";
 };
@@ -124,11 +74,11 @@ const PostPage = ({
   mdxSource,
   headings,
   slug,
+  relatedPosts,
 }: PostPageProps) => {
   const theme = useTheme();
-  const router = useRouter();
-  const { basePath } = router;
   const postUrl = `https://azhagu-swe.github.io/portfolio/blog/${slug}`;
+
   const articleRef = useRef<HTMLElement>(null);
   const [articleText, setArticleText] = useState("");
 
@@ -137,6 +87,8 @@ const PostPage = ({
       setArticleText(articleRef.current.innerText);
     }
   }, [mdxSource]);
+
+  const handleAudioBoundary = (charIndex: number) => {};
 
   const components = {
     h2: H2,
@@ -150,95 +102,62 @@ const PostPage = ({
     },
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: frontmatter.title,
+    description: frontmatter.excerpt,
+    image: `https://azhagu-swe.github.io${frontmatter.coverImage}`,
+    author: {
+      "@type": "Person",
+      name: "Alagappan P",
+      url: "https://azhagu-swe.github.io/portfolio/",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Alagappan P's Blog",
+      logo: {
+        "@type": "ImageObject",
+        url: `https://azhagu-swe.github.io${HERO_DATA.images.profile}`,
+      },
+    },
+    datePublished: frontmatter.date,
+    mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+  };
+
   return (
     <>
+      <Head>
+        <title>{frontmatter.title}</title>
+        <meta name="description" content={frontmatter.excerpt} />
+        <meta property="og:title" content={frontmatter.title} />
+        <meta property="og:description" content={frontmatter.excerpt} />
+        <meta
+          property="og:image"
+          content={`https://azhagu-swe.github.io${frontmatter.coverImage}`}
+        />
+        <meta property="og:url" content={postUrl} />
+        <meta property="og:type" content="article" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </Head>
+
       <ReadingProgressBar />
+
       <Box sx={{ maxWidth: "1200px", mx: "auto", p: { xs: 2, sm: 4 } }}>
-        <Box
-          sx={{
-            position: "relative",
-            height: "45vh",
-            width: "100%",
-            borderRadius: "16px",
-            overflow: "hidden",
-            color: "white",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            p: 4,
-            mb: 4,
-            "&::before": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundImage: `url(${frontmatter.coverImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "brightness(0.4)",
-              zIndex: 1,
-            },
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              background:
-                "linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%)",
-              zIndex: 1,
-            },
-          }}>
-          <Box sx={{ position: "relative", zIndex: 2 }}>
-            <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-              {(Array.isArray(frontmatter.category)
-                ? frontmatter.category
-                : [frontmatter.category]
-              ).map((cat) => (
-                <Chip
-                  key={cat}
-                  label={cat}
-                  color="primary"
-                  sx={{
-                    backgroundColor: "rgba(50, 205, 50, 0.2)",
-                    color: "#76FF7A",
-                    border: "1px solid #76FF7A",
-                  }}
-                />
-              ))}
-            </Stack>
-            <Typography
-              variant="h3"
-              component="h1"
-              sx={{
-                fontWeight: "bold",
-                textShadow: "2px 2px 6px rgba(0,0,0,0.8)",
-              }}>
-              {frontmatter.title}
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ mt: 1, color: "rgba(255, 255, 255, 0.8)" }}>
-              {new Date(frontmatter.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}{" "}
-              • {frontmatter.readTime}
-            </Typography>
-          </Box>
-        </Box>
+        <PostHeader frontmatter={frontmatter} />
 
         <Grid container spacing={5}>
           <Grid item xs={12} md={8}>
             <Paper elevation={0} sx={{ backgroundColor: "transparent" }}>
-              <Box sx={{ mb: 3 }}>
-                {articleText && <AudioPlayer text={articleText} />}
-              </Box>
-              <Divider sx={{ mb: 3 }} />
+              <AudioPlayer
+                text={articleText}
+                onBoundary={handleAudioBoundary}
+              />
+              <Divider sx={{ my: 3 }} />
               <Box
                 ref={articleRef}
                 component="article"
@@ -295,68 +214,15 @@ const PostPage = ({
             xs={12}
             md={4}
             sx={{ display: { xs: "none", md: "block" } }}>
-            <Box sx={{ position: "sticky", top: "80px" }}>
-              <Paper
-                elevation={2}
-                sx={{
-                  p: 2,
-                  borderRadius: "12px",
-                  border: `1px solid ${theme.palette.divider}`,
-                }}>
-                <Typography variant="h6" gutterBottom>
-                  About the Author
-                </Typography>
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Avatar
-                    alt="Azhagu-swe"
-                    src={`${basePath}${HERO_DATA.images.profile}`}
-                    sx={{ width: 56, height: 56 }}
-                  />
-                  <Box>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      Alagappan P
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Full Stack Developer
-                    </Typography>
-                  </Box>
-                </Stack>
-                <Divider sx={{ my: 2 }} />
-
-                <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-                  On this page
-                </Typography>
-                <TableOfContents headings={headings} />
-                <Divider sx={{ my: 2 }} />
-
-                <Typography variant="h6" gutterBottom>
-                  Share this post
-                </Typography>
-                <Stack direction="row" spacing={1}>
-                  <IconButton
-                    size="small"
-                    component="a"
-                    href={`https://twitter.com/intent/tweet?url=${postUrl}&text=${frontmatter.title}`}
-                    target="_blank">
-                    <Twitter />
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    component="a"
-                    href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${frontmatter.title}`}
-                    target="_blank">
-                    <LinkedIn />
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => navigator.clipboard.writeText(postUrl)}>
-                    <LinkIcon />
-                  </IconButton>
-                </Stack>
-              </Paper>
-            </Box>
+            <PostSidebar
+              headings={headings}
+              postUrl={postUrl}
+              title={frontmatter.title}
+            />
           </Grid>
         </Grid>
+
+        <RelatedPosts posts={relatedPosts} />
 
         <Box sx={{ textAlign: "center", mt: 6 }}>
           <Button
@@ -384,5 +250,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { notFound: true };
   }
   const postData = await getPostData(params.slug as string);
-  return { props: { ...postData } };
+  const allPosts = getSortedPostsData();
+  const relatedPosts = allPosts
+    .filter(
+      (p) =>
+        p.slug !== params.slug &&
+        (p.category as unknown as string[]).some((cat) =>
+          (postData.frontmatter.category as unknown as string[]).includes(cat)
+        )
+    )
+    .slice(0, 3);
+
+  return {
+    props: {
+      ...postData,
+      relatedPosts,
+    },
+  };
 };
