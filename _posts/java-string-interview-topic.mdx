@@ -1,0 +1,179 @@
+---
+title: "Java Strings for Interviews (2025) - Beginner-Friendly"
+date: "2025-07-16"
+excerpt: "Master Java Strings, StringBuilder, StringBuffer, and the intern pool to excel in interviews!"
+coverImage: "https://placehold.co/600x400/1E1E1E/00CED1?text=Java+Strings"
+category: ["Programming Guides", "Java", "Interviews"]
+tags:
+  [
+    "Java",
+    "Strings",
+    "Interview",
+    "StringBuilder",
+    "StringBuffer",
+    "Intern Pool",
+  ]
+readTime: "8 min"
+---
+
+# 🧠 Java Strings for Interviews (2025) - Beginner-Friendly
+
+_Your guide to mastering Java Strings, StringBuilder, StringBuffer, and the intern pool for interviews!_
+
+## Introduction
+
+Strings are a fundamental part of Java programming, and understanding how to work with `String`, `StringBuilder`, `StringBuffer`, and the string intern pool is essential for interviews. This beginner-friendly guide explains these concepts with clear examples and answers common interview questions to help you prepare confidently.
+
+## Key Concepts
+
+### 1. String
+
+The `String` class in Java represents an immutable sequence of characters. Once created, a `String` object cannot be modified. Strings are stored in the **String Intern Pool**, a special area in the heap for reusing string literals to save memory.
+
+**Example**:
+
+```java
+String s1 = "Hello"; // Stored in intern pool
+String s2 = new String("Hello"); // New object in heap
+```
+
+**Why it matters**: Immutability ensures thread safety but can be inefficient for frequent modifications.
+
+### 2. String Intern Pool
+
+The string intern pool is a part of the heap where string literals are stored. Using `String.intern()` moves a string to the pool, enabling memory-efficient reuse.
+
+**Example**:
+
+```java
+String s1 = "Java";
+String s2 = new String("Java").intern();
+System.out.println(s1 == s2); // true (same intern pool reference)
+```
+
+### 3. StringBuilder
+
+`StringBuilder` is a mutable sequence of characters, ideal for single-threaded applications where strings need frequent modifications. It’s faster than `String` for concatenation.
+
+**Example**:
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World");
+System.out.println(sb); // Hello World
+```
+
+**Why it matters**: `StringBuilder` is efficient for dynamic string manipulation in non-threaded environments.
+
+### 4. StringBuffer
+
+`StringBuffer` is similar to `StringBuilder` but synchronized, making it thread-safe but slower. It’s used in multithreaded applications.
+
+**Example**:
+
+```java
+StringBuffer sbf = new StringBuffer("Hello");
+sbf.append(" World");
+System.out.println(sbf); // Hello World
+```
+
+**Why it matters**: `StringBuffer` ensures thread safety for string modifications in concurrent scenarios.
+
+## Common Interview Questions
+
+**Q1: Why is `String` immutable in Java?**
+`String` is immutable to ensure thread safety, security (e.g., protecting sensitive data like passwords), and memory efficiency via the intern pool. Immutability also allows strings to be cached and reused.
+
+**Q2: What is the difference between `String`, `StringBuilder`, and `StringBuffer`?**
+
+- **String**: Immutable, thread-safe, stored in the intern pool, inefficient for modifications.
+- **StringBuilder**: Mutable, not thread-safe, faster for single-threaded applications.
+- **StringBuffer**: Mutable, thread-safe (synchronized), slower due to locking.
+
+**Q3: What is the String intern pool?**
+The string intern pool is a heap area where string literals are stored to reuse identical strings, saving memory. `String.intern()` adds a string to the pool.
+
+**Q4: How does `String.intern()` work?**
+`String.intern()` returns a reference to the string in the intern pool. If the string exists, it returns the pooled instance; otherwise, it adds the string to the pool.
+
+**Example**:
+
+```java
+String s1 = new String("Test").intern();
+String s2 = "Test";
+System.out.println(s1 == s2); // true
+```
+
+**Q5: Why use `StringBuilder` over `String` for concatenation?**
+`String` concatenation creates new objects for each operation, leading to memory and performance overhead. `StringBuilder` modifies the same object, making it more efficient.
+
+**Example**:
+
+```java
+// Inefficient with String
+String str = "";
+for (int i = 0; i < 5; i++) {
+    str += i; // Creates new String each time
+}
+// Efficient with StringBuilder
+StringBuilder sb = new StringBuilder();
+for (int i = 0; i < 5; i++) {
+    sb.append(i); // Modifies same object
+}
+```
+
+**Q6: When would you use `StringBuffer` instead of `StringBuilder`?**
+Use `StringBuffer` in multithreaded applications where thread safety is required. Use `StringBuilder` for single-threaded applications for better performance.
+
+**Q7: Can you create a custom immutable class like `String`?**
+Yes, make the class `final`, use private final fields, provide no setters, and ensure methods return new instances instead of modifying state.
+
+**Example**:
+
+```java
+final class ImmutableExample {
+    private final int value;
+    public ImmutableExample(int value) { this.value = value; }
+    public int getValue() { return value; }
+}
+```
+
+## Code Example
+
+Here’s a program demonstrating `String`, `StringBuilder`, `StringBuffer`, and the intern pool:
+
+```java
+public class StringsDemo {
+    public static void main(String[] args) {
+        // String immutability
+        String s1 = "Java";
+        String s2 = "Java";
+        String s3 = new String("Java").intern();
+        System.out.println("s1 == s2: " + (s1 == s2)); // true (intern pool)
+        System.out.println("s1 == s3: " + (s1 == s3)); // true (interned)
+
+        // StringBuilder
+        StringBuilder sb = new StringBuilder("Hello");
+        sb.append(" World");
+        System.out.println("StringBuilder: " + sb); // Hello World
+
+        // StringBuffer
+        StringBuffer sbf = new StringBuffer("Java");
+        sbf.append(" 8");
+        System.out.println("StringBuffer: " + sbf); // Java 8
+    }
+}
+```
+
+**Output**:
+
+```
+s1 == s2: true
+s1 == s3: true
+StringBuilder: Hello World
+StringBuffer: Java 8
+```
+
+## Conclusion
+
+Mastering Java’s `String`, `StringBuilder`, `StringBuffer`, and the intern pool is crucial for interviews. Practice manipulating strings with these classes, focusing on their performance and thread-safety differences. Experiment with the code above and review the interview questions to build confidence. Stay tuned for more Java interview prep guides!

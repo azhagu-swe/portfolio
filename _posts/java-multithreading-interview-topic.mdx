@@ -1,0 +1,256 @@
+---
+title: "Java Multithreading for Interviews (2025) - Beginner-Friendly"
+date: "2025-07-16"
+excerpt: "Master Java multithreading concepts like Thread, Runnable, ExecutorService, synchronization, and deadlock to excel in interviews!"
+coverImage: "https://placehold.co/600x400/1E1E1E/00CED1?text=Multithreading"
+category: ["Programming Guides", "Java", "Interviews"]
+tags:
+  [
+    "Java",
+    "Multithreading",
+    "Interview",
+    "Thread",
+    "Runnable",
+    "ExecutorService",
+    "Synchronization",
+    "Deadlock",
+  ]
+readTime: "12 min"
+---
+
+# 🧠 Java Multithreading for Interviews (2025) - Beginner-Friendly
+
+_Your guide to mastering Java multithreading, including Thread, Runnable, ExecutorService, synchronization, deadlock, daemon threads, thread lifecycle, and multitasking for interviews!_
+
+## Introduction
+
+Multithreading in Java allows multiple tasks to run concurrently, improving performance in applications like web servers and data processing. Understanding concepts like `Thread`, `Runnable`, `ExecutorService`, synchronization, deadlock, daemon threads, thread lifecycle, and multitasking is crucial for Java interviews. This beginner-friendly guide explains these concepts with clear examples and answers common interview questions to help you prepare confidently.
+
+## Key Concepts
+
+### 1. Thread
+
+A **Thread** is the smallest unit of execution in Java. You can create threads by extending the `Thread` class or implementing the `Runnable` interface.
+
+**Example (Extending Thread)**:
+
+```java
+class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread running: " + Thread.currentThread().getName());
+    }
+}
+```
+
+### 2. Runnable
+
+The `Runnable` interface defines a single `run()` method, providing a more flexible way to create threads (preferred over extending `Thread`).
+
+**Example**:
+
+```java
+class MyRunnable implements Runnable {
+    public void run() {
+        System.out.println("Runnable running: " + Thread.currentThread().getName());
+    }
+}
+```
+
+### 3. ExecutorService
+
+`ExecutorService` is a higher-level framework for managing threads, providing thread pools to execute tasks efficiently.
+
+**Example**:
+
+```java
+ExecutorService executor = Executors.newFixedThreadPool(2);
+executor.submit(() -> System.out.println("Task executed"));
+executor.shutdown();
+```
+
+**Why it matters**: `ExecutorService` simplifies thread management and improves resource usage.
+
+### 4. Synchronization
+
+Synchronization ensures thread safety by preventing multiple threads from accessing shared resources simultaneously, using the `synchronized` keyword.
+
+**Example**:
+
+```java
+class Counter {
+    private int count = 0;
+    public synchronized void increment() {
+        count++;
+    }
+}
+```
+
+### 5. Deadlock
+
+A **deadlock** occurs when two or more threads are blocked forever, each waiting for a resource the other holds.
+
+**Example**:
+
+```java
+String resource1 = "Resource1";
+String resource2 = "Resource2";
+Thread t1 = new Thread(() -> {
+    synchronized (resource1) {
+        try { Thread.sleep(100); } catch (Exception e) {}
+        synchronized (resource2) {}
+    }
+});
+Thread t2 = new Thread(() -> {
+    synchronized (resource2) {
+        try { Thread.sleep(100); } catch (Exception e) {}
+        synchronized (resource1) {}
+    }
+});
+```
+
+### 6. Daemon Threads
+
+**Daemon threads** run in the background (e.g., garbage collector) and terminate when all non-daemon threads finish. Set with `setDaemon(true)` before starting a thread.
+
+**Example**:
+
+```java
+Thread daemon = new Thread(() -> System.out.println("Daemon running"));
+daemon.setDaemon(true);
+```
+
+### 7. Thread Lifecycle
+
+A thread goes through states: **New**, **Runnable**, **Running**, **Blocked/Waiting**, **Terminated**.
+
+**Example**:
+
+```java
+Thread thread = new Thread(() -> {
+    try { Thread.sleep(1000); } catch (Exception e) {}
+});
+thread.start(); // Moves to Runnable
+```
+
+### 8. Multitasking
+
+Multitasking in Java uses multithreading to perform multiple tasks concurrently, leveraging threads or `ExecutorService`.
+
+**Why it matters**: Multithreading enhances performance in CPU-intensive or I/O-bound applications.
+
+## Common Interview Questions
+
+**Q1: What is multithreading in Java?**
+Multithreading allows multiple threads to execute concurrently within a single program, improving performance and responsiveness.
+
+**Q2: What is the difference between `Thread` and `Runnable`?**
+
+- **Thread**: A class to create and manage threads, with a `run()` method.
+- **Runnable**: An interface with a `run()` method, preferred for flexibility as it allows a class to extend another class.
+
+**Q3: How can you create a thread in Java?**
+Two ways:
+
+1. Extend `Thread` and override `run()`.
+2. Implement `Runnable` and pass it to a `Thread` object.
+
+**Q4: What is `ExecutorService`, and why is it used?**
+`ExecutorService` is a framework for managing threads via thread pools, reducing overhead and simplifying task execution.
+
+**Q5: What is synchronization in Java?**
+Synchronization ensures thread safety by restricting access to shared resources using the `synchronized` keyword, preventing race conditions.
+
+**Q6: What is a deadlock, and how can it be avoided?**
+A deadlock occurs when threads mutually wait for resources. Avoid by:
+
+- Ensuring consistent lock ordering.
+- Using timeouts or `tryLock` in `ReentrantLock`.
+- Avoiding nested locks.
+
+**Q7: What are daemon threads?**
+Daemon threads are low-priority background threads (e.g., garbage collector) that terminate when all non-daemon threads finish. Set with `setDaemon(true)`.
+
+**Q8: Explain the thread lifecycle in Java.**
+A thread’s states are:
+
+- **New**: Created but not started.
+- **Runnable**: Ready to run, waiting for CPU.
+- **Running**: Executing.
+- **Blocked/Waiting**: Waiting for a resource or event.
+- **Terminated**: Completed or stopped.
+
+**Q9: What is the difference between `start()` and `run()` in a Thread?**
+
+- `start()`: Creates a new thread and calls `run()`.
+- `run()`: Executes the thread’s logic in the current thread without creating a new one.
+
+**Q10: How do you achieve thread safety in Java?**
+
+- Use `synchronized` methods/blocks.
+- Use thread-safe collections (e.g., `ConcurrentHashMap`).
+- Use `Lock` interfaces or `volatile` variables.
+
+**Q11: What is a race condition?**
+A race condition occurs when multiple threads access shared resources concurrently, leading to unpredictable results. Prevent with synchronization.
+
+**Q12: What is the `volatile` keyword in Java?**
+The `volatile` keyword ensures a variable’s value is always read from and written to main memory, preventing thread caching issues.
+
+**Q13: What is the difference between `wait()` and `sleep()`?**
+
+- `wait()`: Releases the monitor and waits for `notify()` or `notifyAll()`, used in synchronization.
+- `sleep()`: Pauses the thread for a specified time without releasing locks.
+
+## Code Example
+
+Here’s a program demonstrating multithreading concepts:
+
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class MultithreadingDemo {
+    static class Counter {
+        private int count = 0;
+        public synchronized void increment() {
+            count++;
+            System.out.println(Thread.currentThread().getName() + ": " + count);
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        // Thread via Runnable
+        Runnable task = () -> System.out.println("Runnable: " + Thread.currentThread().getName());
+        Thread thread = new Thread(task);
+        thread.start();
+
+        // Daemon thread
+        Thread daemon = new Thread(() -> System.out.println("Daemon running"));
+        daemon.setDaemon(true);
+        daemon.start();
+
+        // ExecutorService
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Counter counter = new Counter();
+        executor.submit(() -> counter.increment());
+        executor.submit(() -> counter.increment());
+        executor.shutdown();
+
+        // Synchronization
+        Thread.sleep(100); // Ensure output visibility
+    }
+}
+```
+
+**Output** (may vary due to thread scheduling):
+
+```
+Runnable: Thread-0
+Daemon running
+pool-1-thread-1: 1
+pool-1-thread-2: 2
+```
+
+## Conclusion
+
+Mastering Java multithreading concepts like `Thread`, `Runnable`, `ExecutorService`, synchronization, and deadlock prevention is essential for interviews. Practice creating threads, managing thread pools, and handling synchronization to build robust concurrent applications. Experiment with the code above and review the interview questions to solidify your understanding. Stay tuned for more Java interview prep guides!
