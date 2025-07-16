@@ -95,9 +95,9 @@ const TutorialCard = ({ tutorial, basePath }: TutorialCardProps) => {
               sx={{ mb: 1 }}>
               <Chip
                 label={tutorial.difficulty}
-                color="primary"
+                color="secondary"
                 size="small"
-                variant="outlined"
+                variant="filled"
               />
               <Typography variant="caption" color="text.secondary">
                 {tutorial.duration}
@@ -115,7 +115,7 @@ const TutorialCard = ({ tutorial, basePath }: TutorialCardProps) => {
             </Typography>
           </CardContent>
           <Box sx={{ p: 2, pt: 0, mt: "auto" }}>
-            <Button fullWidth variant="contained" color="secondary">
+            <Button fullWidth variant="contained" color="primary">
               Start Learning
             </Button>
           </Box>
@@ -242,7 +242,7 @@ const TutorialsIndexPage = ({ allTutorialsData }: TutorialsIndexProps) => {
                   sx={{ mb: 2 }}>
                   {featuredTutorial.excerpt}
                 </Typography>
-                <Button variant="contained">Start Learning</Button>
+                <Button variant="contained" color="primary">Start Learning</Button>
               </CardContent>
             </Card>
           </Link>
