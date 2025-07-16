@@ -1,0 +1,209 @@
+---
+title: "Java I/O and NIO for Interviews (2025) - Beginner-Friendly"
+date: "2025-07-16"
+excerpt: "Master Java I/O and NIO, including Streams, Readers/Writers, NIO channels, and more, to excel in interviews!"
+coverImage: "https://placehold.co/600x400/1E1E1E/00CED1?text=Java+I/O+and+NIO"
+category: ["Programming Guides", "Java", "Interviews"]
+tags:
+  [
+    "Java",
+    "I/O",
+    "NIO",
+    "Interview",
+    "Streams",
+    "Readers",
+    "Writers",
+    "Channels",
+  ]
+readTime: "10 min"
+---
+
+# 🧠 Java I/O and NIO for Interviews (2025) - Beginner-Friendly
+
+_Your guide to mastering Java I/O and NIO, covering Streams, Readers/Writers, NIO channels, FileInputStream, FileOutputStream, Buffered Streams, and Filter Streams for interviews!_
+
+## Introduction
+
+Java I/O (Input/Output) and NIO (New I/O) provide mechanisms to read and write data, such as files, network sockets, and more. Understanding streams, readers/writers, NIO channels, and related classes like `FileInputStream` and `FileOutputStream` is crucial for Java interviews. This beginner-friendly guide explains these concepts with clear examples and answers common interview questions to help you prepare confidently.
+
+## Key Concepts
+
+### 1. Streams
+
+Streams handle raw byte data, used for reading from or writing to sources like files or sockets. They are divided into:
+
+- **Input Streams**: Read data (e.g., `FileInputStream`).
+- **Output Streams**: Write data (e.g., `FileOutputStream`).
+
+**Example**:
+
+```java
+try (FileInputStream fis = new FileInputStream("input.txt")) {
+    int data = fis.read(); // Reads a byte
+    System.out.println((char) data);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+**Why it matters**: Streams are foundational for handling binary data.
+
+### 2. Readers/Writers
+
+Readers and Writers handle character data (text), supporting Unicode and character encoding, unlike byte-based streams.
+
+- **Readers**: Read text (e.g., `FileReader`).
+- **Writers**: Write text (e.g., `FileWriter`).
+
+**Example**:
+
+```java
+try (FileWriter fw = new FileWriter("output.txt")) {
+    fw.write("Hello, Java!");
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+### 3. NIO Channels
+
+NIO (New I/O, Java 1.4+) uses **channels** and **buffers** for non-blocking, high-performance I/O operations. Channels (e.g., `FileChannel`) transfer data to/from buffers.
+
+**Example**:
+
+```java
+FileChannel channel = FileChannel.open(Paths.get("input.txt"), StandardOpenOption.READ);
+ByteBuffer buffer = ByteBuffer.allocate(1024);
+channel.read(buffer);
+```
+
+**Why it matters**: NIO supports scalable, non-blocking I/O for high-performance applications.
+
+### 4. FileInputStream and FileOutputStream
+
+- **FileInputStream**: Reads raw bytes from a file.
+- **FileOutputStream**: Writes raw bytes to a file.
+
+**Example**:
+
+```java
+try (FileOutputStream fos = new FileOutputStream("output.txt")) {
+    fos.write("Test".getBytes());
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+### 5. Buffered Streams
+
+Buffered streams (`BufferedInputStream`, `BufferedOutputStream`, `BufferedReader`, `BufferedWriter`) reduce direct access to underlying resources by using a buffer, improving performance.
+
+**Example**:
+
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("input.txt"))) {
+    System.out.println(br.readLine());
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+### 6. Filter Streams
+
+Filter streams (e.g., `DataInputStream`, `DataOutputStream`) add functionality to existing streams, such as reading/writing primitive data types.
+
+**Example**:
+
+```java
+try (DataOutputStream dos = new DataOutputStream(new FileOutputStream("data.bin"))) {
+    dos.writeInt(42);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+## Common Interview Questions
+
+**Q1: What is the difference between byte streams and character streams in Java?**
+
+- **Byte Streams**: Handle raw bytes (e.g., `FileInputStream`, `FileOutputStream`), used for binary data.
+- **Character Streams**: Handle text (e.g., `FileReader`, `FileWriter`), support Unicode and encoding.
+
+**Q2: What is the purpose of `FileInputStream` and `FileOutputStream`?**
+
+- **FileInputStream**: Reads bytes from a file.
+- **FileOutputStream**: Writes bytes to a file. Both are used for low-level I/O operations.
+
+**Q3: What are buffered streams, and why are they used?**
+Buffered streams (e.g., `BufferedInputStream`, `BufferedReader`) use a memory buffer to reduce direct access to the underlying resource, improving performance.
+
+**Q4: What is Java NIO, and how does it differ from traditional I/O?**
+Java NIO (New I/O) uses channels and buffers for non-blocking, high-performance I/O. Unlike traditional I/O (blocking, stream-based), NIO supports asynchronous operations and better scalability.
+
+**Q5: What is a `FileChannel` in NIO?**
+A `FileChannel` is a channel for reading/writing files in NIO, used with `ByteBuffer` for efficient data transfer.
+
+**Q6: What is the advantage of using `BufferedReader` over `FileReader`?**
+`BufferedReader` reduces direct file access by buffering data, improving performance for text reading, especially for large files.
+
+**Q7: What are filter streams in Java?**
+Filter streams (e.g., `DataInputStream`, `DataOutputStream`) wrap other streams to add functionality, like reading/writing primitive data types.
+
+**Q8: How do you handle exceptions in Java I/O operations?**
+I/O operations throw `IOException` (checked), which must be handled using `try-catch` or declared with `throws`. Use `try-with-resources` for automatic resource closure.
+
+## Code Example
+
+Here’s a program demonstrating Java I/O and NIO concepts:
+
+```java
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
+public class IODemo {
+    public static void main(String[] args) {
+        // FileOutputStream and BufferedWriter
+        try (FileOutputStream fos = new FileOutputStream("output.txt");
+             BufferedWriter bw = new BufferedWriter(new FileWriter("buffered.txt"))) {
+            fos.write("Byte data".getBytes());
+            bw.write("Buffered text");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // FileInputStream and BufferedReader
+        try (FileInputStream fis = new FileInputStream("output.txt");
+             BufferedReader br = new BufferedReader(new FileReader("buffered.txt"))) {
+            System.out.println("FileInputStream: " + (char) fis.read());
+            System.out.println("BufferedReader: " + br.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // NIO FileChannel
+        try (FileChannel channel = FileChannel.open(Paths.get("output.txt"), StandardOpenOption.READ)) {
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            channel.read(buffer);
+            buffer.flip();
+            System.out.println("NIO: " + new String(buffer.array(), 0, buffer.limit()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+**Output** (assuming files are created successfully):
+
+```
+FileInputStream: B
+BufferedReader: Buffered text
+NIO: Byte data
+```
+
+## Conclusion
+
+Mastering Java I/O and NIO, including streams, readers/writers, NIO channels, and buffered/filter streams, is essential for handling data in interviews. Practice reading and writing files using both traditional I/O and NIO, and understand their performance differences. Experiment with the code above and review the interview questions to build confidence. Stay tuned for more Java interview prep guides!

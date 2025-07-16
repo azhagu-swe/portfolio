@@ -1,0 +1,174 @@
+---
+title: "Java Access Modifiers for Interviews (2025) - Beginner-Friendly"
+date: "2025-07-16"
+excerpt: "Master Java access modifiers like public, private, protected, and default to shine in interviews!"
+coverImage: "https://placehold.co/600x400/1E1E1E/00CED1?text=Access+Modifiers"
+category: ["Programming Guides", "Java", "Interviews"]
+tags: ["Java", "Access Modifiers", "Interview", "Public", "Private", "Protected", "Default"]
+readTime: "8 min"
+---
+
+# 🧠 Java Access Modifiers for Interviews (2025) - Beginner-Friendly
+
+_Your guide to mastering Java access modifiers—public, private, protected, and default—for interviews!_
+
+## Introduction
+Access modifiers in Java control the visibility and accessibility of classes, fields, methods, and constructors. Understanding `public`, `private`, `protected`, and `default` (package-private) is essential for designing secure and maintainable code, a key topic in Java interviews. This beginner-friendly guide explains these modifiers with clear examples and answers common interview questions to help you prepare confidently.
+
+## Key Concepts
+
+### 1. Public
+The `public` modifier makes a class, field, method, or constructor accessible from everywhere, regardless of package or class.
+
+**Example**:
+```java
+public class PublicExample {
+    public int data = 100; // Accessible everywhere
+    public void display() {
+        System.out.println("Public data: " + data);
+    }
+}
+```
+
+**Why it matters**: `public` is used for APIs or components intended for universal access.
+
+### 2. Private
+The `private` modifier restricts access to within the same class, hiding implementation details and enforcing encapsulation.
+
+**Example**:
+```java
+class PrivateExample {
+    private String secret = "Hidden";
+    private void showSecret() {
+        System.out.println("Secret: " + secret);
+    }
+    public void accessSecret() {
+        showSecret(); // Accessible within the class
+    }
+}
+```
+
+**Why it matters**: `private` ensures data and methods are only accessible internally, protecting class integrity.
+
+### 3. Protected
+The `protected` modifier allows access within the same package and in subclasses (even in different packages) through inheritance.
+
+**Example**:
+```java
+class Parent {
+    protected int value = 50;
+    protected void showValue() {
+        System.out.println("Value: " + value);
+    }
+}
+class Child extends Parent {
+    void access() {
+        showValue(); // Accessible via inheritance
+    }
+}
+```
+
+**Why it matters**: `protected` balances accessibility for subclasses while restricting external access.
+
+### 4. Default (Package-Private)
+If no modifier is specified, the **default** (package-private) access applies, allowing access only within the same package.
+
+**Example**:
+```java
+class DefaultExample {
+    int number = 10; // Default access
+    void display() {
+        System.out.println("Number: " + number);
+    }
+}
+// Same package
+class Test {
+    void test() {
+        DefaultExample de = new DefaultExample();
+        de.display(); // Accessible in same package
+    }
+}
+```
+
+**Why it matters**: Default access is useful for package-level encapsulation.
+
+## Common Interview Questions
+
+**Q1: What are access modifiers in Java?**
+Access modifiers (`public`, `private`, `protected`, `default`) control the visibility and accessibility of classes, fields, methods, and constructors in Java.
+
+**Q2: What is the difference between `protected` and default access modifiers?**
+- **Protected**: Accessible within the same package and in subclasses (even in different packages) via inheritance.
+- **Default**: Accessible only within the same package, not in subclasses outside the package.
+
+## Code Example
+Here’s a program demonstrating all access modifiers:
+```java
+// Parent.java
+package com.example;
+
+public class Parent {
+    public int publicData = 100; // Accessible everywhere
+    private int privateData = 200; // Accessible only in this class
+    protected int protectedData = 300; // Accessible in package and subclasses
+    int defaultData = 400; // Accessible in package
+
+    public void accessAll() {
+        System.out.println("Public: " + publicData);
+        System.out.println("Private: " + privateData);
+        System.out.println("Protected: " + protectedData);
+        System.out.println("Default: " + defaultData);
+    }
+}
+
+// Child.java (same package)
+package com.example;
+
+class Child extends Parent {
+    void testAccess() {
+        System.out.println("Child accessing protected: " + protectedData);
+        System.out.println("Child accessing default: " + defaultData);
+        // privateData is not accessible
+    }
+}
+
+// Main.java
+package com.example;
+
+public class Main {
+    public static void main(String[] args) {
+        Parent parent = new Parent();
+        parent.accessAll();
+
+        Child child = new Child();
+        child.testAccess();
+
+        // Default access example
+        DefaultExample de = new DefaultExample();
+        System.out.println("Default access: " + de.defaultData);
+    }
+}
+
+// DefaultExample.java
+package com.example;
+
+class DefaultExample {
+    int defaultData = 500;
+}
+```
+
+**Output**:
+```
+Public: 100
+Private: 200
+Protected: 300
+Default: 400
+Child accessing protected: 300
+Child accessing default: 400
+Default access: 500
+```
+
+**Note**: If `Child` were in a different package, it could access `protectedData` via inheritance but not `defaultData`.
+
+## Conclusion
+Mastering Java access modifiers—`public`, `private`, `protected`, and `default`—is crucial for designing secure and modular code in interviews. Practice using these modifiers in class designs to control access appropriately. Experiment with the code above and review the interview questions to build confidence. Stay tuned for more Java interview prep guides!

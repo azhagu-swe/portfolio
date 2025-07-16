@@ -1,0 +1,247 @@
+---
+title: "Java Control Flow for Interviews (2025) - Beginner-Friendly"
+date: "2025-07-16"
+excerpt: "Learn Java control flow essentials like if statements, switch statements, loops, break, and continue to shine in interviews!"
+coverImage: "https://placehold.co/600x400/1E1E1E/00CED1?text=Control+Flow"
+category: ["Programming Guides", "Java", "Interviews"]
+tags: ["Java", "Control Flow", "Interview", "If Statements", "Loops", "Switch"]
+readTime: "8 min"
+---
+
+# 🧠 Java Control Flow for Interviews (2025) - Beginner-Friendly
+
+_Your guide to mastering Java control flow concepts like if statements, switch statements, loops, break, and continue for interviews!_
+
+## Introduction
+
+Control flow in Java determines the order in which your code executes, allowing you to make decisions, repeat tasks, and control program behavior. For interviews, understanding control flow constructs like `if` statements, `switch` statements, loops, and keywords like `break` and `continue` is essential. This beginner-friendly guide explains these concepts with clear examples and includes sample interview questions to help you prepare confidently.
+
+## Key Concepts
+
+### 1. If Statements
+
+The `if` statement executes a block of code if a condition is `true`. You can extend it with `else if` and `else` for additional conditions.
+
+**Syntax**:
+
+```java
+if (condition) {
+    // Code if condition is true
+} else if (anotherCondition) {
+    // Code if anotherCondition is true
+} else {
+    // Code if no conditions are true
+}
+```
+
+**Example**:
+
+```java
+int score = 85;
+if (score >= 90) {
+    System.out.println("Grade: A");
+} else if (score >= 80) {
+    System.out.println("Grade: B");
+} else {
+    System.out.println("Grade: C");
+}
+// Output: Grade: B
+```
+
+**Why it matters**: `if` statements are used for decision-making, a common requirement in coding problems.
+
+### 2. Switch Statements
+
+The `switch` statement selects one of many code blocks to execute based on a variable’s value. It’s an alternative to multiple `else if` statements for cleaner code when comparing a single variable against multiple values.
+
+**Syntax** (Java 14+ enhanced switch):
+
+```java
+switch (expression) {
+    case value1 -> // Code for value1
+    case value2 -> // Code for value2
+    default -> // Code if no case matches
+}
+```
+
+**Example**:
+
+```java
+int day = 3;
+switch (day) {
+    case 1 -> System.out.println("Monday");
+    case 2 -> System.out.println("Tuesday");
+    case 3 -> System.out.println("Wednesday");
+    default -> System.out.println("Invalid day");
+}
+// Output: Wednesday
+```
+
+**Why it matters**: `switch` is efficient for handling multiple discrete values, often seen in menu-driven or state-based problems.
+
+### 3. Loops
+
+Loops repeat a block of code until a condition is met. Java supports:
+
+- **for loop**: Used when the number of iterations is known.
+- **while loop**: Runs while a condition is true.
+- **do-while loop**: Runs at least once, then continues if the condition is true.
+
+**Examples**:
+
+```java
+// For loop
+for (int i = 1; i <= 5; i++) {
+    System.out.print(i + " "); // Output: 1 2 3 4 5
+}
+
+// While loop
+int j = 1;
+while (j <= 5) {
+    System.out.print(j + " "); // Output: 1 2 3 4 5
+    j++;
+}
+
+// Do-while loop
+int k = 1;
+do {
+    System.out.print(k + " "); // Output: 1 2 3 4 5
+    k++;
+} while (k <= 5);
+```
+
+**Why it matters**: Loops are critical for repetitive tasks, like processing arrays or generating patterns, common in interview coding challenges.
+
+### 4. Break
+
+The `break` statement exits a loop or switch statement immediately, stopping further execution within that construct.
+
+**Example**:
+
+```java
+for (int i = 1; i <= 10; i++) {
+    if (i == 5) {
+        break; // Exits loop when i is 5
+    }
+    System.out.print(i + " "); // Output: 1 2 3 4
+}
+```
+
+**Why it matters**: `break` is useful for early termination when a condition is met, such as searching for an element.
+
+### 5. Continue
+
+The `continue` statement skips the current iteration of a loop and proceeds to the next iteration.
+
+**Example**:
+
+```java
+for (int i = 1; i <= 5; i++) {
+    if (i % 2 == 0) {
+        continue; // Skips even numbers
+    }
+    System.out.print(i + " "); // Output: 1 3 5
+}
+```
+
+**Why it matters**: `continue` helps filter iterations, useful in problems requiring selective processing.
+
+## Common Interview Questions
+
+**Q1: How does an `if` statement differ from a `switch` statement in Java?**
+
+- **If Statement**: Evaluates boolean conditions and supports complex logic with relational operators. Best for range-based or dynamic conditions.
+- **Switch Statement**: Compares a single variable against discrete values (e.g., integers, strings, enums). Cleaner for multiple fixed-value checks.
+
+**Q2: When would you use a `while` loop instead of a `for` loop?**
+Use a `while` loop when the number of iterations is unknown and depends on a condition (e.g., reading input until a specific value). Use a `for` loop when the iteration count is known (e.g., iterating over an array).
+
+**Q3: What happens if you forget a `break` in a `switch` case?**
+Without a `break`, execution "falls through" to the next case, running all subsequent cases until a `break` or the end of the `switch` is reached. In Java 14+ arrow syntax (`->`), fall-through is prevented.
+
+**Example** (traditional switch):
+
+```java
+int value = 1;
+switch (value) {
+    case 1:
+        System.out.println("One");
+    case 2:
+        System.out.println("Two");
+        break;
+    default:
+        System.out.println("Default");
+}
+// Output: One Two
+```
+
+**Q4: Can a `do-while` loop execute zero times?**
+No, a `do-while` loop executes at least once because the code block runs before checking the condition.
+
+**Q5: How can `continue` be used in a nested loop?**
+In a nested loop, `continue` skips the current iteration of the innermost loop. To skip an outer loop’s iteration, use a labeled `continue`.
+
+**Example**:
+
+```java
+outerLoop: for (int i = 1; i <= 3; i++) {
+    for (int j = 1; j <= 3; j++) {
+        if (j == 2) {
+            continue outerLoop; // Skips to next i
+        }
+        System.out.println("i: " + i + ", j: " + j);
+    }
+}
+// Output: i: 1, j: 1
+//         i: 2, j: 1
+//         i: 3, j: 1
+```
+
+## Code Example
+
+Here’s a program combining control flow concepts:
+
+```java
+public class ControlFlowDemo {
+    public static void main(String[] args) {
+        // If statement
+        int number = 42;
+        if (number % 2 == 0) {
+            System.out.println(number + " is even");
+        } else {
+            System.out.println(number + " is odd");
+        }
+
+        // Switch statement
+        String day = "Monday";
+        switch (day) {
+            case "Monday" -> System.out.println("Start of the week");
+            case "Friday" -> System.out.println("End of the work week");
+            default -> System.out.println("Midweek day");
+        }
+
+        // For loop with break and continue
+        for (int i = 1; i <= 10; i++) {
+            if (i % 2 == 0) {
+                continue; // Skip even numbers
+            }
+            if (i > 7) {
+                break; // Stop after printing 1, 3, 5, 7
+            }
+            System.out.print(i + " ");
+        }
+    }
+}
+```
+
+**Output**:
+
+```
+42 is even
+Start of the week
+1 3 5 7
+```
+
+## Conclusion
+
+Mastering Java control flow—`if` statements, `switch` statements, loops, `break`, and `continue`—is vital for solving interview coding problems. Practice writing programs that combine these constructs, such as generating patterns or processing user input. Experiment with the code above and try answering the sample questions to solidify your understanding. Stay tuned for more Java interview prep guides!

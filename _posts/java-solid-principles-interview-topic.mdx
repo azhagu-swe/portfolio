@@ -1,0 +1,353 @@
+---
+title: "SOLID Principles for Java Interviews (2025) - Beginner-Friendly"
+date: "2025-07-16"
+excerpt: "Master SOLID principles (SRP, OCP, LSP, ISP, DIP) in Java with simple explanations and examples to ace your interviews!"
+coverImage: "https://placehold.co/600x400/1E1E1E/00CED1?text=SOLID+Principles"
+category: ["Programming Guides", "Java", "Interviews"]
+tags: ["Java", "SOLID Principles", "Interview", "SRP", "OCP", "LSP", "ISP", "DIP"]
+readTime: "12 min"
+---
+
+# 🧠 SOLID Principles for Java Interviews (2025) - Beginner-Friendly
+
+_Your guide to mastering SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion) for Java interviews!_
+
+## Introduction
+SOLID principles are five design guidelines that help you write clean, maintainable, and scalable code. They are a must-know for Java interviews, as they demonstrate your ability to design robust object-oriented systems. This beginner-friendly guide explains **SRP**, **OCP**, **LSP**, **ISP**, and **DIP** in a simple, easy-to-understand way with examples and suggested interview questions to help you prepare confidently.
+
+## Key Concepts
+
+### 1. Single Responsibility Principle (SRP)
+**SRP** states that a class should have only one reason to change, meaning it should have one job or responsibility. Think of a chef who only cooks, not cleans or serves.
+
+**Example (Violating SRP)**:
+```java
+class Employee {
+    void calculateSalary() { System.out.println("Calculating salary"); }
+    void saveToDatabase() { System.out.println("Saving to database"); }
+}
+```
+
+**Example (Following SRP)**:
+```java
+class Employee {
+    void calculateSalary() { System.out.println("Calculating salary"); }
+}
+class EmployeeRepository {
+    void saveToDatabase() { System.out.println("Saving to database"); }
+}
+```
+
+**Why it matters**: SRP reduces complexity and makes classes easier to maintain.
+
+### 2. Open/Closed Principle (OCP)
+**OCP** states that classes should be open for extension but closed for modification. You should add new functionality by extending classes, not changing existing code. Imagine a toy set where you add new pieces without breaking the old ones.
+
+**Example (Violating OCP)**:
+```java
+class PaymentProcessor {
+    void process(String type) {
+        if (type.equals("CreditCard")) {
+            System.out.println("Processing credit card");
+        } else if (type.equals("PayPal")) {
+            System.out.println("Processing PayPal");
+        }
+    }
+}
+```
+
+**Example (Following OCP)**:
+```java
+interface Payment {
+    void process();
+}
+class CreditCardPayment implements Payment {
+    public void process() { System.out.println("Processing credit card"); }
+}
+class PayPalPayment implements Payment {
+    public void process() { System.out.println("Processing PayPal"); }
+}
+class PaymentProcessor {
+    void process(Payment payment) {
+        payment.process();
+    }
+}
+```
+
+**Why it matters**: OCP allows new features without altering existing code, reducing bugs.
+
+### 3. Liskov Substitution Principle (LSP)
+**LSP** states that objects of a subclass should be substitutable for objects of the superclass without breaking the program. Think of using any brand of battery in a flashlight—it should work the same way.
+
+**Example (Violating LSP)**:
+```java
+class Bird {
+    void fly() { System.out.println("Flying"); }
+}
+class Ostrich extends Bird {
+    void fly() { throw new UnsupportedOperationException("Ostriches can't fly"); }
+}
+```
+
+**Example (Following LSP)**:
+```java
+interface Flyable {
+    void fly();
+}
+class Sparrow implements Flyable {
+    public void fly() { System.out.println("Flying"); }
+}
+class Ostrich {
+    void run() { System.out.println("Running"); }
+}
+```
+
+**Why it matters**: LSP ensures subclasses behave as expected, maintaining reliability.
+
+### 4. Interface Segregation Principle (ISP)
+**ISP** states that clients should not be forced to implement interfaces they don’t use. Think of a restaurant menu where you only pick what you need, not the entire menu.
+
+**Example (Violating ISP)**:
+```java
+interface Worker {
+    void work();
+    void eat();
+}
+class Robot implements Worker {
+    public void work() { System.out.println("Working"); }
+    public void eat() { /* Robots don’t eat */ }
+}
+```
+
+**Example (Following ISP)**:
+```java
+interface Workable {
+    void work();
+}
+interface Eatable {
+    void eat();
+}
+class Human implements Workable, Eatable {
+    public void work() { System.out.println("Working"); }
+    public void eat() { System.out.println("Eating"); }
+}
+class Robot implements Workable {
+    public void work() { System.out.println("Working"); }
+}
+```
+
+**Why it matters**: ISP avoids unnecessary code and keeps interfaces focused.
+
+### 5. Dependency Inversion Principle (DIP)
+**DIP** states that high-level modules should not depend on low-level modules; both should depend on abstractions. Think of plugging devices into a power strip—devices don’t care about the power source, only the plug.
+
+**Example (Violating DIP)**:
+```java
+class DatabaseService {
+    void save() { System.out.println("Saving to MySQL"); }
+}
+class UserService {
+    private DatabaseService db = new DatabaseService();
+    void saveUser() { db.save(); }
+}
+```
+
+**Example (Following DIP)**:
+```java
+interface Database {
+    void save();
+}
+class MySQLDatabase implements Database {
+    public void save() { System.out.println("Saving to MySQL"); }
+}
+class UserService {
+    private Database db;
+    UserService(Database db) { this.db = db; }
+    void saveUser() { db.save(); }
+}
+```
+
+**Why it matters**: DIP makes code flexible by decoupling dependencies.
+
+## Suggested Interview Questions with Answers and Examples
+
+**Q1: What are the SOLID principles, and why are they important?**  
+**Answer**: SOLID principles (SRP, OCP, LSP, ISP, DIP) are guidelines for designing maintainable, scalable object-oriented code. They reduce complexity, improve flexibility, and minimize bugs.  
+**Example**: Using OCP, you can add new payment types without modifying the `PaymentProcessor` class.
+
+**Q2: How does the Single Responsibility Principle improve code quality?**  
+**Answer**: SRP ensures a class has one job, making it easier to understand, test, and maintain.  
+**Example**:
+```java
+class ReportGenerator {
+    void generateReport() { System.out.println("Generating report"); }
+}
+class ReportPrinter {
+    void printReport() { System.out.println("Printing report"); }
+}
+```
+
+**Q3: How can you apply the Open/Closed Principle in Java?**  
+**Answer**: Use interfaces or abstract classes to allow extension without modifying existing code.  
+**Example**:
+```java
+interface Shape {
+    double area();
+}
+class Circle implements Shape {
+    double radius;
+    Circle(double radius) { this.radius = radius; }
+    public double area() { return Math.PI * radius * radius; }
+}
+```
+
+**Q4: What happens if you violate the Liskov Substitution Principle?**  
+**Answer**: Violating LSP can cause unexpected behavior when substituting subclasses, breaking program reliability.  
+**Example**: Ostrich throwing an exception for `fly()` in a `Bird` hierarchy violates LSP.
+
+**Q5: Why is Interface Segregation Principle important for interface design?**  
+**Answer**: ISP prevents classes from implementing unused methods, keeping interfaces lean and relevant.  
+**Example**:
+```java
+interface Printable {
+    void print();
+}
+class Document implements Printable {
+    public void print() { System.out.println("Printing"); }
+}
+```
+
+**Q6: How does Dependency Inversion Principle support loose coupling?**  
+**Answer**: DIP uses abstractions to decouple high-level and low-level modules, making it easy to swap implementations.  
+**Example**:
+```java
+class MongoDatabase implements Database {
+    public void save() { System.out.println("Saving to MongoDB"); }
+}
+UserService service = new UserService(new MongoDatabase());
+```
+
+**Q7: Can you give a real-world example of applying SOLID principles?**  
+**Answer**: In a payment system, SRP separates payment processing and logging, OCP allows new payment methods, LSP ensures all payment types work interchangeably, ISP splits payment interfaces, and DIP uses a payment interface for flexibility.  
+**Example**:
+```java
+interface PaymentMethod {
+    void pay();
+}
+class CardPayment implements PaymentMethod {
+    public void pay() { System.out.println("Card payment"); }
+}
+```
+
+**Q8: How do you ensure thread safety in a SOLID-compliant design?**  
+**Answer**: Use SRP to isolate thread-safe logic, DIP to inject thread-safe dependencies, and avoid shared mutable state.  
+**Example**:
+```java
+class ThreadSafeService {
+    private Database db;
+    ThreadSafeService(Database db) { this.db = db; }
+    synchronized void save() { db.save(); }
+}
+```
+
+## Code Example
+Here’s a program demonstrating all SOLID principles:
+```java
+// SRP: Separate responsibilities
+class Order {
+    void calculateTotal() { System.out.println("Calculating total"); }
+}
+class OrderRepository {
+    void saveOrder() { System.out.println("Saving order"); }
+}
+
+// OCP: Open for extension
+interface PaymentMethod {
+    void pay();
+}
+class CreditCard implements PaymentMethod {
+    public void pay() { System.out.println("Paying with Credit Card"); }
+}
+class PayPal implements PaymentMethod {
+    public void pay() { System.out.println("Paying with PayPal"); }
+}
+class PaymentProcessor {
+    void process(PaymentMethod method) { method.pay(); }
+}
+
+// LSP: Substitutable subclasses
+interface Drivable {
+    void drive();
+}
+class Car implements Drivable {
+    public void drive() { System.out.println("Driving car"); }
+}
+
+// ISP: Focused interfaces
+interface Workable {
+    void work();
+}
+interface Eatable {
+    void eat();
+}
+class Worker implements Workable, Eatable {
+    public void work() { System.out.println("Working"); }
+    public void eat() { System.out.println("Eating"); }
+}
+
+// DIP: Depend on abstractions
+interface Database {
+    void save();
+}
+class SQLDatabase implements Database {
+    public void save() { System.out.println("Saving to SQL"); }
+}
+class OrderService {
+    private Database db;
+    OrderService(Database db) { this.db = db; }
+    void saveOrder() { db.save(); }
+}
+
+public class SOLIDDemo {
+    public static void main(String[] args) {
+        // SRP
+        Order order = new Order();
+        order.calculateTotal();
+        OrderRepository repo = new OrderRepository();
+        repo.saveOrder();
+
+        // OCP
+        PaymentProcessor processor = new PaymentProcessor();
+        processor.process(new CreditCard());
+        processor.process(new PayPal());
+
+        // LSP
+        Drivable car = new Car();
+        car.drive();
+
+        // ISP
+        Worker worker = new Worker();
+        worker.work();
+        worker.eat();
+
+        // DIP
+        OrderService service = new OrderService(new SQLDatabase());
+        service.saveOrder();
+    }
+}
+```
+
+**Output**:
+```
+Calculating total
+Saving order
+Paying with Credit Card
+Paying with PayPal
+Driving car
+Working
+Eating
+Saving to SQL
+```
+
+## Conclusion
+Mastering SOLID principles—**SRP**, **OCP**, **LSP**, **ISP**, and **DIP**—is key to designing clean, scalable Java code for interviews. Practice applying these principles in small projects to understand their benefits. Experiment with the code above and review the suggested questions to build confidence. Stay tuned for more Java interview prep guides!
