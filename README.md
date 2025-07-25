@@ -98,7 +98,7 @@ title: "My First Blog Post"
 date: "2025-07-08"
 excerpt: "This is a summary of my first post. Learning how to build a blog with Next.js is exciting!"
 coverImage: "https://placehold.co/600x400/1E1E1E/32CD32?text=First+Post"
-category: "Personal Thoughts"
+category: ["Personal Thoughts","",]
 tags: ["Next.js", "React", "Web Dev"]
 readTime: "3 min"
 ---

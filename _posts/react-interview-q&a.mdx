@@ -1,0 +1,621 @@
+---
+title: "Mastering React: 70 Interview Questions for 2025"
+date: "2025-07-25"
+excerpt: "A complete guide to React interview questions, with ESL-friendly explanations, examples, and code to ace your 2025 interviews!"
+coverImage: "https://placehold.co/600x400/1E1E1E/32CD32?text=React+Interview"
+category: ["Web Development", "Interview Prep"]
+tags: ["React", "JavaScript", "Frontend", "Interview Questions"]
+readTime: "12 min"
+---
+
+## Mastering React: Your Ultimate Interview Prep Guide for 2025
+
+Preparing for a React interview? This guide covers **70 essential React interview questions** with simple, beginner-friendly explanations, memorable examples, and code snippets. Whether you’re a beginner or experienced, this post will help you confidently answer technical questions and stand out in 2025 interviews. Let’s dive in!
+
+---
+
+## 1. React Basics
+
+### What is ReactJS? ⭐
+React is a JavaScript library for building user interfaces, especially single-page apps (SPAs). It uses reusable components, a Virtual DOM for fast updates, and JSX to mix HTML with JavaScript. **Why use it?** It’s fast, modular, and developer-friendly.
+
+- **Example**: A toy shop app uses a `ToyCard` component to show toys, updating only the cart with Virtual DOM.
+- **Code**:
+```jsx
+function ToyCard({ name }) {
+  return <div>{name}</div>;
+}
+```
+
+### What is the latest version of React?
+The latest stable version is **v19.1.0** (March 28, 2025), building on v19.0.0’s updates (December 5, 2024).
+
+### What is JSX? ⭐
+JSX is a syntax that mixes HTML and JavaScript to write UI, using `{}` for variables.
+- **Example**: A school app shows `<p>Hello, {name}</p>` for a student’s name.
+- **Code**:
+```jsx
+const name = "Emma";
+function Student() {
+  return <p>Hello, {name}</p>;
+}
+```
+
+### How do browsers read JSX?
+Browsers can’t read JSX directly. **Babel** converts JSX into JavaScript.
+- **Example**: JSX is like a recipe in a foreign language; Babel translates it for the browser.
+
+### What is the Virtual DOM? ⭐
+The Virtual DOM is a lightweight copy of the real DOM. React uses diffing to update only changed parts.
+- **Example**: A soccer scoreboard updates just the score, not the whole board.
+
+### How does Virtual DOM differ from Real DOM?
+- **Real DOM**: Actual webpage, slow to update (redraws all).
+- **Virtual DOM**: In-memory copy, fast (updates only changes).
+- **Example**: Real DOM repaints a house for a crack; Virtual DOM patches only the crack.
+
+---
+
+## 2. Components
+
+### What are components in React? ⭐
+Components are reusable UI blocks, like buttons. **Types**: Functional (use Hooks) and class (use lifecycle methods).
+- **Example**: A music app’s `SongCard` shows a song title.
+- **Code**:
+```jsx
+function SongCard({ title }) {
+  return <p>{title}</p>;
+}
+```
+
+### What’s the difference between functional and class components? ⭐
+- **Functional**: Simple functions, use Hooks.
+- **Class**: Use classes, lifecycle methods, `render`.
+- **Example**: Functional `WeatherDisplay` uses `useState`; class `WeatherApp` uses `componentDidMount`.
+- **Code**:
+```jsx
+function WeatherDisplay() {
+  const [temp] = useState(20);
+  return <p>{temp}°C</p>;
+}
+```
+
+### What are Pure Components?
+Pure Components (`React.PureComponent`) only re-render if props/state change, using shallow comparison.
+- **Example**: A weather app’s `WeatherIcon` re-renders only if the icon changes.
+- **Code**:
+```jsx
+class WeatherIcon extends React.PureComponent {
+  render() {
+    return <img src={this.props.icon} />;
+  }
+}
+```
+
+### What is a Higher-Order Component (HOC)?
+An HOC is a function that enhances a component with extra features.
+- **Example**: A gift-wrapping HOC adds a border to a `Text` component.
+- **Code**:
+```jsx
+function withBorder(Component) {
+  return (props) => <div style={{ border: '2px solid' }}><Component {...props} /></div>;
+}
+```
+
+---
+
+## 3. State and Props
+
+### What are props in React? ⭐
+Props pass data from parent to child, read-only.
+- **Example**: A restaurant app passes `dishName` to `MenuItem`.
+- **Code**:
+```jsx
+function MenuItem({ dishName }) {
+  return <h3>{dishName}</h3>;
+}
+```
+
+### What is state in React? ⭐
+State is mutable data in a component, managed with `useState` or `this.setState`.
+- **Example**: A voting app tracks votes.
+- **Code**:
+```jsx
+import { useState } from 'react';
+function VoteCounter() {
+  const [votes, setVotes] = useState(0);
+  return <button onClick={() => setVotes(votes + 1)}>Votes: {votes}</button>;
+}
+```
+
+### Props vs. State ⭐
+- **Props**: Passed from parent, read-only.
+- **State**: Managed internally, mutable.
+- **Example**: Props set a card’s message; state tracks views.
+- **Code**:
+```jsx
+function Card({ message }) {
+  const [views, setViews] = useState(0);
+  return <p>{message}, Views: {views}</p>;
+}
+```
+
+### What is setState, and why use a callback?
+`this.setState` updates state in class components, using a callback to ensure updates use the latest state.
+- **Example**: A voting app uses a callback to add votes safely.
+- **Code**:
+```jsx
+class VoteCounter extends React.Component {
+  state = { votes: 0 };
+  addVote = () => {
+    this.setState((prev) => ({ votes: prev.votes + 1 }));
+  };
+  render() {
+    return <button onClick={this.addVote}>Votes: {this.state.votes}</button>;
+  }
+}
+```
+
+---
+
+## 4. Hooks
+
+### What are Hooks? ⭐
+Hooks are functions (e.g., `useState`, `useEffect`) that add state and lifecycle features to functional components.
+- **Example**: A todo app uses `useState` for tasks.
+- **Code**:
+```jsx
+import { useState } from 'react';
+function TodoApp() {
+  const [task, setTask] = useState('');
+  return <input value={task} onChange={(e) => setTask(e.target.value)} />;
+}
+```
+
+### What is useState? ⭐
+`useState` adds state to functional components, returning a state variable and setter.
+- **Example**: A light switch tracks on/off state.
+- **Code**:
+```jsx
+import { useState } from 'react';
+function LightSwitch() {
+  const [isOn, setIsOn] = useState(false);
+  return <button onClick={() => setIsOn(!isOn)}>{isOn ? 'On' : 'Off'}</button>;
+}
+```
+
+### What is useEffect? ⭐
+`useEffect` runs side effects (e.g., fetching data) after rendering, with a dependency array to control when it runs.
+- **Example**: A news app fetches headlines.
+- **Code**:
+```jsx
+import { useState, useEffect } from 'react';
+function NewsApp() {
+  const [category] = useState('sports');
+  useEffect(() => {
+    console.log(`Fetching ${category} news`);
+  }, [category]);
+  return <p>News</p>;
+}
+```
+
+### What are custom Hooks?
+Custom Hooks are functions starting with “use” that reuse logic with built-in Hooks.
+- **Example**: A fitness app’s `useTimer` tracks workout time.
+- **Code**:
+```jsx
+import { useState, useEffect } from 'react';
+function useTimer() {
+  const [seconds, setSeconds] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setSeconds(s => s + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return seconds;
+}
+```
+
+### What is useRef vs. createRef?
+- **useRef**: Hook for functional components, same ref across renders.
+- **createRef**: Function for class components, new ref each render.
+- **Example**: `useRef` focuses a video player.
+- **Code**:
+```jsx
+import { useRef } from 'react';
+function VideoPlayer() {
+  const videoRef = useRef();
+  return <video ref={videoRef} />;
+}
+```
+
+---
+
+## 5. Routing and Navigation
+
+### What is React Router? ⭐
+React Router handles navigation in SPAs, mapping URLs to components.
+- **Example**: A bookstore app shows “Books” at `/books`.
+- **Code**:
+```jsx
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/books" element={<Books />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+function Books() { return <p>Books</p>; }
+```
+
+### Components of React Router
+- **BrowserRouter**: Wraps app.
+- **Routes**: Holds routes.
+- **Route**: Maps URL to component.
+- **Link**: Creates navigation links.
+- **Example**: A travel app links to “Destinations”.
+
+### React Router vs. Conventional Routing
+- **React Router**: Client-side, no reload, SPAs.
+- **Conventional**: Server-side, full reload, MPAs.
+- **Example**: React Router flips book pages; conventional opens new books.
+
+---
+
+## 6. Rendering and UI
+
+### What is conditional rendering? ⭐
+Conditional rendering shows UI based on conditions, using `? :` or `&&`.
+- **Example**: A login app shows “Welcome” if logged in.
+- **Code**:
+```jsx
+function LoginStatus({ isLoggedIn }) {
+  return isLoggedIn ? <p>Welcome</p> : <p>Log In</p>;
+}
+```
+
+### What is the render method?
+`render` in class components returns JSX to display UI.
+- **Example**: A movie app’s `MovieCard` shows a title.
+- **Code**:
+```jsx
+class MovieCard extends React.Component {
+  render() {
+    return <h2>{this.props.title}</h2>;
+  }
+}
+```
+
+### What are React Fragments?
+Fragments group elements without extra DOM nodes, using `<>` or `<React.Fragment>`.
+- **Example**: A list app groups a heading and list.
+- **Code**:
+```jsx
+function ItemList() {
+  return (
+    <>
+      <h2>Items</h2>
+      <ul><li>Apple</li></ul>
+    </>
+  );
+}
+```
+
+### What are lists and keys? ⭐
+Use `map` to create lists, with a `key` prop to identify items.
+- **Example**: A grocery app lists “Apples”.
+- **Code**:
+```jsx
+function GroceryList() {
+  const items = ["Apples", "Bananas"];
+  return <ul>{items.map(item => <li key={item}>{item}</li>)}</ul>;
+}
+```
+
+### What is dangerouslySetInnerHTML?
+`dangerouslySetInnerHTML` inserts raw HTML, risky for XSS attacks.
+- **Example**: A blog app shows formatted HTML from a trusted editor.
+- **Code**:
+```jsx
+function BlogPost() {
+  const html = "<p><b>Bold</b></p>";
+  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+}
+```
+
+---
+
+## 7. Forms and Events
+
+### What are forms in React?
+Forms collect user input (e.g., text fields) using controlled or uncontrolled components.
+- **Example**: A survey app collects feedback.
+
+### How to create forms? ⭐
+Use controlled components with `useState` for input values, `onChange` for updates, and `onSubmit` for submission.
+- **Example**: A contact form tracks name.
+- **Code**:
+```jsx
+import { useState } from 'react';
+function ContactForm() {
+  const [name, setName] = useState('');
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); console.log(name); }}>
+      <input value={name} onChange={(e) => setName(e.target.value)} />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+### What are controlled components?
+Controlled components use state to manage form input values.
+- **Example**: A signup form’s username input.
+- **Code**:
+```jsx
+import { useState } from 'react';
+function SignupForm() {
+  const [username, setUsername] = useState('');
+  return <input value={username} onChange={(e) => setUsername(e.target.value)} />;
+}
+```
+
+### How to create an event in React?
+Add handlers like `onClick` to JSX elements, defining functions for actions.
+- **Example**: A game app’s “Play” button starts the game.
+- **Code**:
+```jsx
+function Game() {
+  const startGame = () => alert("Game started!");
+  return <button onClick={startGame}>Play</button>;
+}
+```
+
+---
+
+## 8. State Management
+
+### What is the Context API?
+Context API shares data across components without prop drilling, using `Provider` and `useContext`.
+- **Example**: A blog app shares the theme.
+- **Code**:
+```jsx
+import { createContext, useContext } from 'react';
+const ThemeContext = createContext();
+function BlogPost() {
+  const theme = useContext(ThemeContext);
+  return <p>Theme: {theme}</p>;
+}
+```
+
+### What is prop drilling?
+Prop drilling passes data through many components, making code messy.
+- **Example**: Passing a student’s name through layers in a school app.
+
+### What is React-Redux?
+React-Redux connects Redux (state management) to React, sharing state globally.
+- **Example**: A cart app stores items in Redux.
+
+### Benefits of React-Redux
+- Centralized state, better performance, easier debugging, persistent data.
+- **Example**: A todo app’s tasks in one store.
+
+### Core components of React-Redux
+- **Store**: Holds state.
+- **Action Creators**: Create actions.
+- **Actions**: Describe changes.
+- **Reducers**: Update state.
+- **Example**: Adding an item to a cart.
+- **Code**:
+```jsx
+const addItem = (item) => ({ type: 'ADD_ITEM', payload: item });
+const reducer = (state = [], action) => action.type === 'ADD_ITEM' ? [...state, action.payload] : state;
+```
+
+### Combining reducers
+Use `combineReducers` to merge reducers into one store.
+- **Example**: A blog app combines posts and users reducers.
+- **Code**:
+```jsx
+import { combineReducers } from 'redux';
+const rootReducer = combineReducers({
+  posts: (state = [], action) => state,
+  users: (state = [], action) => state,
+});
+```
+
+---
+
+## 9. Performance and Optimization
+
+### How to optimize React code?
+Use `React.memo`, `React.lazy`, `useMemo`, `useCallback`, and avoid extra DOM nodes.
+- **Example**: A gallery app memoizes images.
+- **Code**:
+```jsx
+import { memo } from 'react';
+const Image = memo(({ src }) => <img src={src} />);
+```
+
+### What is Lazy Loading?
+Lazy Loading loads components when needed with `React.lazy` and `Suspense`.
+- **Example**: A photo app loads a gallery on demand.
+- **Code**:
+```jsx
+import { lazy, Suspense } from 'react';
+const Gallery = lazy(() => import('./Gallery'));
+function App() {
+  return <Suspense fallback={<div>Loading...</div>}><Gallery /></Suspense>;
+}
+```
+
+### What is Memoization?
+Memoization caches results to avoid re-computation, using `React.memo` or `useMemo`.
+- **Example**: A calculator caches a sum.
+- **Code**:
+```jsx
+import { useMemo } from 'react';
+function Calculator({ numbers }) {
+  const sum = useMemo(() => numbers.reduce((a, b) => a + b, 0), [numbers]);
+  return <p>Sum: {sum}</p>;
+}
+```
+
+### What is Strict Mode?
+Strict Mode catches issues in development with `<React.StrictMode>`.
+- **Example**: Warns about deprecated methods in a form app.
+- **Code**:
+```jsx
+import React from 'react';
+function App() {
+  return <React.StrictMode><div>Hello</div></React.StrictMode>;
+}
+```
+
+---
+
+## 10. Advanced Topics
+
+### What are lifecycle methods?
+Class components have lifecycle stages: initialization, mounting, updating, unmounting (e.g., `componentDidMount`).
+- **Example**: A chat app fetches messages in `componentDidMount`.
+
+### Mounting phase methods
+- `componentWillMount` (deprecated): Before mounting.
+- `componentDidMount`: After mounting, for fetching data.
+- **Example**: A weather app fetches data in `componentDidMount`.
+
+### What is shouldComponentUpdate?
+Controls re-rendering in class components, returning `false` to skip.
+- **Example**: A chat app’s `Message` re-renders only if text changes.
+
+### What is Reconciliation?
+Reconciliation updates the DOM via Virtual DOM diffing, using the Fiber algorithm.
+- **Example**: A todo app updates only new tasks.
+
+### What is one-way data binding?
+Data flows from parent to child or state to UI, making debugging easier.
+- **Example**: A to-do app sends tasks via props.
+
+### What are refs?
+Refs access DOM elements or components, like focusing an input.
+- **Example**: A form app focuses an input.
+- **Code**:
+```jsx
+import { useRef } from 'react';
+function Form() {
+  const inputRef = useRef();
+  return <input ref={inputRef} />;
+}
+```
+
+### What is server-side rendering (SSR)?
+SSR renders HTML on the server for faster load and SEO, using Next.js.
+- **Example**: A blog app pre-renders posts.
+
+### What is CORS?
+CORS allows requests to different domains, requiring server permission.
+- **Example**: A weather app fetches data from an API.
+
+### What is Axios?
+Axios makes HTTP requests to APIs, supporting promises.
+- **Example**: A movie app fetches data.
+- **Code**:
+```jsx
+import axios from 'axios';
+import { useEffect } from 'react';
+function MovieApp() {
+  useEffect(() => {
+    axios.get('https://api.example.com/movies').then(res => console.log(res.data));
+  }, []);
+  return <p>Movies</p>;
+}
+```
+
+### What is React-Material UI?
+Material UI is a library of prebuilt, customizable components styled with Material Design.
+- **Example**: A dashboard app uses styled buttons.
+
+### What is Flux in Redux?
+Flux is a one-way data flow pattern for state management in Redux.
+- **Example**: A chat app updates messages via actions.
+
+---
+
+## 11. Miscellaneous
+
+### How to create a React app?
+Use `npm create vite@latest`, install dependencies, and edit `App.jsx`.
+- **Example**: A “Hello World” app.
+- **Code**:
+```jsx
+function App() {
+  return <div>Hello World</div>;
+}
+export default App;
+```
+
+### How to write comments in React?
+- JavaScript: `//` or `/* */`.
+- JSX: `{/* */}`.
+- **Example**: Commenting a JSX element.
+- **Code**:
+```jsx
+function App() {
+  return <div>{/* Hello */}<p>World</p></div>;
+}
+```
+
+### React vs. Angular
+- **React**: Library, Virtual DOM, one-way binding.
+- **Angular**: Framework, Real DOM, two-way binding.
+- **Example**: React builds a custom burger; Angular is a full meal.
+
+### React vs. React Native
+- **React**: Web apps, HTML.
+- **React Native**: Mobile apps, native components.
+- **Example**: React for a web blog, React Native for a mobile blog.
+
+### What is a React Developer Tool?
+A browser extension to inspect components, props, and state.
+- **Example**: Debugging a cart in a shopping app.
+
+### How to use styles in React?
+Use CSS Modules for local scoping with `.module.css`.
+- **Example**: A profile card with a border.
+- **Code**:
+```css
+/* Card.module.css */
+.card { border: 2px solid blue; }
+```
+```jsx
+import styles from './Card.module.css';
+function Card() {
+  return <div className={styles.card}>Profile</div>;
+}
+```
+
+### What are styled components?
+Write CSS in JavaScript with the `styled-components` library.
+- **Example**: A red button.
+- **Code**:
+```jsx
+import styled from 'styled-components';
+const RedButton = styled.button`background: red;`;
+function App() {
+  return <RedButton>Click</RedButton>;
+}
+```
+
+---
+
+## Practice Tips for Your Interview
+1. **Code Daily**: Build a todo or counter app to practice components, state, and Hooks.
+2. **Explain Aloud**: Answer each question using the examples, as if in an interview.
+3. **Focus on Basics**: Master components, state, props, Hooks, and Router first.
+4. **Use Tools**: Debug with React Developer Tools and test in CodeSandbox.
+5. **Mock Interviews**: Practice with a friend or record yourself answering 5 questions daily.
+
+This guide condenses everything you need to shine in your React interview. Good luck, and happy coding!
