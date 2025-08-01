@@ -12,7 +12,7 @@ import {
   Stack,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router"; // Import useRouter
+import { useRouter } from "next/router";
 import { PostFrontmatter } from "@/lib/blog";
 
 interface BlogCardProps {
@@ -41,18 +41,15 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
     e.stopPropagation();
     router.push(`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`);
   };
-  const handleReadMoreClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); 
+
+  const handleCardClick = () => {
     router.push(`/blog/${post.slug}`);
   };
 
   return (
-    // <Link
-    //   href={`/blog/${post.slug}`}
-    //   passHref
-    //   style={{ textDecoration: "none", height: "100%" }}>
     <motion.div variants={itemVariants} style={{ height: "100%" }}>
       <Card
+        onClick={handleCardClick}
         sx={{
           height: "100%",
           display: "flex",
@@ -84,10 +81,12 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
             flexDirection: "column",
             p: 3,
           }}>
+          {/* --- CORRECTED CATEGORY STACK --- */}
           <Stack
             direction="row"
-            justifyContent="space-between"
-            alignItems="center"
+            spacing={1}
+            useFlexGap
+            flexWrap="wrap"
             sx={{ mb: 1 }}>
             {(Array.isArray(post.category)
               ? post.category
@@ -103,10 +102,11 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
                 onClick={(e) => handleCategoryClick(e, cat)}
               />
             ))}
-            <Typography variant="caption" color="text.secondary">
-              {post.readTime}
-            </Typography>
           </Stack>
+
+          <Typography variant="caption" color="text.secondary">
+            {post.readTime}
+          </Typography>
           <Typography
             variant="h6"
             component="h2"
@@ -131,23 +131,18 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
                 variant="filled"
                 clickable
                 sx={{ backgroundColor: "action.hover" }}
-                onClick={(e) => handleTagClick(e, tag)} // Use the new handler
+                onClick={(e) => handleTagClick(e, tag)}
               />
             ))}
           </Stack>
         </CardContent>
         <Box sx={{ p: 2, pt: 0, mt: "auto" }}>
-          <Button
-            fullWidth
-            variant="contained"
-            color="secondary"
-            onClick={handleReadMoreClick}>
+          <Button fullWidth variant="contained" color="primary">
             Read More
           </Button>
         </Box>
       </Card>
     </motion.div>
-    // </Link>
   );
 };
 
