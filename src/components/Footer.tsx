@@ -9,10 +9,15 @@ import {
   Grid,
   Link as MuiLink,
   Tooltip,
+  Paper,
 } from "@mui/material";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { CONTACT_DATA } from "@/utils/contactData";
+import { motion } from "framer-motion";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { useVisitorCounts } from "@/context/VisitorContex";
 
 const FooterRoot = styled("footer")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -26,6 +31,72 @@ const FooterContent = styled(Box)(({ theme }) => ({
   maxWidth: "1200px",
   margin: "0 auto",
 }));
+
+const FooterVisitorStats = () => {
+  const { uniqueVisitors, totalVisits, loading } = useVisitorCounts();
+  const theme = useTheme();
+
+  if (loading || !uniqueVisitors) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}>
+      <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+        {/* Unique Visitors Counter */}
+        <Paper
+          variant="outlined"
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 1,
+            p: "6px 12px",
+            borderRadius: "50px",
+            backgroundColor: "transparent",
+            borderColor: theme.palette.primary.main,
+            boxShadow: `0 2px 12px 0 ${theme.palette.primary.light}55`,
+            color: theme.palette.text.primary,
+          }}>
+          <PeopleAltOutlinedIcon
+            sx={{ fontSize: 18, color: theme.palette.primary.main }}
+          />
+          <Typography
+            variant="body2"
+            component="p"
+            sx={{ fontWeight: "medium" }}>
+            {uniqueVisitors?.toLocaleString()}
+          </Typography>
+        </Paper>
+
+        {/* Total Visits Counter */}
+        <Paper
+          variant="outlined"
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 1,
+            p: "6px 12px",
+            borderRadius: "50px",
+            backgroundColor: "transparent",
+            borderColor: theme.palette.secondary.main,
+            boxShadow: `0 2px 12px 0 ${theme.palette.secondary.light}55`,
+            color: theme.palette.text.primary,
+          }}>
+          <VisibilityOutlinedIcon
+            sx={{ fontSize: 18, color: theme.palette.secondary.main }}
+          />
+          <Typography
+            variant="body2"
+            component="p"
+            sx={{ fontWeight: "medium" }}>
+            {totalVisits?.toLocaleString()}
+          </Typography>
+        </Paper>
+      </Stack>
+    </motion.div>
+  );
+};
 
 const Footer = () => {
   const theme = useTheme();
@@ -89,7 +160,7 @@ const Footer = () => {
                       color: "text.secondary",
                       transition: "color 0.3s ease, transform 0.3s ease",
                       "&:hover": {
-                        color: social.color, // Using color from your data object
+                        color: social.color,
                         transform: "translateY(-3px)",
                       },
                     }}>
@@ -103,13 +174,15 @@ const Footer = () => {
 
         <Divider sx={{ my: 4, borderColor: "rgba(255, 255, 255, 0.08)" }} />
 
-        <Box>
-          <Typography variant="body2" align="center">
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="body2">
             &copy; {new Date().getFullYear()} Azhagu-swe. All rights reserved.
           </Typography>
-          <Typography variant="body2" align="center" sx={{ mt: 1 }}>
+          <Typography variant="body2" sx={{ mt: 1 }}>
             Crafted with ❤️ By Azhagu-swe
           </Typography>
+
+          <FooterVisitorStats />
         </Box>
       </FooterContent>
     </FooterRoot>
