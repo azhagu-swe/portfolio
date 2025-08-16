@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import type { AppProps } from "next/app";
 import "@fontsource/orbitron";
 import "@fontsource/poppins";
+import { VisitorProvider } from "@/context/VisitorContex";
 
 const AppContent: React.FC<AppProps> = ({ Component, pageProps }) => {
   const { theme, toggleTheme, isDarkMode } = useThemeContext();
@@ -22,8 +23,10 @@ const AppContent: React.FC<AppProps> = ({ Component, pageProps }) => {
 
 export default function MyApp(props: AppProps) {
   return (
-    <ThemeProvider>
-      <AppContent {...props} />
-    </ThemeProvider>
+    <VisitorProvider>
+      <ThemeProvider>
+        <AppContent {...props} />
+      </ThemeProvider>
+    </VisitorProvider>
   );
 }
