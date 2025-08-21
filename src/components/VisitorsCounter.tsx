@@ -12,7 +12,6 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { motion, useInView, animate } from "framer-motion";
 import { useVisitorCounts } from "@/context/VisitorContex";
 
-// A reusable component to animate numbers counting up
 const AnimatedNumber = ({ value }: { value: number }) => {
   const ref = React.useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true });
@@ -46,11 +45,8 @@ const VisitorCounter: React.FC = () => {
   }
 
   if (error) {
-    return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
-        <Typography color="error">{error}</Typography>
-      </Box>
-    );
+    console.error("VisitorCounter error:", error);
+    return null;
   }
 
   const containerVariants = {
@@ -79,18 +75,24 @@ const VisitorCounter: React.FC = () => {
           {uniqueVisitors !== null && (
             <motion.div variants={itemVariants}>
               <Paper
-                variant="outlined" // Use outline instead of solid fill
+                variant="outlined"
                 sx={{
                   p: 3,
                   textAlign: "center",
                   minWidth: 240,
                   borderRadius: 3,
-                  backgroundColor: 'transparent', // No fill color
-                  borderColor: theme.palette.primary.main, // Primary color for the outline
-                  color: theme.palette.text.primary, // Standard text color
-                  boxShadow: `0 4px 24px 0 ${theme.palette.primary.light}60`, // Shadow with primary color
+                  backgroundColor: "transparent",
+                  borderColor: theme.palette.primary.main,
+                  color: theme.palette.text.primary,
+                  boxShadow: `0 4px 24px 0 ${theme.palette.primary.light}60`,
                 }}>
-                <PeopleAltIcon sx={{ fontSize: 40, mb: 1, color: theme.palette.primary.main }} />
+                <PeopleAltIcon
+                  sx={{
+                    fontSize: 40,
+                    mb: 1,
+                    color: theme.palette.primary.main,
+                  }}
+                />
                 <Typography variant="h6" component="h3">
                   Unique Visitors
                 </Typography>
@@ -104,18 +106,24 @@ const VisitorCounter: React.FC = () => {
           {totalVisits !== null && (
             <motion.div variants={itemVariants}>
               <Paper
-                variant="outlined" // Use outline instead of solid fill
+                variant="outlined"
                 sx={{
                   p: 3,
                   textAlign: "center",
                   minWidth: 240,
                   borderRadius: 3,
-                  backgroundColor: 'transparent', // No fill color
-                  borderColor: theme.palette.secondary.main, // Secondary color for the outline
-                  color: theme.palette.text.primary, // Standard text color
-                  boxShadow: `0 4px 24px 0 ${theme.palette.secondary.light}60`, // Shadow with secondary color
+                  backgroundColor: "transparent",
+                  borderColor: theme.palette.secondary.main,
+                  color: theme.palette.text.primary,
+                  boxShadow: `0 4px 24px 0 ${theme.palette.secondary.light}60`,
                 }}>
-                <VisibilityIcon sx={{ fontSize: 40, mb: 1, color: theme.palette.secondary.main }} />
+                <VisibilityIcon
+                  sx={{
+                    fontSize: 40,
+                    mb: 1,
+                    color: theme.palette.secondary.main,
+                  }}
+                />
                 <Typography variant="h6" component="h3">
                   Total Page Views
                 </Typography>
