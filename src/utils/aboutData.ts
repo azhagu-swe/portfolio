@@ -1,7 +1,6 @@
-// aboutData.ts
 export const PROFILE = (basePath: string) => ({
-  name: "Alagappan P", //
-  role: "Java FullStack Developer", //
+  name: "Alagappan P", 
+  role: "Java FullStack Developer", 
   intro:
     "A Full Stack Developer with professional experience in building scalable and secure applications using Java and Spring Boot. Armed with a Master's degree in Computer Science, I enjoy tackling complex challenges and delivering innovative tech solutions. Let's build something remarkable together!",
   avatar: `${basePath}/image/profile.jpg`,
@@ -10,19 +9,19 @@ export const PROFILE = (basePath: string) => ({
 export const SKILLS_DATA = [
   {
     title: "Languages",
-    skills: "Java (Core 8+), SQL, JavaScript, HTML, CSS", //
+    skills: "Java (Core 8+), SQL, JavaScript, HTML, CSS", 
   },
   {
     title: "Frameworks & Technologies",
-    skills: "Spring Boot, Spring MVC, Spring Data JPA, Hibernate, RESTful APIs, Microservices, RabbitMQ, Redis", //
+    skills: "Spring Boot, Spring MVC, Spring Data JPA, Hibernate, RESTful APIs, Microservices, RabbitMQ, Redis",
   },
   {
     title: "Databases",
-    skills: "PostgreSQL, MySQL", //
+    skills: "PostgreSQL, MySQL",
   },
   {
     title: "Tools & Platforms",
-    skills: "Git, IntelliJ IDEA, VS Code, Maven, Docker (Basic), Windows, Ubuntu", //
+    skills: "Git, IntelliJ IDEA, VS Code, Maven, Docker (Basic), Windows, Ubuntu", 
   },
 ];
 
@@ -40,7 +39,7 @@ export const CERTIFICATIONS_DATA = (basePath: string) => [
     img: `${basePath}/image/chat_gpt_advanced_cert.jpg`,
   },
   {
-    description: "Introduction to Prompt Engineering - Simplilearn, 2025", //
+    description: "Introduction to Prompt Engineering - Simplilearn, 2025", 
     img: `${basePath}/image/prompt_engineer_cert.jpg`, 
   },
 ];
@@ -48,7 +47,7 @@ export const CERTIFICATIONS_DATA = (basePath: string) => [
 export const ACHIEVEMENTS_DATA = (basePath: string) => [
   {
     description:
-      "🏆 Secured Second Prize in a Debugging Competition at National College, Trichy.", //
+      "🏆 Secured Second Prize in a Debugging Competition at National College, Trichy.",
     img: `${basePath}/image/Debuggin-2nd-Prize.jpg`,
   },
 ];

@@ -12,7 +12,7 @@ export const HERO_DATA = {
     
   ],
    description:
-    "Software Engineer with 3 years of hands-on experience in building scalable microservices and full-stack solutions using Java and Spring Boot. Holder of an M.Sc in Computer Science, passionate about leveraging modern technologies to solve complex problems and optimize system performance.",
+    "Software Engineer with 3+ years of hands-on experience in building scalable microservices and full-stack solutions using Java and Spring Boot. Holder of an M.Sc in Computer Science, passionate about leveraging modern technologies to solve complex problems and optimize system performance.",
    buttons: {
     hire: "Hire Me",
     resume: "Download Resume",
