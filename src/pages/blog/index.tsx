@@ -39,7 +39,6 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-// --- MAIN PAGE COMPONENT ---
 const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
   const theme = useTheme();
   const router = useRouter();

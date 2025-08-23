@@ -20,6 +20,7 @@ import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import MailIcon from "@mui/icons-material/Mail";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Book } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -167,7 +168,13 @@ const Layout: React.FC<{
               value="/contact"
               icon={<MailIcon />}
             />
+              <BottomNavigationAction
+              label="Blog"
+              value="/blog"
+              icon={<Book />}
+            />
           </BottomNavigation>
+          
         </Paper>
       )}
     </Box>

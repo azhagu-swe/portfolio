@@ -69,7 +69,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
     .filter((project) =>
       project.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  
+
   const featuredProject = filteredProjects[0];
   const otherProjects = filteredProjects.slice(1);
 
@@ -79,21 +79,18 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}
-    >
+      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
       <Box
         sx={{ textAlign: "center", mb: 6 }}
         component={motion.div}
-        variants={itemVariants}
-      >
+        variants={itemVariants}>
         <Typography
           variant="h3"
           sx={{
             fontWeight: "bold",
             color: theme.palette.primary.main,
             fontFamily: "Orbitron, sans-serif",
-          }}
-        >
+          }}>
           My Projects
         </Typography>
         <Typography variant="h6" color="text.secondary">
@@ -114,8 +111,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
           backdropFilter: "blur(10px)",
           borderRadius: "16px",
           border: `1px solid ${theme.palette.divider}`,
-        }}
-      >
+        }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={4}>
             <TextField
@@ -141,8 +137,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
               variant="scrollable"
               scrollButtons="auto"
               allowScrollButtonsMobile
-              aria-label="Project filter tabs"
-            >
+              aria-label="Project filter tabs">
               <Tab label="All" value="All" />
               <Tab label="Java" value="Java" />
               <Tab label="Next.js" value="Next.js" />
@@ -155,41 +150,64 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
 
       {featuredProject && (
         <Box sx={{ mb: 6 }} component={motion.div} variants={itemVariants}>
-            <Typography variant="h4" sx={{ mb: 2, fontFamily: 'Orbitron, sans-serif' }}>Featured Project</Typography>
-            <Link href={`/projects/${featuredProject.slug}`} passHref style={{ textDecoration: 'none' }}>
-              <Card
-                  sx={{
-                      display: { xs: 'flex', md: 'flex' },
-                      flexDirection: { xs: 'column', md: 'row' },
-                      borderRadius: '16px',
-                      boxShadow: 3,
-                      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                      cursor: 'pointer',
-                      '&:hover': {
-                          transform: 'translateY(-5px)',
-                          boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
-                      }
-                  }}
-              >
-                  <CardMedia
-                      component="img"
-                      sx={{ width: { xs: '100%', md: 400 }, height: { xs: 250, md: 'auto' } }}
-                      image={featuredProject.thumbnail.startsWith("http") ? featuredProject.thumbnail : `${basePath}${featuredProject.thumbnail}`}
-                      alt={featuredProject.title}
-                  />
-                  <CardContent sx={{ p: 4, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                      <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 1 }}>
-                          {featuredProject.title}
-                      </Typography>
-                      <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                          {featuredProject.description}
-                      </Typography>
-                      <Button variant="contained">
-                          View Case Study
-                      </Button>
-                  </CardContent>
-              </Card>
-            </Link>
+          <Typography
+            variant="h4"
+            sx={{ mb: 2, fontFamily: "Orbitron, sans-serif" }}>
+            Featured Project
+          </Typography>
+          <Link
+            href={`/projects/${featuredProject.slug}`}
+            passHref
+            style={{ textDecoration: "none" }}>
+            <Card
+              sx={{
+                display: { xs: "flex", md: "flex" },
+                flexDirection: { xs: "column", md: "row" },
+                borderRadius: "16px",
+                boxShadow: 3,
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                cursor: "pointer",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
+                },
+              }}>
+              <CardMedia
+                component="img"
+                sx={{
+                  width: { xs: "100%", md: 400 },
+                  height: { xs: 250, md: "auto" },
+                }}
+                image={
+                  featuredProject.thumbnail.startsWith("http")
+                    ? featuredProject.thumbnail
+                    : `${basePath}${featuredProject.thumbnail}`
+                }
+                alt={featuredProject.title}
+              />
+              <CardContent
+                sx={{
+                  p: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}>
+                <Typography
+                  variant="h5"
+                  component="h2"
+                  sx={{ fontWeight: "bold", mb: 1 }}>
+                  {featuredProject.title}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}>
+                  {featuredProject.description}
+                </Typography>
+                <Button variant="contained">View Case Study</Button>
+              </CardContent>
+            </Card>
+          </Link>
         </Box>
       )}
 
@@ -200,55 +218,38 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
             : `${basePath}/${project.thumbnail}`;
 
           return (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={4}
-              key={project.slug}
-              component={motion.div}
-              variants={itemVariants}
-            >
+            <Grid item xs={12} sm={6} md={4} key={project.slug}>
               <Card
                 sx={{
-                  height: "100%",
                   display: "flex",
                   flexDirection: "column",
+                  height: "100%",
                   borderRadius: "16px",
-                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                  backgroundColor:
-                    theme.palette.mode === "dark"
-                      ? "rgba(255, 255, 255, 0.05)"
-                      : "rgba(0, 0, 0, 0.02)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  overflow: "hidden",
+                  boxShadow: 2,
                   "&:hover": {
-                    transform: "translateY(-8px)",
-                    boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
+                    transform: { md: "translateY(-8px)" }, // disable hover shift on mobile
                   },
-                }}
-              >
+                }}>
                 <CardMedia
                   component="img"
-                  height="200"
+                  height="180"
+                  sx={{ objectFit: "cover" }}
                   image={imageUrl}
                   alt={project.title}
-                  sx={{ objectFit: "cover" }}
                 />
-                <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                <CardContent sx={{ flexGrow: 1, p: 2 }}>
                   <Typography
                     variant="h6"
                     component="h2"
                     gutterBottom
-                    sx={{ fontWeight: "bold" }}
-                  >
+                    sx={{ fontWeight: "bold" }}>
                     {project.title}
                   </Typography>
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    sx={{ flexGrow: 1, minHeight: "60px" }}
-                  >
+                    sx={{ flexGrow: 1, minHeight: "60px" }}>
                     {project.description}
                   </Typography>
                 </CardContent>
@@ -258,8 +259,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                     spacing={1}
                     useFlexGap
                     flexWrap="wrap"
-                    sx={{ mb: 2 }}
-                  >
+                    sx={{ mb: 2 }}>
                     {project.technologies.map((tech, i) => (
                       <Chip
                         key={i}
@@ -276,14 +276,12 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                     pt: 0,
                     mt: "auto",
                     justifyContent: "space-between",
-                  }}
-                >
+                  }}>
                   <Button
                     component={Link}
                     href={`/projects/${project.slug}`}
                     size="small"
-                    variant="contained"
-                  >
+                    variant="contained">
                     Case Study
                   </Button>
                   <Stack direction="row" spacing={1}>
@@ -293,8 +291,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                         href={project.liveDemo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        startIcon={<OpenInNew />}
-                      >
+                        startIcon={<OpenInNew />}>
                         Demo
                       </Button>
                     )}
@@ -304,8 +301,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      startIcon={<Code />}
-                    >
+                      startIcon={<Code />}>
                       Code
                     </Button>
                   </Stack>
