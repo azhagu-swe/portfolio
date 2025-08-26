@@ -19,7 +19,6 @@ import { useRouter } from "next/router";
 import { Icon } from "@iconify/react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-// Assuming these are correctly imported from your utils
 import { MENU_ITEMS, BOTTOM_ITEMS } from "@/utils/drawerData";
 
 const drawerWidth = 240;
@@ -52,11 +51,9 @@ const StyledDrawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
-  // Hide the drawer completely on mobile
   [theme.breakpoints.down("sm")]: {
     display: "none",
   },
-  // Apply mixins for desktop view
   "& .MuiDrawer-paper": {
     borderRight: "none",
     ...((open && openedMixin(theme)) || (!open && closedMixin(theme))),
