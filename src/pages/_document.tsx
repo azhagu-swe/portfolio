@@ -39,7 +39,14 @@ class MyDocument extends Document<MyDocumentProps> {
             rel="icon"
             href={`https://azhagu-swe.github.io/portfolio/image/favicon.ico`}
           />
-          <meta name="description" content="Azhagu-Swe Portfolio" />
+          <meta name="description" content="Software Engineer with 3+ years of hands-on experience in building scalable microservices and full-stack solutions using Java and Spring Boot. Passionate about leveraging modern technologies to solve complex problems and optimize system performance." />
+          <meta name="keywords" content="Software Engineer, Java, Spring Boot, Full Stack Developer, Microservices, Web Development" />
+          <meta name="author" content="Alagappan P" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta property="og:type" content="website" />
+          <meta property="og:locale" content="en_US" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <link rel="canonical" href="https://azhagu-swe.github.io/portfolio" />
         </Head>
         <body>
           <Main />

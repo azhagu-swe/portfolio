@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { PostFrontmatter } from "@/lib/blog";
+import { ProjectFrontmatter } from "@/lib/projects";
 
-interface BlogCardProps {
-  post: PostFrontmatter & { slug: string };
+interface ProjectCardProps {
+  project: ProjectFrontmatter & { slug: string };
   basePath: string;
 }
 
@@ -25,25 +25,15 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-const BlogCard = ({ post, basePath }: BlogCardProps) => {
+const ProjectCard = ({ project, basePath }: ProjectCardProps) => {
   const theme = useTheme();
   const router = useRouter();
-  const imageUrl = post.coverImage.startsWith("http")
-    ? post.coverImage
-    : `${basePath}${post.coverImage}`;
-
-  const handleCategoryClick = (e: React.MouseEvent, cat: string) => {
-    e.stopPropagation();
-    router.push(`/categories/${cat.toLowerCase().replace(/\s+/g, "-")}`);
-  };
-
-  const handleTagClick = (e: React.MouseEvent, tag: string) => {
-    e.stopPropagation();
-    router.push(`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`);
-  };
+  const imageUrl = project.thumbnail.startsWith("http")
+    ? project.thumbnail
+    : `${basePath}${project.thumbnail}`;
 
   const handleCardClick = () => {
-    router.push(`/blog/${post.slug}`);
+    router.push(`/projects/${project.slug}`);
   };
 
   return (
@@ -75,7 +65,7 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
             objectFit: "cover" 
           }}
           image={imageUrl}
-          alt={post.title}
+          alt={project.title}
         />
         <CardContent
           sx={{
@@ -84,45 +74,15 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
             flexDirection: "column",
             p: { xs: 2, sm: 3 },
           }}>
-          {/* --- CORRECTED CATEGORY STACK --- */}
-          <Stack
-            direction="row"
-            spacing={1}
-            useFlexGap
-            flexWrap="wrap"
-            sx={{ mb: 1 }}>
-            {(Array.isArray(post.category)
-              ? post.category
-              : [post.category]
-            ).map((cat: string) => (
-              <Chip
-                key={cat}
-                label={cat}
-                color="primary"
-                size="small"
-                variant="outlined"
-                clickable
-                onClick={(e) => handleCategoryClick(e, cat)}
-                sx={{
-                  height: { xs: 20, sm: 24 },
-                  fontSize: { xs: "0.65rem", sm: "0.75rem" }
-                }}
-              />
-            ))}
-          </Stack>
-
-          <Typography variant="caption" color="text.secondary">
-            {post.readTime}
-          </Typography>
           <Typography
             variant="h6"
             component="h2"
             gutterBottom
             sx={{ fontWeight: "bold", flexGrow: 1, mt: 1, fontSize: { xs: "1rem", sm: "1.1rem" } }}>
-            {post.title}
+            {project.title}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontSize: { xs: "0.85rem", sm: "0.9rem" } }}>
-            {post.excerpt}
+            {project.description}
           </Typography>
           <Stack
             direction="row"
@@ -130,19 +90,17 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
             useFlexGap
             flexWrap="wrap"
             sx={{ mt: "auto", mb: 2 }}>
-            {post.tags.map((tag: string) => (
+            {project.technologies.map((tech: string) => (
               <Chip
-                key={tag}
-                label={`#${tag}`}
+                key={tech}
+                label={tech}
                 size="small"
-                variant="filled"
-                clickable
+                variant="outlined"
                 sx={{ 
                   backgroundColor: "action.hover",
                   height: { xs: 20, sm: 24 },
                   fontSize: { xs: "0.65rem", sm: "0.75rem" }
                 }}
-                onClick={(e) => handleTagClick(e, tag)}
               />
             ))}
           </Stack>
@@ -157,7 +115,7 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
               py: { xs: 0.8, sm: 1 },
               fontSize: { xs: "0.85rem", sm: "0.95rem" }
             }}>
-            Read More
+            View Case Study
           </Button>
         </Box>
       </Card>
@@ -165,4 +123,4 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
   );
 };
 
-export default BlogCard;
+export default ProjectCard;

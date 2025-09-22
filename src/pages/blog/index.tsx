@@ -42,6 +42,7 @@ const itemVariants = {
 const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
   const theme = useTheme();
   const router = useRouter();
+  const { basePath } = router;
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,10 +70,15 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}
+      sx={{ 
+        p: { xs: 2, sm: 3, md: 4 }, 
+        maxWidth: "1200px", 
+        mx: "auto",
+        width: "100%"
+      }}
     >
       <Box
-        sx={{ textAlign: "center", mb: 6 }}
+        sx={{ textAlign: "center", mb: { xs: 4, sm: 5, md: 6 } }}
         component={motion.div}
         variants={itemVariants}
       >
@@ -82,16 +88,22 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
             fontWeight: "bold",
             color: theme.palette.primary.main,
             fontFamily: "Orbitron, sans-serif",
+            fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+            mb: 1
           }}
         >
           My Blog
         </Typography>
-        <Typography variant="h6" color="text.secondary">
+        <Typography 
+          variant="h6" 
+          color="text.secondary"
+          sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
+        >
           Innovating Code, Sharing Thoughts
         </Typography>
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center", mb: 6 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", mb: { xs: 4, sm: 5, md: 6 } }}>
         <TextField
           variant="outlined"
           placeholder="Search articles by title or tag..."
@@ -102,52 +114,65 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
               <SearchIcon sx={{ mr: 1, color: "text.secondary" }} />
             ),
           }}
-          sx={{ width: "100%", maxWidth: "600px" }}
+          sx={{ 
+            width: { xs: "100%", sm: "80%", md: "60%" },
+            maxWidth: "600px",
+            "& .MuiInputBase-root": {
+              fontSize: { xs: "0.9rem", sm: "1rem" }
+            }
+          }}
         />
       </Box>
 
       {featuredPost && (
-        <Box sx={{ mb: 6 }} component={motion.div} variants={itemVariants}>
+        <Box sx={{ mb: { xs: 4, sm: 5, md: 6 } }} component={motion.div} variants={itemVariants}>
           <Typography
             variant="h4"
-            sx={{ mb: 2, fontFamily: "Orbitron, sans-serif" }}
+            sx={{
+              fontWeight: "bold",
+              mb: 2,
+              textAlign: "center",
+              fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.125rem" }
+            }}
           >
-            Latest Post
+            Featured Article
           </Typography>
-          <Link
-            href={`/blog/${featuredPost.slug}`}
-            passHref
-            style={{ textDecoration: "none" }}
-          >
+          <Link href={`/blog/${featuredPost.slug}`} passHref>
             <Card
               sx={{
-                display: { xs: "flex", md: "flex" },
+                display: "flex",
                 flexDirection: { xs: "column", md: "row" },
                 borderRadius: "16px",
                 boxShadow: 3,
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 cursor: "pointer",
                 "&:hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
+                  transform: { xs: "none", md: "translateY(-10px)" },
+                  boxShadow: `0 20px 40px ${theme.palette.primary.main}44`,
                 },
               }}
             >
               <CardMedia
                 component="img"
                 sx={{
-                  width: { xs: "100%", md: 400 },
+                  width: { xs: "100%", md: "45%" },
                   height: { xs: 250, md: "auto" },
+                  objectFit: "cover",
                 }}
-                image={featuredPost.coverImage}
+                image={
+                  featuredPost.coverImage.startsWith("http")
+                    ? featuredPost.coverImage
+                    : `${basePath}${featuredPost.coverImage}`
+                }
                 alt={featuredPost.title}
               />
               <CardContent
                 sx={{
-                  p: 4,
+                  p: { xs: 2, sm: 3, md: 4 },
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
+                  width: { xs: "100%", md: "55%" },
                 }}
               >
                 <Stack direction="row" spacing={1} sx={{ mb: 2, alignSelf: "flex-start" }}>
@@ -160,6 +185,10 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
                       variant="outlined"
                       clickable
                       onClick={(e) => handleChipClick(e, `/categories/${cat.toLowerCase().replace(/\s+/g, '-')}`)}
+                      sx={{
+                        height: { xs: 20, sm: 24 },
+                        fontSize: { xs: "0.65rem", sm: "0.75rem" }
+                      }}
                     />
                   ))}
                 </Stack>
@@ -167,25 +196,35 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
                 <Typography
                   variant="h5"
                   component="h2"
-                  sx={{ fontWeight: "bold", mb: 1 }}
+                  sx={{ fontWeight: "bold", mb: 1, fontSize: { xs: "1.25rem", sm: "1.5rem" } }}
                 >
                   {featuredPost.title}
                 </Typography>
                 <Typography
                   variant="body1"
                   color="text.secondary"
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2, fontSize: { xs: "0.9rem", sm: "1rem" } }}
                 >
                   {featuredPost.excerpt}
                 </Typography>
-                <Button variant="contained">Start Reading</Button>
+                <Button 
+                  variant="contained"
+                  sx={{
+                    px: { xs: 2, sm: 3 },
+                    py: { xs: 1, sm: 1.5 },
+                    fontSize: { xs: "0.9rem", sm: "1rem" },
+                    alignSelf: "flex-start"
+                  }}
+                >
+                  Start Reading
+                </Button>
               </CardContent>
             </Card>
           </Link>
         </Box>
       )}
 
-      <Grid container spacing={4}>
+      <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
         {otherPosts.map((post) => (
           <Grid item xs={12} sm={6} md={4} key={post.slug}>
             <BlogCard post={post} basePath={router.basePath} />

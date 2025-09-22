@@ -2,22 +2,21 @@
 
 export const HERO_DATA = {
   name: "Alagappan P",
-  title: " Software Developer | Full Stack | Software Engineer",
+  title: "Software Developer | Full Stack Engineer",
   roles: [
-    "Software Engineer 🌐",
-    "Java Specialist ☕",
-    "Spring Boot Developer 🌱",
-    "Java Full Stack Developer 🛠️",
-    "Web Developer 🌐",
-    
+    "Full Stack Developer 🚀",
+    "Java & Spring Boot Specialist ☕",
+    "Microservices Architect 🏗️",
+    "Problem Solver 🧩",
+    "Tech Innovator 💡",
   ],
-   description:
-    "Software Engineer with 3+ years of hands-on experience in building scalable microservices and full-stack solutions using Java and Spring Boot. Holder of an M.Sc in Computer Science, passionate about leveraging modern technologies to solve complex problems and optimize system performance.",
-   buttons: {
-    hire: "Hire Me",
-    resume: "Download Resume",
+  description:
+    "I build scalable, high-performance applications that solve real-world problems. With expertise in Java, Spring Boot, and modern web technologies, I transform complex requirements into elegant, efficient solutions. Let's create something amazing together!",
+  buttons: {
+    hire: "Let's Connect",
+    resume: "Get My Resume",
   },
-   images: {
+  images: {
     profile: "/image/profile.jpg",
     // background: "/path/to/background.jpg",
     resume: "/pdf/azhagu-resume.pdf",

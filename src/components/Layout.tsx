@@ -33,22 +33,20 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
+  [theme.breakpoints.down("sm")]: {
+    paddingBottom: "56px",
+  },
 
   [theme.breakpoints.up("sm")]: {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
     ...(open && {
-      marginLeft: `-15px`,
-
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      marginLeft: 0,
     }),
     ...(!open && {
-      marginLeft: `-190px`,
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      marginLeft: `-${drawerWidth - 50}px`,
     }),
   },
 }));
@@ -58,6 +56,9 @@ const ContentBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
   flexGrow: 1,
+  [theme.breakpoints.down("sm")]: {
+    paddingBottom: "70px",
+  },
 }));
 
 const Layout: React.FC<{
@@ -99,7 +100,7 @@ const Layout: React.FC<{
   };
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }} role="main">
       <CssBaseline />
       <AppBarTop
         open={!isMobile && open}
@@ -139,7 +140,13 @@ const Layout: React.FC<{
 
       {isMobile && (
         <Paper
-          sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+          sx={{ 
+            position: "fixed", 
+            bottom: 0, 
+            left: 0, 
+            right: 0,
+            zIndex: theme.zIndex.appBar + 1
+          }}
           elevation={3}>
           <BottomNavigation
             showLabels
@@ -147,34 +154,88 @@ const Layout: React.FC<{
             onChange={(event: React.SyntheticEvent, newValue: string) => {
               setBottomNavValue(newValue);
               router.push(newValue);
-            }}>
+            }}
+            sx={{
+              height: "56px",
+              minHeight: "56px"
+            }}
+          >
             <BottomNavigationAction
               label="Home"
               value="/"
               icon={<HomeIcon />}
+              sx={{
+                minWidth: 0,
+                padding: "6px 0",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  "&.Mui-selected": {
+                    fontSize: "0.75rem",
+                  }
+                }
+              }}
             />
             <BottomNavigationAction
               label="Experience"
               value="/experience"
               icon={<WorkHistoryIcon />}
+              sx={{
+                minWidth: 0,
+                padding: "6px 0",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  "&.Mui-selected": {
+                    fontSize: "0.75rem",
+                  }
+                }
+              }}
             />
             <BottomNavigationAction
               label="Projects"
               value="/projects"
               icon={<AccountTreeIcon />}
+              sx={{
+                minWidth: 0,
+                padding: "6px 0",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  "&.Mui-selected": {
+                    fontSize: "0.75rem",
+                  }
+                }
+              }}
             />
             <BottomNavigationAction
               label="Contact"
               value="/contact"
               icon={<MailIcon />}
+              sx={{
+                minWidth: 0,
+                padding: "6px 0",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  "&.Mui-selected": {
+                    fontSize: "0.75rem",
+                  }
+                }
+              }}
             />
-              <BottomNavigationAction
+            <BottomNavigationAction
               label="Blog"
               value="/blog"
               icon={<Book />}
+              sx={{
+                minWidth: 0,
+                padding: "6px 0",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  "&.Mui-selected": {
+                    fontSize: "0.75rem",
+                  }
+                }
+              }}
             />
           </BottomNavigation>
-          
         </Paper>
       )}
     </Box>
