@@ -1,34 +1,21 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Typography, Button, useTheme, Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/router";
 import { HERO_DATA } from "@/utils/heroData";
+import { HERO_ANIMATION_CONFIG } from "@/utils/animationConfig";
 import Image from "next/image";
-
-const ANIMATION_CONFIG = {
-  textContainer: {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  },
-  item: {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  },
-  image: {
-    hidden: { opacity: 0, scale: 0.8 },
-    show: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
-  },
-};
 
 const HeroSection: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
   const { basePath } = router;
+
+  // Memoize the image URL to prevent unnecessary re-renders
+  const profileImageUrl = useMemo(() => {
+    return `${basePath}${HERO_DATA.images.profile}`;
+  }, [basePath]);
 
   return (
     <Grid
@@ -45,14 +32,14 @@ const HeroSection: React.FC = () => {
         md={7}
         sx={{ textAlign: { xs: "center", md: "left" } }}>
         <motion.div
-          variants={ANIMATION_CONFIG.textContainer}
+          variants={HERO_ANIMATION_CONFIG.textContainer}
           initial="hidden"
           animate="show">
           <Typography
             component={motion.h1}
             variant="h2"
             gutterBottom
-            variants={ANIMATION_CONFIG.item}>
+            variants={HERO_ANIMATION_CONFIG.item}>
             Hi, I&apos;m{" "}
             <span style={{ color: theme.palette.primary.main }}>
               {HERO_DATA.name}
@@ -64,7 +51,7 @@ const HeroSection: React.FC = () => {
             variant="h2"
             gutterBottom
             color="text.primary"
-            variants={ANIMATION_CONFIG.item}
+            variants={HERO_ANIMATION_CONFIG.item}
             sx={{
               minHeight: { xs: 140, sm: "auto" },
             }}>
@@ -83,12 +70,12 @@ const HeroSection: React.FC = () => {
             component={motion.p}
             variant="h5"
             color="text.secondary"
-            variants={ANIMATION_CONFIG.item}
+            variants={HERO_ANIMATION_CONFIG.item}
             sx={{ mt: 3, lineHeight: 1.6, textAlign: "justify" }}>
             {HERO_DATA.description}
           </Typography>
 
-          <motion.div variants={ANIMATION_CONFIG.item}>
+          <motion.div variants={HERO_ANIMATION_CONFIG.item}>
             <Box
               sx={{
                 mt: 4,
@@ -100,7 +87,9 @@ const HeroSection: React.FC = () => {
                 variant="contained"
                 size="large"
                 onClick={() => router.push("/contact")}
-                sx={{ "&:hover": { transform: "translateY(-2px)" } }}>
+                sx={{ "&:hover": { transform: "translateY(-2px)" } }}
+                role="button"
+                aria-label="Contact me for hiring opportunities">
                 {HERO_DATA.buttons.hire}
               </Button>
 
@@ -110,7 +99,9 @@ const HeroSection: React.FC = () => {
                 onClick={() =>
                   window.open(`${basePath}${HERO_DATA.images.resume}`)
                 }
-                sx={{ "&:hover": { transform: "translateY(-2px)" } }}>
+                sx={{ "&:hover": { transform: "translateY(-2px)" } }}
+                role="button"
+                aria-label="Download my resume">
                 {HERO_DATA.buttons.resume}
               </Button>
             </Box>
@@ -128,7 +119,7 @@ const HeroSection: React.FC = () => {
           alignItems: "center",
           mt: { xs: 6, md: 0 },
         }}>
-        <motion.div initial="hidden" animate="show">
+        <motion.div initial="hidden" animate="show" variants={HERO_ANIMATION_CONFIG.image}>
           <Box
             sx={{
               position: "relative",
@@ -139,13 +130,15 @@ const HeroSection: React.FC = () => {
               boxShadow: `0 0 30px ${theme.palette.primary.light}`,
             }}>
             <Image
-              src={`${basePath}${HERO_DATA.images.profile}`}
+              src={profileImageUrl}
               alt={HERO_DATA.name}
-              layout="fill"
-              objectFit="cover"
+              fill
               style={{
+                objectFit: "cover",
                 borderRadius: "50%",
               }}
+              sizes="(max-width: 768px) 250px, (max-width: 900px) 300px, 350px"
+              priority // Add priority loading for the main hero image
             />
           </Box>
         </motion.div>

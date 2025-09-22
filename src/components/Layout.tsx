@@ -35,20 +35,15 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   }),
 
   [theme.breakpoints.up("sm")]: {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
     ...(open && {
-      marginLeft: `-15px`,
-
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      marginLeft: 0,
     }),
     ...(!open && {
-      marginLeft: `-190px`,
-      transition: theme.transitions.create("margin", {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+      marginLeft: `-${drawerWidth - 50}px`,
     }),
   },
 }));
@@ -99,7 +94,7 @@ const Layout: React.FC<{
   };
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }} role="main">
       <CssBaseline />
       <AppBarTop
         open={!isMobile && open}
@@ -168,7 +163,7 @@ const Layout: React.FC<{
               value="/contact"
               icon={<MailIcon />}
             />
-              <BottomNavigationAction
+            <BottomNavigationAction
               label="Blog"
               value="/blog"
               icon={<Book />}

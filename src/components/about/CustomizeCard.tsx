@@ -2,9 +2,13 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import exp from "constants";
 
-const CustomizeCard = ({ img, description }: { img: string; description: string }) => (
+interface CustomizeCardProps {
+  img: string;
+  description: string;
+}
+
+const CustomizeCard = ({ img, description }: CustomizeCardProps) => (
   <Box
     component={motion.div}
     initial="hidden"
@@ -21,12 +25,9 @@ const CustomizeCard = ({ img, description }: { img: string; description: string 
       borderRadius: "12px",
       overflow: "hidden",
       width: "100%",
-      height: "100%", // Parent container should control height
       display: "flex",
       flexDirection: "column",
-      // Fixed height for all cards
-      minHeight: 320, // Adjust this value as needed
-      maxHeight: 300,
+      height: "100%",
     }}
   >
     {/* Image Container with fixed aspect ratio */}
@@ -34,8 +35,8 @@ const CustomizeCard = ({ img, description }: { img: string; description: string 
       sx={{
         position: "relative",
         width: "100%",
-        height: 250, 
-        flexShrink: 0, // Prevent image container from shrinking
+        height: 250,
+        flexShrink: 0,
       }}
     >
       <Image
@@ -48,31 +49,35 @@ const CustomizeCard = ({ img, description }: { img: string; description: string 
         sizes="(max-width: 768px) 100vw, 50vw"
       />
     </Box>
-    {/* Space between image and text */}
-    <Box sx={{ marginBottom: 1 }} /> {/* Add space here */}
+    
     {/* Description Text */}
-    <Typography
-      variant="body2"
-      sx={{
-        fontWeight: "bold",
+    <Box 
+      sx={{ 
         padding: "10px",
         backgroundColor: "primary.main",
-        color: "white",
-        height: 120, // Fixed height for text container
+        borderRadius: "0 0 12px 12px",
+        flexGrow: 1,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        // Text truncation for multi-line text
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        // display: "-webkit-box",
-        WebkitLineClamp: 3, // Show max 3 lines
-        WebkitBoxOrient: "vertical",
-        borderRadius: "0 0 12px 12px",
       }}
     >
-      {description}
-    </Typography>
+      <Typography
+        variant="body2"
+        sx={{
+          fontWeight: "bold",
+          color: "white",
+          overflow: "hidden",
+          display: "-webkit-box",
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: "vertical",
+          textOverflow: "ellipsis",
+        }}
+      >
+        {description}
+      </Typography>
+    </Box>
   </Box>
 );
+
 export default CustomizeCard;

@@ -6,7 +6,7 @@ import Layout from "../components/Layout";
 import type { AppProps } from "next/app";
 import "@fontsource/orbitron";
 import "@fontsource/poppins";
-import { VisitorProvider } from "@/context/VisitorContex";
+import { VisitorProvider } from "@/context/VisitorContext";
 
 const AppContent: React.FC<AppProps> = ({ Component, pageProps }) => {
   const { theme, toggleTheme, isDarkMode } = useThemeContext();

@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import CustomizeCard from "@/components/style/about/CustomizeCard";
-import SkillCard from "@/components/style/about/SkillCard";
+import CustomizeCard from "@/components/about/CustomizeCard";
+import SkillCard from "@/components/about/SkillCard";
 import {
   PROFILE,
   SKILLS_DATA,

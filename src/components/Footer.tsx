@@ -17,7 +17,7 @@ import { CONTACT_DATA } from "@/utils/contactData";
 import { motion } from "framer-motion";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { useVisitorCounts } from "@/context/VisitorContex";
+import { useVisitorCounts } from "@/context/VisitorContext";
 
 const FooterRoot = styled("footer")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,

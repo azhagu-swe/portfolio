@@ -79,9 +79,14 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{ p: { xs: 2, sm: 4 }, maxWidth: "1200px", mx: "auto" }}>
+      sx={{ 
+        p: { xs: 2, sm: 3, md: 4 }, 
+        maxWidth: "1200px", 
+        mx: "auto",
+        width: "100%"
+      }}>
       <Box
-        sx={{ textAlign: "center", mb: 6 }}
+        sx={{ textAlign: "center", mb: { xs: 4, md: 6 } }}
         component={motion.div}
         variants={itemVariants}>
         <Typography
@@ -90,10 +95,15 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
             fontWeight: "bold",
             color: theme.palette.primary.main,
             fontFamily: "Orbitron, sans-serif",
+            fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
+            mb: 1
           }}>
           My Projects
         </Typography>
-        <Typography variant="h6" color="text.secondary">
+        <Typography 
+          variant="h6" 
+          color="text.secondary"
+          sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}>
           A showcase of innovation, creativity, and technical expertise.
         </Typography>
       </Box>
@@ -137,22 +147,32 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
               variant="scrollable"
               scrollButtons="auto"
               allowScrollButtonsMobile
-              aria-label="Project filter tabs">
-              <Tab label="All" value="All" />
-              <Tab label="Java" value="Java" />
-              <Tab label="Next.js" value="Next.js" />
-              <Tab label="React.js" value="React.js" />
-              <Tab label="PostgreSQL" value="PostgreSQL" />
+              aria-label="Project filter tabs"
+              sx={{
+                minHeight: 48,
+                '& .MuiTabs-scrollButtons': {
+                  '&.Mui-disabled': { opacity: 0.3 },
+                },
+              }}>
+              <Tab label="All" value="All" sx={{ minHeight: 48 }} />
+              <Tab label="Java" value="Java" sx={{ minHeight: 48 }} />
+              <Tab label="Next.js" value="Next.js" sx={{ minHeight: 48 }} />
+              <Tab label="React.js" value="React.js" sx={{ minHeight: 48 }} />
+              <Tab label="PostgreSQL" value="PostgreSQL" sx={{ minHeight: 48 }} />
             </Tabs>
           </Grid>
         </Grid>
       </Box>
 
       {featuredProject && (
-        <Box sx={{ mb: 6 }} component={motion.div} variants={itemVariants}>
+        <Box sx={{ mb: { xs: 4, md: 6 } }} component={motion.div} variants={itemVariants}>
           <Typography
             variant="h4"
-            sx={{ mb: 2, fontFamily: "Orbitron, sans-serif" }}>
+            sx={{ 
+              mb: 2, 
+              fontFamily: "Orbitron, sans-serif",
+              fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.125rem" }
+            }}>
             Featured Project
           </Typography>
           <Link
@@ -161,14 +181,14 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
             style={{ textDecoration: "none" }}>
             <Card
               sx={{
-                display: { xs: "flex", md: "flex" },
+                display: "flex",
                 flexDirection: { xs: "column", md: "row" },
                 borderRadius: "16px",
                 boxShadow: 3,
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 cursor: "pointer",
                 "&:hover": {
-                  transform: "translateY(-5px)",
+                  transform: { xs: "none", md: "translateY(-5px)" },
                   boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
                 },
               }}>
@@ -177,6 +197,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                 sx={{
                   width: { xs: "100%", md: 400 },
                   height: { xs: 250, md: "auto" },
+                  objectFit: "cover",
                 }}
                 image={
                   featuredProject.thumbnail.startsWith("http")
@@ -187,10 +208,11 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
               />
               <CardContent
                 sx={{
-                  p: 4,
+                  p: { xs: 2, md: 4 },
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
+                  width: { xs: "100%", md: "auto" },
                 }}>
                 <Typography
                   variant="h5"
@@ -215,7 +237,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
         {otherProjects.map((project) => {
           const imageUrl = project.thumbnail.startsWith("http")
             ? project.thumbnail
-            : `${basePath}/${project.thumbnail}`;
+            : `${basePath}${project.thumbnail}`;
 
           return (
             <Grid item xs={12} sm={6} md={4} key={project.slug}>
@@ -228,13 +250,16 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                   overflow: "hidden",
                   boxShadow: 2,
                   "&:hover": {
-                    transform: { md: "translateY(-8px)" }, // disable hover shift on mobile
+                    transform: { xs: "none", sm: "translateY(-8px)" },
+                    boxShadow: 3,
                   },
                 }}>
                 <CardMedia
                   component="img"
-                  height="180"
-                  sx={{ objectFit: "cover" }}
+                  sx={{ 
+                    height: { xs: 200, sm: 180 },
+                    objectFit: "cover" 
+                  }}
                   image={imageUrl}
                   alt={project.title}
                 />
