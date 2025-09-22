@@ -83,7 +83,8 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
         p: { xs: 2, sm: 3, md: 4 }, 
         maxWidth: "1200px", 
         mx: "auto",
-        width: "100%"
+        width: "100%",
+        boxSizing: "border-box"
       }}>
       <Box
         sx={{ textAlign: "center", mb: { xs: 4, md: 6 } }}
@@ -112,7 +113,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
         component={motion.div}
         variants={itemVariants}
         sx={{
-          mb: 5,
+          mb: { xs: 3, sm: 4, md: 5 },
           p: 2,
           backgroundColor:
             theme.palette.mode === "dark"
@@ -121,8 +122,10 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
           backdropFilter: "blur(10px)",
           borderRadius: "16px",
           border: `1px solid ${theme.palette.divider}`,
+          width: "100%",
+          boxSizing: "border-box"
         }}>
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={2} alignItems="center" sx={{ width: "100%", margin: 0 }}>
           <Grid item xs={12} md={4}>
             <TextField
               fullWidth
@@ -137,6 +140,9 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                     <SearchIcon />
                   </InputAdornment>
                 ),
+              }}
+              sx={{
+                fontSize: { xs: "0.9rem", sm: "1rem" }
               }}
             />
           </Grid>
@@ -154,18 +160,18 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                   '&.Mui-disabled': { opacity: 0.3 },
                 },
               }}>
-              <Tab label="All" value="All" sx={{ minHeight: 48 }} />
-              <Tab label="Java" value="Java" sx={{ minHeight: 48 }} />
-              <Tab label="Next.js" value="Next.js" sx={{ minHeight: 48 }} />
-              <Tab label="React.js" value="React.js" sx={{ minHeight: 48 }} />
-              <Tab label="PostgreSQL" value="PostgreSQL" sx={{ minHeight: 48 }} />
+              <Tab label="All" value="All" sx={{ minHeight: 48, fontSize: { xs: "0.8rem", sm: "0.9rem" } }} />
+              <Tab label="Java" value="Java" sx={{ minHeight: 48, fontSize: { xs: "0.8rem", sm: "0.9rem" } }} />
+              <Tab label="Next.js" value="Next.js" sx={{ minHeight: 48, fontSize: { xs: "0.8rem", sm: "0.9rem" } }} />
+              <Tab label="React.js" value="React.js" sx={{ minHeight: 48, fontSize: { xs: "0.8rem", sm: "0.9rem" } }} />
+              <Tab label="PostgreSQL" value="PostgreSQL" sx={{ minHeight: 48, fontSize: { xs: "0.8rem", sm: "0.9rem" } }} />
             </Tabs>
           </Grid>
         </Grid>
       </Box>
 
       {featuredProject && (
-        <Box sx={{ mb: { xs: 4, md: 6 } }} component={motion.div} variants={itemVariants}>
+        <Box sx={{ mb: { xs: 4, sm: 5, md: 6 } }} component={motion.div} variants={itemVariants}>
           <Typography
             variant="h4"
             sx={{ 
@@ -187,6 +193,8 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                 boxShadow: 3,
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 cursor: "pointer",
+                width: "100%",
+                height: "auto",
                 "&:hover": {
                   transform: { xs: "none", md: "translateY(-5px)" },
                   boxShadow: `0 10px 20px ${theme.palette.primary.light}44`,
@@ -212,35 +220,44 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
-                  width: { xs: "100%", md: "auto" },
                 }}>
                 <Typography
                   variant="h5"
                   component="h2"
-                  sx={{ fontWeight: "bold", mb: 1 }}>
+                  sx={{ fontWeight: "bold", mb: 1, fontSize: { xs: "1.25rem", sm: "1.5rem" } }}>
                   {featuredProject.title}
                 </Typography>
                 <Typography
                   variant="body1"
                   color="text.secondary"
-                  sx={{ mb: 2 }}>
+                  sx={{ mb: 2, fontSize: { xs: "0.9rem", sm: "1rem" } }}>
                   {featuredProject.description}
                 </Typography>
-                <Button variant="contained">View Case Study</Button>
+                <Button 
+                  variant="contained" 
+                  color="primary"
+                  sx={{
+                    px: { xs: 2, sm: 3 },
+                    py: { xs: 1, sm: 1.5 },
+                    fontSize: { xs: "0.9rem", sm: "1rem" },
+                    alignSelf: "flex-start"
+                  }}>
+                  View Case Study
+                </Button>
               </CardContent>
             </Card>
           </Link>
         </Box>
       )}
 
-      <Grid container spacing={4}>
+      <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} sx={{ width: "100%", margin: 0 }}>
         {otherProjects.map((project) => {
           const imageUrl = project.thumbnail.startsWith("http")
             ? project.thumbnail
             : `${basePath}${project.thumbnail}`;
 
           return (
-            <Grid item xs={12} sm={6} md={4} key={project.slug}>
+            <Grid item xs={12} sm={6} md={4} key={project.slug} sx={{ width: "100%" }}>
               <Card
                 sx={{
                   display: "flex",
@@ -257,7 +274,7 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                 <CardMedia
                   component="img"
                   sx={{ 
-                    height: { xs: 200, sm: 180 },
+                    height: { xs: 200, sm: 180, md: 200 },
                     objectFit: "cover" 
                   }}
                   image={imageUrl}
@@ -268,13 +285,13 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                     variant="h6"
                     component="h2"
                     gutterBottom
-                    sx={{ fontWeight: "bold" }}>
+                    sx={{ fontWeight: "bold", fontSize: { xs: "1rem", sm: "1.1rem" } }}>
                     {project.title}
                   </Typography>
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    sx={{ flexGrow: 1, minHeight: "60px" }}>
+                    sx={{ flexGrow: 1, minHeight: "60px", fontSize: { xs: "0.85rem", sm: "0.9rem" } }}>
                     {project.description}
                   </Typography>
                 </CardContent>
@@ -291,6 +308,10 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                         label={tech}
                         size="small"
                         variant="outlined"
+                        sx={{
+                          height: { xs: 20, sm: 24 },
+                          fontSize: { xs: "0.65rem", sm: "0.75rem" }
+                        }}
                       />
                     ))}
                   </Stack>
@@ -306,7 +327,12 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                     component={Link}
                     href={`/projects/${project.slug}`}
                     size="small"
-                    variant="contained">
+                    variant="contained"
+                    sx={{
+                      px: { xs: 1.5, sm: 2 },
+                      py: { xs: 0.8, sm: 1 },
+                      fontSize: { xs: "0.75rem", sm: "0.875rem" }
+                    }}>
                     Case Study
                   </Button>
                   <Stack direction="row" spacing={1}>
@@ -316,7 +342,13 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                         href={project.liveDemo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        startIcon={<OpenInNew />}>
+                        startIcon={<OpenInNew sx={{ fontSize: "1rem" }} />}
+                        sx={{
+                          px: { xs: 1, sm: 1.5 },
+                          py: { xs: 0.8, sm: 1 },
+                          fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                          minWidth: 0
+                        }}>
                         Demo
                       </Button>
                     )}
@@ -326,7 +358,13 @@ const ProjectPage = ({ allProjectsData }: ProjectPageProps) => {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      startIcon={<Code />}>
+                      startIcon={<Code sx={{ fontSize: "1rem" }} />}
+                      sx={{
+                        px: { xs: 1, sm: 1.5 },
+                        py: { xs: 0.8, sm: 1 },
+                        fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                        minWidth: 0
+                      }}>
                       Code
                     </Button>
                   </Stack>

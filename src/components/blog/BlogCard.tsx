@@ -64,13 +64,16 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
           border: "1px solid rgba(255, 255, 255, 0.1)",
           cursor: "pointer",
           "&:hover": {
-            transform: "translateY(-8px)",
+            transform: { xs: "none", sm: "translateY(-8px)" },
             boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
           },
         }}>
         <CardMedia
           component="img"
-          height="200"
+          sx={{ 
+            height: { xs: 200, sm: 180, md: 200 },
+            objectFit: "cover" 
+          }}
           image={imageUrl}
           alt={post.title}
         />
@@ -79,7 +82,7 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            p: 3,
+            p: { xs: 2, sm: 3 },
           }}>
           {/* --- CORRECTED CATEGORY STACK --- */}
           <Stack
@@ -100,6 +103,10 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
                 variant="outlined"
                 clickable
                 onClick={(e) => handleCategoryClick(e, cat)}
+                sx={{
+                  height: { xs: 20, sm: 24 },
+                  fontSize: { xs: "0.65rem", sm: "0.75rem" }
+                }}
               />
             ))}
           </Stack>
@@ -111,10 +118,10 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
             variant="h6"
             component="h2"
             gutterBottom
-            sx={{ fontWeight: "bold", flexGrow: 1, mt: 1 }}>
+            sx={{ fontWeight: "bold", flexGrow: 1, mt: 1, fontSize: { xs: "1rem", sm: "1.1rem" } }}>
             {post.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontSize: { xs: "0.85rem", sm: "0.9rem" } }}>
             {post.excerpt}
           </Typography>
           <Stack
@@ -130,14 +137,26 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
                 size="small"
                 variant="filled"
                 clickable
-                sx={{ backgroundColor: "action.hover" }}
+                sx={{ 
+                  backgroundColor: "action.hover",
+                  height: { xs: 20, sm: 24 },
+                  fontSize: { xs: "0.65rem", sm: "0.75rem" }
+                }}
                 onClick={(e) => handleTagClick(e, tag)}
               />
             ))}
           </Stack>
         </CardContent>
-        <Box sx={{ p: 2, pt: 0, mt: "auto" }}>
-          <Button fullWidth variant="contained" color="primary">
+        <Box sx={{ p: { xs: 1.5, sm: 2 }, pt: 0, mt: "auto" }}>
+          <Button 
+            fullWidth 
+            variant="contained" 
+            color="primary"
+            sx={{
+              px: { xs: 1, sm: 2 },
+              py: { xs: 0.8, sm: 1 },
+              fontSize: { xs: "0.85rem", sm: "0.95rem" }
+            }}>
             Read More
           </Button>
         </Box>
