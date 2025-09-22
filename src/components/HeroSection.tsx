@@ -1,5 +1,13 @@
 import React, { useMemo } from "react";
-import { Box, Typography, Button, useTheme, Grid } from "@mui/material";
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  useTheme, 
+  Grid,
+  Chip,
+  Stack
+} from "@mui/material";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/router";
@@ -17,133 +25,327 @@ const HeroSection: React.FC = () => {
     return `${basePath}${HERO_DATA.images.profile}`;
   }, [basePath]);
 
+  const handleHireMe = () => {
+    router.push("/contact");
+  };
+
+  const handleDownloadResume = () => {
+    window.open(`${basePath}${HERO_DATA.images.resume}`, "_blank");
+  };
+
   return (
-    <Grid
-      container
-      alignItems="center"
-      justifyContent="center"
-      sx={{
-        minHeight: "90vh",
-        padding: { xs: "20px", md: "40px" },
-      }}>
+    <Box 
+      sx={{ 
+        minHeight: { xs: "auto", sm: "auto", md: "90vh" },
+        display: "flex",
+        alignItems: "center",
+        py: { xs: 4, sm: 6, md: 8 }
+      }}
+    >
       <Grid
-        item
-        xs={12}
-        md={7}
-        sx={{ textAlign: { xs: "center", md: "left" } }}>
-        <motion.div
-          variants={HERO_ANIMATION_CONFIG.textContainer}
-          initial="hidden"
-          animate="show">
-          <Typography
-            component={motion.h1}
-            variant="h2"
-            gutterBottom
-            variants={HERO_ANIMATION_CONFIG.item}>
-            Hi, I&apos;m{" "}
-            <span style={{ color: theme.palette.primary.main }}>
-              {HERO_DATA.name}
-            </span>
-          </Typography>
+        container
+        spacing={{ xs: 4, sm: 6, md: 8 }}
+        alignItems="center"
+        justifyContent="center"
+        sx={{ 
+          width: "100%",
+          mx: "auto",
+          px: { xs: 2, sm: 3, lg: 4 }
+        }}>
+        {/* Text Content */}
+        <Grid
+          item
+          xs={12}
+          md={7}
+          sx={{ 
+            textAlign: { xs: "center", md: "left" },
+            order: { xs: 2, md: 1 },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center"
+          }}>
+          <motion.div
+            variants={HERO_ANIMATION_CONFIG.textContainer}
+            initial="hidden"
+            animate="show">
+            <Typography
+              component={motion.h1}
+              variant="h1"
+              gutterBottom
+              variants={HERO_ANIMATION_CONFIG.item}
+              sx={{
+                fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem", lg: "3.5rem" },
+                fontWeight: 800,
+                lineHeight: 1.2,
+                mb: { xs: 1, sm: 2 }
+              }}>
+              Hi, I&apos;m{" "}
+              <span style={{ 
+                color: theme.palette.primary.main,
+                position: "relative"
+              }}>
+                {HERO_DATA.name}
+                <Box
+                  component="span"
+                  sx={{
+                    position: "absolute",
+                    bottom: { xs: -4, sm: -6 },
+                    left: 0,
+                    width: "100%",
+                    height: { xs: "4px", sm: "6px" },
+                    background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                    borderRadius: "2px",
+                    opacity: 0.5
+                  }}
+                />
+              </span>
+            </Typography>
 
-          <Typography
-            component={motion.h1}
-            variant="h2"
-            gutterBottom
-            color="text.primary"
-            variants={HERO_ANIMATION_CONFIG.item}
-            sx={{
-              minHeight: { xs: 140, sm: "auto" },
-            }}>
-            <Typewriter
-              words={HERO_DATA.roles}
-              loop={Infinity}
-              cursor
-              cursorStyle="_"
-              typeSpeed={70}
-              deleteSpeed={50}
-              delaySpeed={1500}
-            />
-          </Typography>
+            <Typography
+              component={motion.h2}
+              variant="h2"
+              gutterBottom
+              color="text.primary"
+              variants={HERO_ANIMATION_CONFIG.item}
+              sx={{
+                fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.8rem", lg: "2.2rem" },
+                fontWeight: 700,
+                minHeight: { xs: 60, sm: 70, md: 80 },
+                mb: { xs: 2, sm: 3 },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: { xs: "center", md: "flex-start" }
+              }}>
+              <Typewriter
+                words={HERO_DATA.roles}
+                loop={Infinity}
+                cursor
+                cursorStyle="_"
+                typeSpeed={70}
+                deleteSpeed={50}
+                delaySpeed={1500}
+              />
+            </Typography>
 
-          <Typography
-            component={motion.p}
-            variant="h5"
-            color="text.secondary"
-            variants={HERO_ANIMATION_CONFIG.item}
-            sx={{ mt: 3, lineHeight: 1.6, textAlign: "justify" }}>
-            {HERO_DATA.description}
-          </Typography>
+            <Typography
+              component={motion.p}
+              variant="h6"
+              color="text.secondary"
+              variants={HERO_ANIMATION_CONFIG.item}
+              sx={{ 
+                mt: { xs: 1, sm: 2 },
+                lineHeight: 1.6,
+                maxWidth: { md: "90%" },
+                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.25rem" },
+                textAlign: { xs: "center", md: "left" }
+              }}>
+              {HERO_DATA.description}
+            </Typography>
 
-          <motion.div variants={HERO_ANIMATION_CONFIG.item}>
+            {/* Skills/Tags */}
+            <motion.div variants={HERO_ANIMATION_CONFIG.item}>
+              <Stack 
+                direction="row" 
+                spacing={{ xs: 0.5, sm: 1 }}
+                useFlexGap
+                flexWrap="wrap"
+                sx={{ 
+                  mt: { xs: 2, sm: 3, md: 4 },
+                  mb: { xs: 2, sm: 3 },
+                  justifyContent: { xs: "center", md: "flex-start" }
+                }}
+              >
+                <Chip 
+                  label="Java" 
+                  size="small" 
+                  sx={{ 
+                    backgroundColor: theme.palette.primary.main,
+                    color: theme.palette.primary.contrastText,
+                    fontWeight: 600,
+                    fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                    height: { xs: 24, sm: 28, md: 32 }
+                  }} 
+                />
+                <Chip 
+                  label="Spring Boot" 
+                  variant="outlined" 
+                  size="small"
+                  sx={{ 
+                    borderColor: theme.palette.primary.main,
+                    color: theme.palette.primary.main,
+                    fontWeight: 600,
+                    fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                    height: { xs: 24, sm: 28, md: 32 }
+                  }} 
+                />
+                <Chip 
+                  label="React" 
+                  size="small"
+                  sx={{ 
+                    backgroundColor: theme.palette.secondary.main,
+                    color: theme.palette.secondary.contrastText,
+                    fontWeight: 600,
+                    fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                    height: { xs: 24, sm: 28, md: 32 }
+                  }} 
+                />
+                <Chip 
+                  label="Microservices" 
+                  variant="outlined" 
+                  size="small"
+                  sx={{ 
+                    borderColor: theme.palette.secondary.main,
+                    color: theme.palette.secondary.main,
+                    fontWeight: 600,
+                    fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                    height: { xs: 24, sm: 28, md: 32 }
+                  }} 
+                />
+              </Stack>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div variants={HERO_ANIMATION_CONFIG.item}>
+              <Box
+                sx={{
+                  mt: { xs: 2, sm: 3 },
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: { xs: 1.5, sm: 2 },
+                  justifyContent: { xs: "center", md: "flex-start" },
+                  alignItems: { xs: "center", sm: "flex-start" }
+                }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={handleHireMe}
+                  sx={{ 
+                    px: { xs: 3, sm: 4, md: 6 },
+                    py: { xs: 1, sm: 1.5 },
+                    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+                    fontWeight: 600,
+                    borderRadius: "50px",
+                    boxShadow: `0 4px 20px ${theme.palette.primary.main}40`,
+                    "&:hover": { 
+                      transform: "translateY(-3px)",
+                      boxShadow: `0 6px 25px ${theme.palette.primary.main}60`
+                    },
+                    transition: "all 0.3s ease",
+                    width: { xs: "100%", sm: "auto" },
+                    maxWidth: { xs: 280, sm: "none" }
+                  }}
+                  role="button"
+                  aria-label="Contact me for hiring opportunities">
+                  {HERO_DATA.buttons.hire}
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={handleDownloadResume}
+                  sx={{ 
+                    px: { xs: 3, sm: 4, md: 6 },
+                    py: { xs: 1, sm: 1.5 },
+                    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+                    fontWeight: 600,
+                    borderRadius: "50px",
+                    borderWidth: "2px",
+                    "&:hover": { 
+                      transform: "translateY(-3px)",
+                      borderWidth: "2px"
+                    },
+                    transition: "all 0.3s ease",
+                    width: { xs: "100%", sm: "auto" },
+                    maxWidth: { xs: 280, sm: "none" }
+                  }}
+                  role="button"
+                  aria-label="Download my resume">
+                  {HERO_DATA.buttons.resume}
+                </Button>
+              </Box>
+            </motion.div>
+          </motion.div>
+        </Grid>
+
+        {/* Profile Image */}
+        <Grid
+          item
+          xs={12}
+          md={5}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            order: { xs: 1, md: 2 },
+            mb: { xs: 2, sm: 3, md: 0 }
+          }}>
+          <motion.div 
+            initial="hidden" 
+            animate="show" 
+            variants={HERO_ANIMATION_CONFIG.image}
+            style={{ width: "100%", display: "flex", justifyContent: "center" }}
+          >
             <Box
               sx={{
-                mt: 4,
+                position: "relative",
+                width: { xs: 200, sm: 250, md: 300, lg: 350 },
+                height: { xs: 200, sm: 250, md: 300, lg: 350 },
+                borderRadius: "50%",
+                border: `4px solid ${theme.palette.primary.main}`,
+                boxShadow: `0 0 30px ${theme.palette.primary.light}`,
                 display: "flex",
-                gap: 2,
-                justifyContent: { xs: "center", md: "flex-start" },
-              }}>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => router.push("/contact")}
-                sx={{ "&:hover": { transform: "translateY(-2px)" } }}
-                role="button"
-                aria-label="Contact me for hiring opportunities">
-                {HERO_DATA.buttons.hire}
-              </Button>
-
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={() =>
-                  window.open(`${basePath}${HERO_DATA.images.resume}`)
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
+                "&:before": {
+                  content: '""',
+                  position: "absolute",
+                  width: "150%",
+                  height: "150%",
+                  background: `conic-gradient(
+                    transparent,
+                    ${theme.palette.primary.main},
+                    transparent
+                  )`,
+                  animation: "rotate 4s linear infinite",
+                },
+                "&:after": {
+                  content: '""',
+                  position: "absolute",
+                  inset: "4px",
+                  borderRadius: "50%",
+                  background: theme.palette.background.paper,
+                },
+                "@keyframes rotate": {
+                  "0%": { transform: "rotate(0deg)" },
+                  "100%": { transform: "rotate(360deg)" }
                 }
-                sx={{ "&:hover": { transform: "translateY(-2px)" } }}
-                role="button"
-                aria-label="Download my resume">
-                {HERO_DATA.buttons.resume}
-              </Button>
+              }}>
+              <Box sx={{ 
+                position: "relative", 
+                width: "95%", 
+                height: "95%", 
+                borderRadius: "50%",
+                overflow: "hidden",
+                zIndex: 2
+              }}>
+                <Image
+                  src={profileImageUrl}
+                  alt={HERO_DATA.name}
+                  fill
+                  style={{
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                  sizes="(max-width: 600px) 200px, (max-width: 768px) 250px, (max-width: 900px) 300px, (max-width: 1200px) 350px, 350px"
+                  priority
+                />
+              </Box>
             </Box>
           </motion.div>
-        </motion.div>
+        </Grid>
       </Grid>
-
-      <Grid
-        item
-        xs={12}
-        md={5}
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: { xs: 6, md: 0 },
-        }}>
-        <motion.div initial="hidden" animate="show" variants={HERO_ANIMATION_CONFIG.image}>
-          <Box
-            sx={{
-              position: "relative",
-              width: { xs: 250, sm: 300, md: 350 },
-              height: { xs: 250, sm: 300, md: 350 },
-              borderRadius: "50%",
-              border: `4px solid ${theme.palette.primary.main}`,
-              boxShadow: `0 0 30px ${theme.palette.primary.light}`,
-            }}>
-            <Image
-              src={profileImageUrl}
-              alt={HERO_DATA.name}
-              fill
-              style={{
-                objectFit: "cover",
-                borderRadius: "50%",
-              }}
-              sizes="(max-width: 768px) 250px, (max-width: 900px) 300px, 350px"
-              priority // Add priority loading for the main hero image
-            />
-          </Box>
-        </motion.div>
-      </Grid>
-    </Grid>
+    </Box>
   );
 };
 

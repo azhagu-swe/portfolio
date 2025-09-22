@@ -39,7 +39,7 @@ const VisitorCounter: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }} role="status">
+      <Box sx={{ display: "flex", justifyContent: "center", my: { xs: 6, sm: 8 } }} role="status">
         <CircularProgress />
         <span className="sr-only">Loading visitor statistics...</span>
       </Box>
@@ -48,7 +48,7 @@ const VisitorCounter: React.FC = () => {
 
   if (error) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", my: { xs: 6, sm: 8 } }}>
         <Typography color="error">{error}</Typography>
       </Box>
     );
@@ -70,11 +70,46 @@ const VisitorCounter: React.FC = () => {
   };
 
   return (
-    <Box sx={{ my: 6 }} aria-label="Visitor Statistics">
+    <Box 
+      sx={{ 
+        py: { xs: 4, sm: 6, md: 10 },
+        px: { xs: 2, sm: 3, lg: 4 },
+        maxWidth: "1200px",
+        mx: "auto"
+      }} 
+      aria-label="Visitor Statistics"
+    >
+      <Box sx={{ textAlign: "center", mb: { xs: 4, sm: 6 } }}>
+        <Typography
+          variant="h3"
+          sx={{
+            fontWeight: 800,
+            mb: 2,
+            background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem", lg: "3rem" }
+          }}
+        >
+          Visitor Statistics
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            color: "text.secondary",
+            maxWidth: "700px",
+            mx: "auto",
+            fontSize: { xs: "0.95rem", sm: "1.05rem", md: "1.1rem" }
+          }}
+        >
+          Join the community of visitors exploring my portfolio
+        </Typography>
+      </Box>
+      
       <motion.div variants={containerVariants} initial="hidden" animate="show">
         <Stack
           direction={{ xs: "column", sm: "row" }}
-          spacing={4}
+          spacing={{ xs: 3, sm: 4, md: 6 }}
           justifyContent="center"
           alignItems="center">
           {uniqueVisitors !== null && (
@@ -82,20 +117,56 @@ const VisitorCounter: React.FC = () => {
               <Paper
                 variant="outlined"
                 sx={{
-                  p: 3,
+                  p: { xs: 2, sm: 3, md: 4 },
                   textAlign: "center",
-                  minWidth: 240,
-                  borderRadius: 3,
+                  minWidth: { xs: 240, sm: 280, md: 300 },
+                  borderRadius: "16px",
                   backgroundColor: 'transparent',
                   borderColor: theme.palette.primary.main,
                   color: theme.palette.text.primary,
-                  boxShadow: `0 4px 24px 0 ${theme.palette.primary.light}60`,
+                  boxShadow: `0 5px 15px ${theme.palette.mode === "dark" 
+                    ? "rgba(0, 0, 0, 0.3)" 
+                    : "rgba(0, 0, 0, 0.1)"}`,
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    transform: { xs: "none", sm: "translateY(-5px)" },
+                    boxShadow: `0 10px 25px ${theme.palette.primary.main}40`,
+                  }
                 }}>
-                <PeopleAltIcon sx={{ fontSize: 40, mb: 1, color: theme.palette.primary.main }} />
-                <Typography variant="h6" component="h3">
+                <Box sx={{ 
+                  display: "flex", 
+                  justifyContent: "center",
+                  mb: { xs: 1.5, sm: 2 }
+                }}>
+                  <Box sx={{
+                    width: { xs: 60, sm: 70, md: 80 },
+                    height: { xs: 60, sm: 70, md: 80 },
+                    borderRadius: "50%",
+                    backgroundColor: `${theme.palette.primary.main}20`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                    <PeopleAltIcon sx={{ 
+                      fontSize: { xs: 32, sm: 36, md: 40 }, 
+                      color: theme.palette.primary.main 
+                    }} />
+                  </Box>
+                </Box>
+                <Typography variant="h6" component="h3" sx={{ mb: { xs: 1, sm: 2 } }}>
                   Unique Visitors
                 </Typography>
-                <Typography variant="h3" component="p" fontWeight="bold">
+                <Typography 
+                  variant="h2" 
+                  component="p" 
+                  fontWeight="bold"
+                  sx={{
+                    background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" }
+                  }}
+                >
                   <AnimatedNumber value={uniqueVisitors} />
                 </Typography>
               </Paper>
@@ -107,20 +178,56 @@ const VisitorCounter: React.FC = () => {
               <Paper
                 variant="outlined"
                 sx={{
-                  p: 3,
+                  p: { xs: 2, sm: 3, md: 4 },
                   textAlign: "center",
-                  minWidth: 240,
-                  borderRadius: 3,
+                  minWidth: { xs: 240, sm: 280, md: 300 },
+                  borderRadius: "16px",
                   backgroundColor: 'transparent',
                   borderColor: theme.palette.secondary.main,
                   color: theme.palette.text.primary,
-                  boxShadow: `0 4px 24px 0 ${theme.palette.secondary.light}60`,
+                  boxShadow: `0 5px 15px ${theme.palette.mode === "dark" 
+                    ? "rgba(0, 0, 0, 0.3)" 
+                    : "rgba(0, 0, 0, 0.1)"}`,
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    transform: { xs: "none", sm: "translateY(-5px)" },
+                    boxShadow: `0 10px 25px ${theme.palette.secondary.main}40`,
+                  }
                 }}>
-                <VisibilityIcon sx={{ fontSize: 40, mb: 1, color: theme.palette.secondary.main }} />
-                <Typography variant="h6" component="h3">
+                <Box sx={{ 
+                  display: "flex", 
+                  justifyContent: "center",
+                  mb: { xs: 1.5, sm: 2 }
+                }}>
+                  <Box sx={{
+                    width: { xs: 60, sm: 70, md: 80 },
+                    height: { xs: 60, sm: 70, md: 80 },
+                    borderRadius: "50%",
+                    backgroundColor: `${theme.palette.secondary.main}20`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                    <VisibilityIcon sx={{ 
+                      fontSize: { xs: 32, sm: 36, md: 40 }, 
+                      color: theme.palette.secondary.main 
+                    }} />
+                  </Box>
+                </Box>
+                <Typography variant="h6" component="h3" sx={{ mb: { xs: 1, sm: 2 } }}>
                   Total Page Views
                 </Typography>
-                <Typography variant="h3" component="p" fontWeight="bold">
+                <Typography 
+                  variant="h2" 
+                  component="p" 
+                  fontWeight="bold"
+                  sx={{
+                    background: `linear-gradient(90deg, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    fontSize: { xs: "1.8rem", sm: "2rem", md: "2.5rem" }
+                  }}
+                >
                   <AnimatedNumber value={totalVisits} />
                 </Typography>
               </Paper>
