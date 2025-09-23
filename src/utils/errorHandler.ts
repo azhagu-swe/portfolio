@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { errorMonitoringService as externalErrorMonitoringService } from '@/services/errorMonitoring';
 
 export interface ErrorLog {
   message: string;
@@ -14,6 +15,9 @@ export interface ErrorMonitoringService {
   logError(error: Error, context?: Record<string, any>): void;
   logWarning(message: string, context?: Record<string, any>): void;
   logInfo(message: string, context?: Record<string, any>): void;
+  reportJSError?(error: Error, context?: Record<string, any>): void;
+  reportWarning?(message: string, context?: Record<string, any>): void;
+  reportInfo?(message: string, context?: Record<string, any>): void;
 }
 
 class ConsoleErrorMonitoring implements ErrorMonitoringService {
@@ -29,11 +33,8 @@ class ConsoleErrorMonitoring implements ErrorMonitoringService {
 
     console.error('Application Error:', errorLog);
 
-    // In production, you might send this to an error tracking service
-    if (process.env.NODE_ENV === 'production') {
-      // Example: send to your error tracking service
-      // sendToErrorTrackingService(errorLog);
-    }
+    // Send to our enhanced error monitoring service
+    externalErrorMonitoringService.reportJSError(error, context);
   }
 
   logWarning(message: string, context?: Record<string, any>): void {
@@ -46,6 +47,9 @@ class ConsoleErrorMonitoring implements ErrorMonitoringService {
     };
 
     console.warn('Application Warning:', warningLog);
+
+    // Send to our enhanced error monitoring service
+    externalErrorMonitoringService.reportWarning(message, context);
   }
 
   logInfo(message: string, context?: Record<string, any>): void {
@@ -58,6 +62,9 @@ class ConsoleErrorMonitoring implements ErrorMonitoringService {
     };
 
     console.info('Application Info:', infoLog);
+
+    // Send to our enhanced error monitoring service
+    externalErrorMonitoringService.reportInfo(message, context);
   }
 }
 
@@ -132,24 +139,32 @@ export class ErrorBoundary extends React.Component<{
           reset: this.resetError
         });
       }
+      // Use Material-UI components instead of Tailwind classes
       return React.createElement(
         'div',
-        { className: 'error-boundary p-4 bg-red-50 border border-red-200 rounded' },
+        { style: { padding: '16px', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', borderRadius: '4px' } },
         React.createElement(
           'h2',
-          { className: 'text-xl font-bold text-red-800 mb-2' },
+          { style: { fontSize: '1.25rem', fontWeight: 'bold', color: '#991B1B', marginBottom: '8px' } },
           'Something went wrong'
         ),
         React.createElement(
           'p',
-          { className: 'text-red-600 mb-4' },
+          { style: { color: '#B91C1C', marginBottom: '16px' } },
           this.state.error?.message
         ),
         React.createElement(
           'button',
           {
             onClick: this.resetError,
-            className: 'px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors'
+            style: { 
+              padding: '8px 16px', 
+              backgroundColor: '#DC2626', 
+              color: 'white', 
+              borderRadius: '4px', 
+              border: 'none',
+              cursor: 'pointer'
+            }
           },
           'Try again'
         )

@@ -11,6 +11,7 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
 - **Dark & Light Themes:** User-friendly theme switcher for modern aesthetics.
 - **Optimized Performance:** Fast, scalable, and SEO-friendly.
 - **Interactive Animations:** Subtle animations for an engaging user experience.
+- **Comprehensive Testing:** Unit and integration tests with Jest and React Testing Library.
 
 ---
 

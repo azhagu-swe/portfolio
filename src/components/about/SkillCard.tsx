@@ -8,7 +8,7 @@ const fadeInUp = {
 };
 
 const SkillCard = ({ title, skills }: { title: string; skills: string }) => {
-  const theme = useTheme(); // Add this to access the theme
+  const theme = useTheme();
 
   return (
     <Box

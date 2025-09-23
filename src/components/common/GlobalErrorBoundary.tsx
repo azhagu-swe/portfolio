@@ -1,55 +1,158 @@
-// src/components/common/GlobalErrorBoundary.tsx
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ErrorBoundary } from '@/utils/errorHandler';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  Paper,
+  Stack,
+  useTheme,
+  Alert,
+  AlertTitle
+} from '@mui/material';
+import ErrorIcon from '@mui/icons-material/Error';
+import BugReportIcon from '@mui/icons-material/BugReport';
 
-/**
- * Global error boundary component to wrap the entire application
- */
 const GlobalErrorBoundary: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const theme = useTheme();
+  const errorHeadingRef = useRef<HTMLHeadingElement>(null);
+  
+  useEffect(() => {
+    // Focus the error heading when the component mounts
+    if (errorHeadingRef.current) {
+      errorHeadingRef.current.focus();
+    }
+  }, []);
+  
   return (
     <ErrorBoundary
       fallback={({ error, reset }) => (
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50">
-          <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 text-center">
-            <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center mb-4">
-              <svg 
-                className="w-8 h-8 text-red-600" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24" 
-                xmlns="http://www.w3.org/2000/svg"
+        <Box
+          sx={{
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            p: 2,
+            bgcolor: 'background.default'
+          }}
+          role="alert"
+          aria-live="assertive"
+        >
+          <Card
+            sx={{
+              maxWidth: 600,
+              width: '100%',
+              textAlign: 'center',
+              borderRadius: 2,
+              boxShadow: 3
+            }}
+          >
+            <CardContent>
+              <Box
+                sx={{
+                  width: 64,
+                  height: 64,
+                  mx: 'auto',
+                  bgcolor: 'error.light',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  mb: 3
+                }}
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Oops! Something went wrong</h1>
-            <p className="text-gray-600 mb-4">
-              We&apos;re sorry, but an unexpected error has occurred. Our team has been notified.
-            </p>
-            <div className="bg-gray-100 p-4 rounded mb-4 text-left">
-              <p className="text-sm text-gray-800 font-mono">{error.message}</p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={reset}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                <ErrorIcon sx={{ fontSize: 32, color: 'error.main' }} aria-hidden="true" />
+              </Box>
+              
+              <Typography 
+                variant="h4" 
+                component="h1" 
+                gutterBottom 
+                fontWeight="bold" 
+                color="error.main" 
+                tabIndex={-1} 
+                ref={errorHeadingRef}
               >
-                Try Again
-              </button>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                Oops! Something went wrong
+              </Typography>
+              
+              <Alert severity="error" sx={{ mb: 3, textAlign: 'left' }}>
+                <AlertTitle>Error Details</AlertTitle>
+                <Typography variant="body2" component="p">
+                  We&apos;ve logged this error and our team will look into it.
+                </Typography>
+              </Alert>
+              
+              <Typography variant="body1" color="text.secondary" paragraph>
+                We&apos;re sorry, but an unexpected error has occurred. Our team has been notified.
+              </Typography>
+              
+              <Paper 
+                variant="outlined" 
+                sx={{ 
+                  p: 2, 
+                  mb: 3, 
+                  textAlign: 'left',
+                  bgcolor: 'action.hover'
+                }}
               >
-                Reload Page
-              </button>
-            </div>
-          </div>
-        </div>
+                <Typography 
+                  variant="caption" 
+                  component="p" 
+                  sx={{ 
+                    fontFamily: 'monospace',
+                    wordBreak: 'break-word'
+                  }}
+                >
+                  {error.message}
+                </Typography>
+              </Paper>
+              
+              <Stack 
+                direction={{ xs: 'column', sm: 'row' }} 
+                spacing={2} 
+                justifyContent="center"
+                sx={{ mt: 2 }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={reset}
+                  startIcon={<BugReportIcon />}
+                  sx={{ 
+                    px: 3, 
+                    py: 1.5,
+                    fontWeight: 'bold'
+                  }}
+                  aria-label="Try again to reload the page"
+                >
+                  Try Again
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => window.location.reload()}
+                  sx={{ 
+                    px: 3, 
+                    py: 1.5,
+                    fontWeight: 'bold'
+                  }}
+                  aria-label="Reload the page"
+                >
+                  Reload Page
+                </Button>
+              </Stack>
+              
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 3, display: 'block' }}>
+                If the problem persists, please contact support with the error details above.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
       )}
     >
       {children}

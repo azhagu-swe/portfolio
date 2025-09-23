@@ -2,7 +2,7 @@ export const CONTACT_DATA = {
   title: "Contact Me",
   subtitle: "Connect with Me",
   description:
-    "Feel free to reach out using the form below. I’ll get back to you as soon as possible.",
+    "Feel free to reach out using the form below. I'll get back to you as soon as possible.",
   form: {
     nameLabel: "Your Name",
     emailLabel: "Your Email",

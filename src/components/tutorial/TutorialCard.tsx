@@ -1,9 +1,14 @@
 import React from "react";
-import { Card, CardContent, CardMedia, Button, Typography, Box } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 
-const TutorialCard = ({ title, description, icon, cta }:{title:any, description:any, icon:any, cta:any  }) => {
+const TutorialCard = React.memo(({ title, description, icon, cta }: {title:any, description:any, icon:any, cta:any}) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -40,6 +45,9 @@ const TutorialCard = ({ title, description, icon, cta }:{title:any, description:
       </Card>
     </motion.div>
   );
-};
+});
+
+// Add display name for debugging
+TutorialCard.displayName = 'TutorialCard';
 
 export default TutorialCard;

@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import SideDrawer from "./SideDrawer";
 import AppBarTop from "./AppBarTop";
 import Footer from "./Footer";
+import SkipNavigation from "./SkipNavigation";
 
 import HomeIcon from "@mui/icons-material/Home";
 import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
@@ -102,6 +103,7 @@ const Layout: React.FC<{
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }} role="main">
       <CssBaseline />
+      <SkipNavigation />
       <AppBarTop
         open={!isMobile && open}
         handleDrawerToggle={handleDrawerToggle}
@@ -118,7 +120,9 @@ const Layout: React.FC<{
         <Main open={!isMobile && open}>
           <Box sx={theme.mixins.toolbar} />
 
-          <ContentBox>{children}</ContentBox>
+          <ContentBox id="main-content" component="main">
+            {children}
+          </ContentBox>
           <Footer />
         </Main>
       </Box>

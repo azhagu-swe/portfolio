@@ -1,13 +1,11 @@
 import React, { useMemo } from "react";
-import { 
-  Box, 
-  Typography, 
-  Button, 
-  useTheme, 
-  Grid,
-  Chip,
-  Stack
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import useTheme from "@mui/material/styles/useTheme";
+import Grid from "@mui/material/Grid";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/router";
@@ -216,52 +214,56 @@ const HeroSection: React.FC = () => {
                   alignItems: { xs: "center", sm: "flex-start" }
                 }}>
                 <Button
-                  variant="contained"
-                  size="large"
-                  onClick={handleHireMe}
-                  sx={{ 
-                    px: { xs: 3, sm: 4, md: 6 },
-                    py: { xs: 1, sm: 1.5 },
-                    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
-                    fontWeight: 600,
-                    borderRadius: "50px",
-                    boxShadow: `0 4px 20px ${theme.palette.primary.main}40`,
-                    "&:hover": { 
-                      transform: "translateY(-3px)",
-                      boxShadow: `0 6px 25px ${theme.palette.primary.main}60`
-                    },
-                    transition: "all 0.3s ease",
-                    width: { xs: "100%", sm: "auto" },
-                    maxWidth: { xs: 280, sm: "none" }
-                  }}
-                  role="button"
-                  aria-label="Contact me for hiring opportunities">
-                  {HERO_DATA.buttons.hire}
-                </Button>
+              variant="contained"
+              size="large"
+              onClick={handleHireMe}
+              sx={{ 
+                px: { xs: 3, sm: 4, md: 6 },
+                py: { xs: 1, sm: 1.5 },
+                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+                fontWeight: 600,
+                borderRadius: "50px",
+                boxShadow: `0 4px 20px ${theme.palette.primary.main}40`,
+                "&:hover": { 
+                  transform: "translateY(-3px)",
+                  boxShadow: `0 6px 25px ${theme.palette.primary.main}60`
+                },
+                transition: "all 0.3s ease",
+                width: { xs: "100%", sm: "auto" },
+                maxWidth: { xs: 280, sm: "none" }
+              }}
+              role="button"
+              aria-label="Contact me for hiring opportunities"
+              tabIndex={0}
+            >
+              {HERO_DATA.buttons.hire}
+            </Button>
 
-                <Button
-                  variant="outlined"
-                  size="large"
-                  onClick={handleDownloadResume}
-                  sx={{ 
-                    px: { xs: 3, sm: 4, md: 6 },
-                    py: { xs: 1, sm: 1.5 },
-                    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
-                    fontWeight: 600,
-                    borderRadius: "50px",
-                    borderWidth: "2px",
-                    "&:hover": { 
-                      transform: "translateY(-3px)",
-                      borderWidth: "2px"
-                    },
-                    transition: "all 0.3s ease",
-                    width: { xs: "100%", sm: "auto" },
-                    maxWidth: { xs: 280, sm: "none" }
-                  }}
-                  role="button"
-                  aria-label="Download my resume">
-                  {HERO_DATA.buttons.resume}
-                </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              onClick={handleDownloadResume}
+              sx={{ 
+                px: { xs: 3, sm: 4, md: 6 },
+                py: { xs: 1, sm: 1.5 },
+                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+                fontWeight: 600,
+                borderRadius: "50px",
+                borderWidth: "2px",
+                "&:hover": { 
+                  transform: "translateY(-3px)",
+                  borderWidth: "2px"
+                },
+                transition: "all 0.3s ease",
+                width: { xs: "100%", sm: "auto" },
+                maxWidth: { xs: 280, sm: "none" }
+              }}
+              role="button"
+              aria-label="Download my resume"
+              tabIndex={0}
+            >
+              {HERO_DATA.buttons.resume}
+            </Button>
               </Box>
             </motion.div>
           </motion.div>
