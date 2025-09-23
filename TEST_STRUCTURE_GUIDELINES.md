@@ -2,6 +2,9 @@
 
 This document provides guidelines for organizing tests in the portfolio application following industry best practices.
 
+**⚠️ Current Status: Incomplete Implementation**
+Many components and modules lack tests. See [TEST_IMPROVEMENTS_SUMMARY.md](TEST_IMPROVEMENTS_SUMMARY.md) for a comprehensive improvement plan.
+
 ## Folder Structure Principles
 
 ### 1. **Colocation Principle**
@@ -19,20 +22,21 @@ All test files should follow a consistent naming pattern:
 
 ## Directory Structure
 
-### Current Structure
+### Current Structure (Partially Implemented)
 ```
 src/
 ├── components/
 │   ├── about/
 │   │   ├── __tests__/
-│   │   │   └── .gitkeep
+│   │   │   └── AboutSection.test.tsx (exists)
+│   │   │   └── .gitkeep (others)
 │   │   ├── AboutSection.tsx
 │   │   ├── CustomizeCard.tsx
 │   │   ├── SkillCard.tsx
 │   │   └── index.ts
 │   ├── blog/
 │   │   ├── __tests__/
-│   │   │   └── .gitkeep
+│   │   │   └── .gitkeep (all)
 │   │   ├── AudioPlayer.tsx
 │   │   ├── BlogCard.tsx
 │   │   ├── PostHeader.tsx
@@ -42,8 +46,8 @@ src/
 │   │   └── index.ts
 │   ├── common/
 │   │   ├── __tests__/
-│   │   │   ├── GlobalErrorBoundary.test.tsx
-│   │   │   └── SkipNavigation.test.tsx
+│   │   │   ├── GlobalErrorBoundary.test.tsx (exists)
+│   │   │   └── SkipNavigation.test.tsx (exists)
 │   │   ├── AppBarTop.tsx
 │   │   ├── Footer.tsx
 │   │   ├── GlobalErrorBoundary.tsx
@@ -54,7 +58,7 @@ src/
 │   │   └── index.ts
 │   ├── home/
 │   │   ├── __tests__/
-│   │   │   └── .gitkeep
+│   │   │   └── .gitkeep (all)
 │   │   ├── CallToAction.tsx
 │   │   ├── ContentPreview.tsx
 │   │   ├── ExperienceSection.tsx
@@ -65,18 +69,18 @@ src/
 │   │   └── index.ts
 │   ├── mdx/
 │   │   ├── __tests__/
-│   │   │   └── .gitkeep
+│   │   │   └── .gitkeep (all)
 │   │   ├── ChartJSBlock.tsx
 │   │   ├── CodeBlock.tsx
 │   │   └── index.ts
 │   ├── projects/
 │   │   ├── __tests__/
-│   │   │   └── .gitkeep
+│   │   │   └── .gitkeep (all)
 │   │   ├── ProjectCard.tsx
 │   │   └── index.ts
 │   ├── style/
 │   │   ├── __tests__/
-│   │   │   └── .gitkeep
+│   │   │   └── .gitkeep (all)
 │   │   ├── blog/
 │   │   │   ├── HeroSection.tsx
 │   │   │   └── index.ts
@@ -85,19 +89,21 @@ src/
 │   │   └── index.ts
 │   └── tutorial/
 │       ├── __tests__/
-│       │   └── .gitkeep
+│       │   └── .gitkeep (all)
 │       ├── TutorialCard.tsx
 │       └── index.ts
 ├── context/
 │   ├── __tests__/
-│   │   ├── ThemeContext.test.tsx
-│   │   └── VisitorContext.test.tsx
+│   │   ├── ThemeContext.test.tsx (exists but needs more tests)
+│   │   └── VisitorContext.test.tsx (exists)
 │   ├── ThemeContext.tsx
 │   └── VisitorContext.tsx
 ├── hooks/
 │   ├── __tests__/
-│   │   └── useErrorHandler.test.ts
+│   │   ├── useErrorHandler.test.ts (exists)
+│   │   └── useTouchDevice.test.ts (exists but partial)
 │   ├── useErrorHandler.ts
+│   ├── useTouchDevice.ts
 │   └── index.ts
 ├── lib/
 │   ├── blog.ts
@@ -117,17 +123,18 @@ src/
 │   └── ... (other page directories)
 ├── services/
 │   ├── __tests__/
-│   │   └── errorMonitoring.test.ts
+│   │   └── errorMonitoring.test.ts (exists)
 │   └── errorMonitoring.ts
 ├── styles/
 │   ├── globals.css
 │   └── theme.ts
 └── utils/
     ├── __tests__/
-    │   ├── animationConfig.test.ts
-    │   ├── constants.test.ts
-    │   ├── errorHandler.test.ts
-    │   └── heroData.test.ts
+    │   ├── animationConfig.test.ts (exists)
+    │   ├── constants.test.ts (exists)
+    │   ├── errorHandler.test.ts (exists)
+    │   ├── heroData.test.ts (exists)
+    │   └── aboutData.test.ts (exists)
     ├── aboutData.ts
     ├── animationConfig.ts
     ├── constants.ts
@@ -174,6 +181,11 @@ src/
 - Test data processing and business logic
 - Mock file system operations when needed
 
+### 7. **Page Tests**
+- Place in `__tests__` directory within the pages folder
+- Test page rendering and data fetching
+- Test error states and loading states
+
 ## File Naming Conventions
 
 ### Test Files
@@ -183,6 +195,7 @@ src/
 4. **Service tests**: `serviceName.test.ts`
 5. **Utility tests**: `utilityName.test.ts`
 6. **Library tests**: `libraryName.test.ts`
+7. **Page tests**: `pageName.test.tsx`
 
 ### Test Descriptions
 1. **Top-level describe**: Use the name of the component/hook/utility being tested
@@ -221,33 +234,25 @@ it('should render correctly', () => {
 - Verify keyboard navigation
 - Check screen reader compatibility
 
-## Future Improvements
+## Current Issues and Gaps
 
-### 1. **Add Missing Tests**
-- Create tests for components currently without test files
-- Add tests for utility functions
-- Implement integration tests for complex interactions
+### 1. **Incomplete Test Coverage**
+- Many components lack any tests
+- Several utilities are untested
+- Pages have no test coverage
+- Context providers need more comprehensive tests
 
-### 2. **Enhance Existing Tests**
-- Add more edge case coverage
-- Improve accessibility testing
-- Add performance testing where appropriate
+### 2. **Inconsistent Implementation**
+- Some directories have tests, others only have `.gitkeep`
+- Test quality varies between existing tests
+- Missing integration tests between components
 
-### 3. **Organize by Feature**
-Consider organizing tests by feature rather than by type for larger applications:
-```
-features/
-├── authentication/
-│   ├── components/
-│   │   └── __tests__/
-│   ├── hooks/
-│   │   └── __tests__/
-│   └── services/
-│       └── __tests__/
-└── dashboard/
-    ├── components/
-    │   └── __tests__/
-    └── ...
-```
+### 3. **Documentation vs Implementation Gap**
+- Documentation states 80% coverage goal but actual is ~10%
+- Test structure guidelines don't reflect current reality
 
-This structure provides a solid foundation for maintainable and scalable testing in the portfolio application.
+## Improvement Plan
+
+See [TEST_IMPROVEMENTS_SUMMARY.md](TEST_IMPROVEMENTS_SUMMARY.md) for a detailed 5-phase plan to address all testing gaps and improve the overall quality of the test suite.
+
+This structure provides a roadmap for achieving maintainable and scalable testing in the portfolio application.
