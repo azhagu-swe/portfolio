@@ -9,12 +9,17 @@ import CallToAction from "../components/CallToAction";
 import Head from "next/head";
 import VisitorCounter from "@/components/VisitorsCounter";
 import { getSortedProjectsData, ProjectFrontmatter } from "@/lib/projects";
+import { getSortedPostsData, PostFrontmatter } from "@/lib/blog";
+import { getSortedTutorialsData, TutorialFrontmatter } from "@/lib/tutorials";
+import ContentPreview from "@/components/home/ContentPreview";
 
 interface HomePageProps {
   projects: (ProjectFrontmatter & { slug: string })[];
+  posts: (PostFrontmatter & { slug: string })[];
+  tutorials: (TutorialFrontmatter & { slug: string })[];
 }
 
-export default function HomePage({ projects }: HomePageProps) {
+export default function HomePage({ projects, posts, tutorials }: HomePageProps) {
   return (
     <Container maxWidth={false} disableGutters>
       <Head>
@@ -34,6 +39,7 @@ export default function HomePage({ projects }: HomePageProps) {
       <ExperienceSection />
       <SkillsShowcase />
       <ProjectsPreview projects={projects} />
+      <ContentPreview posts={posts.slice(0, 3)} tutorials={tutorials.slice(0, 3)} />
       <VisitorCounter /> 
       <CallToAction />
     </Container>
@@ -42,9 +48,14 @@ export default function HomePage({ projects }: HomePageProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const projects = getSortedProjectsData();
+  const posts = getSortedPostsData();
+  const tutorials = getSortedTutorialsData();
+  
   return {
     props: {
-      projects
+      projects,
+      posts,
+      tutorials
     }
   };
 };

@@ -102,7 +102,8 @@ export const VisitorProvider = ({ children }: { children: ReactNode }) => {
             const { data } = JSON.parse(cachedData);
             setCounts(data);
           } catch (e) {
-            // Ignore parsing errors
+            console.error(e)
+
           }
         }
         
