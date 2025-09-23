@@ -12,11 +12,14 @@ import { useRouter } from "next/router";
 import { HERO_DATA } from "@/utils/heroData";
 import { HERO_ANIMATION_CONFIG } from "@/utils/animationConfig";
 import Image from "next/image";
+import { useTouchDevice } from "@/hooks/useTouchDevice";
+import { withTouchStyles, getTouchTargetSize } from "@/utils/touchUtils";
 
 const HeroSection: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
   const { basePath } = router;
+  const isTouchDevice = useTouchDevice();
 
   // Memoize the image URL to prevent unnecessary re-renders
   const profileImageUrl = useMemo(() => {
@@ -30,6 +33,24 @@ const HeroSection: React.FC = () => {
   const handleDownloadResume = () => {
     window.open(`${basePath}${HERO_DATA.images.resume}`, "_blank");
   };
+
+  // Touch-friendly button styles
+  const touchButtonStyles = withTouchStyles({
+    px: { xs: 3, sm: 4, md: 6 },
+    py: { xs: 1.5, sm: 2, md: 2.5 }, // Increased padding for touch targets
+    fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" }, // Larger font for touch
+    fontWeight: 600,
+    borderRadius: "50px",
+    boxShadow: `0 4px 20px ${theme.palette.primary.main}40`,
+    "&:hover": { 
+      transform: "translateY(-3px)",
+      boxShadow: `0 6px 25px ${theme.palette.primary.main}60`
+    },
+    transition: "all 0.3s ease",
+    width: { xs: "100%", sm: "auto" },
+    maxWidth: { xs: 320, sm: "none" }, // Max width for touch targets
+    minHeight: `${getTouchTargetSize('button')}px`, // Ensure minimum touch target size
+  }, isTouchDevice);
 
   return (
     <Box 
@@ -161,7 +182,8 @@ const HeroSection: React.FC = () => {
                     color: theme.palette.primary.contrastText,
                     fontWeight: 600,
                     fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 24, sm: 28, md: 32 }
+                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                    minWidth: 60 // Minimum width for touch
                   }} 
                 />
                 <Chip 
@@ -173,7 +195,8 @@ const HeroSection: React.FC = () => {
                     color: theme.palette.primary.main,
                     fontWeight: 600,
                     fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 24, sm: 28, md: 32 }
+                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                    minWidth: 100 // Minimum width for touch
                   }} 
                 />
                 <Chip 
@@ -184,7 +207,8 @@ const HeroSection: React.FC = () => {
                     color: theme.palette.secondary.contrastText,
                     fontWeight: 600,
                     fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 24, sm: 28, md: 32 }
+                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                    minWidth: 60 // Minimum width for touch
                   }} 
                 />
                 <Chip 
@@ -196,7 +220,8 @@ const HeroSection: React.FC = () => {
                     color: theme.palette.secondary.main,
                     fontWeight: 600,
                     fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 24, sm: 28, md: 32 }
+                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                    minWidth: 110 // Minimum width for touch
                   }} 
                 />
               </Stack>
@@ -214,56 +239,36 @@ const HeroSection: React.FC = () => {
                   alignItems: { xs: "center", sm: "flex-start" }
                 }}>
                 <Button
-              variant="contained"
-              size="large"
-              onClick={handleHireMe}
-              sx={{ 
-                px: { xs: 3, sm: 4, md: 6 },
-                py: { xs: 1, sm: 1.5 },
-                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
-                fontWeight: 600,
-                borderRadius: "50px",
-                boxShadow: `0 4px 20px ${theme.palette.primary.main}40`,
-                "&:hover": { 
-                  transform: "translateY(-3px)",
-                  boxShadow: `0 6px 25px ${theme.palette.primary.main}60`
-                },
-                transition: "all 0.3s ease",
-                width: { xs: "100%", sm: "auto" },
-                maxWidth: { xs: 280, sm: "none" }
-              }}
-              role="button"
-              aria-label="Contact me for hiring opportunities"
-              tabIndex={0}
-            >
-              {HERO_DATA.buttons.hire}
-            </Button>
+                  variant="contained"
+                  size="large"
+                  onClick={handleHireMe}
+                  sx={touchButtonStyles}
+                  role="button"
+                  aria-label="Contact me for hiring opportunities"
+                  tabIndex={0}
+                >
+                  {HERO_DATA.buttons.hire}
+                </Button>
 
-            <Button
-              variant="outlined"
-              size="large"
-              onClick={handleDownloadResume}
-              sx={{ 
-                px: { xs: 3, sm: 4, md: 6 },
-                py: { xs: 1, sm: 1.5 },
-                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
-                fontWeight: 600,
-                borderRadius: "50px",
-                borderWidth: "2px",
-                "&:hover": { 
-                  transform: "translateY(-3px)",
-                  borderWidth: "2px"
-                },
-                transition: "all 0.3s ease",
-                width: { xs: "100%", sm: "auto" },
-                maxWidth: { xs: 280, sm: "none" }
-              }}
-              role="button"
-              aria-label="Download my resume"
-              tabIndex={0}
-            >
-              {HERO_DATA.buttons.resume}
-            </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={handleDownloadResume}
+                  sx={{
+                    ...touchButtonStyles,
+                    boxShadow: "none",
+                    borderWidth: "2px",
+                    "&:hover": { 
+                      transform: "translateY(-3px)",
+                      borderWidth: "2px"
+                    },
+                  }}
+                  role="button"
+                  aria-label="Download my resume"
+                  tabIndex={0}
+                >
+                  {HERO_DATA.buttons.resume}
+                </Button>
               </Box>
             </motion.div>
           </motion.div>

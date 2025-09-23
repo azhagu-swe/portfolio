@@ -17,7 +17,7 @@ import {
 import { motion } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
-import ProjectCard from "@/components/projects/ProjectCard";
+import ProjectCard from "@/components/project-page/ProjectCard";
 
 interface ProjectPageProps {
   allProjectsData: (ProjectFrontmatter & { slug: string })[];

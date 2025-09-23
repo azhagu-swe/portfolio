@@ -12,6 +12,8 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { ProjectFrontmatter } from "@/lib/projects";
 import { ANIMATION_VARIANTS } from "@/utils/constants";
+import { useTouchDevice } from "@/hooks/useTouchDevice";
+import { withTouchStyles, getTouchTargetSize } from "@/utils/touchUtils";
 
 interface ProjectCardProps {
   project: ProjectFrontmatter & { slug: string };
@@ -21,6 +23,8 @@ interface ProjectCardProps {
 const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
   const theme = useTheme();
   const router = useRouter();
+  const isTouchDevice = useTouchDevice();
+  
   const imageUrl = project.thumbnail.startsWith("http")
     ? project.thumbnail
     : `${basePath}${project.thumbnail}`;
@@ -40,6 +44,16 @@ const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
     e.stopPropagation();
     window.open(project.github, "_blank");
   };
+
+  // Touch-friendly button styles
+  const touchButtonStyles = withTouchStyles({
+    px: { xs: 1.5, sm: 2, md: 2.5 },
+    py: { xs: 1, sm: 1.2, md: 1.5 },
+    fontSize: { xs: "0.85rem", sm: "0.9rem", md: "0.95rem" },
+    fontWeight: 600,
+    borderRadius: "8px",
+    minHeight: `${getTouchTargetSize('button') * 0.9}px`, // Slightly smaller for secondary actions
+  }, isTouchDevice);
 
   return (
     <motion.div variants={ANIMATION_VARIANTS.ITEM} style={{ height: "100%" }}>
@@ -78,7 +92,7 @@ const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            p: { xs: 2, sm: 3 },
+            p: { xs: 2, sm: 2.5, md: 3 },
           }}
         >
           <Typography
@@ -89,7 +103,7 @@ const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
               fontWeight: "bold",
               flexGrow: 1,
               mt: 1,
-              fontSize: { xs: "1rem", sm: "1.1rem" },
+              fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" },
             }}
           >
             {project.title}
@@ -97,7 +111,7 @@ const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{ mb: 2, fontSize: { xs: "0.85rem", sm: "0.9rem" } }}
+            sx={{ mb: 2, fontSize: { xs: "0.85rem", sm: "0.9rem", md: "0.95rem" } }}
           >
             {project.description}
           </Typography>
@@ -115,8 +129,9 @@ const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
                 size="small"
                 variant="outlined"
                 sx={{
-                  height: { xs: 20, sm: 24 },
-                  fontSize: { xs: "0.65rem", sm: "0.75rem" },
+                  height: { xs: 24, sm: 28, md: 32 },
+                  fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
+                  minWidth: 40, // Minimum width for touch targets
                 }}
               />
             ))}
@@ -129,6 +144,7 @@ const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
             mt: "auto",
             display: "flex",
             gap: 1,
+            flexDirection: { xs: "column", sm: "row" }, // Stack buttons on mobile
           }}
         >
           {project.liveDemo && (
@@ -138,10 +154,9 @@ const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
               color="primary"
               onClick={handleLiveDemo}
               sx={{
-                px: { xs: 1, sm: 2 },
-                py: { xs: 0.8, sm: 1 },
-                fontSize: { xs: "0.85rem", sm: "0.95rem" },
-                mr: 1,
+                ...touchButtonStyles,
+                mr: { xs: 0, sm: 1 }, // No right margin on mobile
+                mb: { xs: 1, sm: 0 }, // Bottom margin on mobile
               }}
             >
               Live Demo
@@ -152,11 +167,7 @@ const ProjectCard = React.memo(({ project, basePath }: ProjectCardProps) => {
             variant="outlined"
             color="secondary"
             onClick={handleGitHub}
-            sx={{
-              px: { xs: 1, sm: 2 },
-              py: { xs: 0.8, sm: 1 },
-              fontSize: { xs: "0.85rem", sm: "0.95rem" },
-            }}
+            sx={touchButtonStyles}
           >
             GitHub
           </Button>

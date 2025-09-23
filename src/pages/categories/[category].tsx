@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import { Box, Typography, Grid } from "@mui/material";
-import BlogCard from "@/components/blog/BlogCard";
+import BlogCard from "@/components/blog-page/BlogCard";
 import { useRouter } from "next/router";
 import {
   getAllCategories,

@@ -20,11 +20,11 @@ import {
 import Link from "next/link";
 import { ArrowBack } from "@mui/icons-material";
 import { HERO_DATA } from "@/utils/heroData";
-import ReadingProgressBar from "@/components/blog/ReadingProgressBar";
-import PostHeader from "@/components/blog/PostHeader";
-import PostSidebar from "@/components/blog/PostSidebar";
-import RelatedPosts from "@/components/blog/RelatedPosts";
-import AudioPlayer from "@/components/blog/AudioPlayer";
+import ReadingProgressBar from "@/components/blog-page/ReadingProgressBar";
+import PostHeader from "@/components/blog-page/PostHeader";
+import PostSidebar from "@/components/blog-page/PostSidebar";
+import RelatedPosts from "@/components/blog-page/RelatedPosts";
+import AudioPlayer from "@/components/blog-page/AudioPlayer";
 import CodeBlock from "@/components/mdx/CodeBlock";
 import ChartJSBlock from "@/components/mdx/ChartJSBlock";
 

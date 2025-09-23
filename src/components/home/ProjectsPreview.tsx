@@ -14,6 +14,8 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { Code, OpenInNew } from "@mui/icons-material";
 import { ProjectFrontmatter } from "@/lib/projects";
+import { useTouchDevice } from "@/hooks/useTouchDevice";
+import { withTouchStyles, getTouchTargetSize } from "@/utils/touchUtils";
 
 interface ProjectsPreviewProps {
   projects: (ProjectFrontmatter & { slug: string })[];
@@ -44,6 +46,7 @@ const ProjectsPreview: React.FC<ProjectsPreviewProps> = ({ projects }) => {
   const theme = useTheme();
   const router = useRouter();
   const { basePath } = router;
+  const isTouchDevice = useTouchDevice();
   
   // Get only the first 3 projects for the preview
   const featuredProjects = projects.slice(0, 3);
@@ -51,6 +54,22 @@ const ProjectsPreview: React.FC<ProjectsPreviewProps> = ({ projects }) => {
   const handleViewAllProjects = () => {
     router.push("/projects");
   };
+
+  // Touch-friendly button styles
+  const touchButtonStyles = withTouchStyles({
+    px: { xs: 2, sm: 3, md: 4 },
+    py: { xs: 1, sm: 1.5, md: 2 },
+    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
+    fontWeight: 600,
+    borderRadius: "50px",
+    borderWidth: "2px",
+    "&:hover": {
+      borderWidth: "2px",
+      transform: "translateY(-3px)"
+    },
+    transition: "all 0.3s ease",
+    minHeight: `${getTouchTargetSize('button')}px`,
+  }, isTouchDevice);
 
   return (
     <Box 
@@ -200,7 +219,8 @@ const ProjectsPreview: React.FC<ProjectsPreviewProps> = ({ projects }) => {
                             borderColor: theme.palette.primary.main,
                             color: theme.palette.primary.main,
                             fontSize: { xs: "0.65rem", sm: "0.7rem", md: "0.75rem" },
-                            height: { xs: 20, sm: 24, md: 28 }
+                            height: { xs: 24, sm: 28, md: 32 },
+                            minWidth: 50
                           }}
                         />
                       ))}
@@ -220,12 +240,13 @@ const ProjectsPreview: React.FC<ProjectsPreviewProps> = ({ projects }) => {
                       size="small"
                       onClick={() => router.push(`/projects/${project.slug}`)}
                       sx={{
-                        px: { xs: 1.5, sm: 2, md: 2.5 },
-                        py: { xs: 0.8, sm: 1, md: 1.2 },
-                        fontSize: { xs: "0.75rem", sm: "0.8rem", md: "0.875rem" },
+                        px: { xs: 2, sm: 2.5, md: 3 },
+                        py: { xs: 1, sm: 1.2, md: 1.5 },
+                        fontSize: { xs: "0.8rem", sm: "0.85rem", md: "0.9rem" },
                         fontWeight: 600,
                         borderRadius: "12px",
-                        minWidth: 0
+                        minWidth: 0,
+                        minHeight: `${getTouchTargetSize('button') * 0.8}px`, // Slightly smaller for secondary actions
                       }}
                     >
                       View Case Study
@@ -240,11 +261,12 @@ const ProjectsPreview: React.FC<ProjectsPreviewProps> = ({ projects }) => {
                         rel="noopener noreferrer"
                         startIcon={<Code sx={{ fontSize: "0.8rem" }} />}
                         sx={{
-                          px: { xs: 1.5, sm: 2, md: 2.5 },
-                          py: { xs: 0.8, sm: 1, md: 1.2 },
-                          fontSize: { xs: "0.75rem", sm: "0.8rem", md: "0.875rem" },
+                          px: { xs: 2, sm: 2.5, md: 3 },
+                          py: { xs: 1, sm: 1.2, md: 1.5 },
+                          fontSize: { xs: "0.8rem", sm: "0.85rem", md: "0.9rem" },
                           borderRadius: "12px",
-                          minWidth: 0
+                          minWidth: 0,
+                          minHeight: `${getTouchTargetSize('button') * 0.8}px`, // Slightly smaller for secondary actions
                         }}
                       >
                         Code
@@ -272,19 +294,7 @@ const ProjectsPreview: React.FC<ProjectsPreviewProps> = ({ projects }) => {
           variant="outlined"
           size="large"
           onClick={handleViewAllProjects}
-          sx={{
-            px: { xs: 3, sm: 4, md: 6 },
-            py: { xs: 1, sm: 1.5, md: 2 },
-            fontSize: { xs: "0.95rem", sm: "1.05rem", md: "1.1rem" },
-            fontWeight: 600,
-            borderRadius: "50px",
-            borderWidth: "2px",
-            "&:hover": {
-              borderWidth: "2px",
-              transform: "translateY(-3px)"
-            },
-            transition: "all 0.3s ease"
-          }}
+          sx={touchButtonStyles}
         >
           View All Projects
         </Button>

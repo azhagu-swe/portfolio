@@ -18,7 +18,7 @@ import {
 import { motion } from "framer-motion";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/router";
-import BlogCard from "@/components/blog/BlogCard";
+import BlogCard from "@/components/blog-page/BlogCard";
 
 // --- TYPE DEFINITIONS ---
 interface BlogIndexProps {
