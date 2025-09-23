@@ -4,6 +4,8 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
 
 **⚠️ Note on Testing**: This project currently has incomplete test coverage. See [Testing Improvements Summary](TEST_IMPROVEMENTS_SUMMARY.md) for details on the current status and improvement plan.
 
+**⚠️ Note on Issues**: This project has several areas for improvement. See [Comprehensive Issues](COMPREHENSIVE_ISSUES.md) for a complete list of identified issues and drawbacks.
+
 ---
 
 ## ✨ Features
