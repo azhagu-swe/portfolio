@@ -1,8 +1,8 @@
 import React from "react";
-import { NotFound } from "@/components/StatusPage";
+import { NotFound } from "@/components/common/StatusPage";
 
-const NotFoundPage = () => {
+const Custom404: React.FC = () => {
   return <NotFound />;
 };
 
-export default NotFoundPage;
+export default Custom404;

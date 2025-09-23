@@ -1,13 +1,13 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import { Container } from "@mui/material";
-import HeroSection from "../components/HeroSection";
-import SkillsShowcase from "../components/SkillsShowcase";
-import ProjectsPreview from "../components/ProjectsPreview";
-import ExperienceSection from "../components/ExperienceSection";
-import CallToAction from "../components/CallToAction";
+import HeroSection from "@/components/home/HeroSection";
+import SkillsShowcase from "@/components/home/SkillsShowcase";
+import ProjectsPreview from "@/components/home/ProjectsPreview";
+import ExperienceSection from "@/components/home/ExperienceSection";
+import CallToAction from "@/components/home/CallToAction";
 import Head from "next/head";
-import VisitorCounter from "@/components/VisitorsCounter";
+import VisitorsCounter from "@/components/home/VisitorsCounter";
 import { getSortedProjectsData, ProjectFrontmatter } from "@/lib/projects";
 import { getSortedPostsData, PostFrontmatter } from "@/lib/blog";
 import { getSortedTutorialsData, TutorialFrontmatter } from "@/lib/tutorials";
@@ -40,7 +40,7 @@ export default function HomePage({ projects, posts, tutorials }: HomePageProps) 
       <SkillsShowcase />
       <ProjectsPreview projects={projects} />
       <ContentPreview posts={posts.slice(0, 3)} tutorials={tutorials.slice(0, 3)} />
-      <VisitorCounter /> 
+      <VisitorsCounter /> 
       <CallToAction />
     </Container>
   );

@@ -1,0 +1,96 @@
+/* Global Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom global styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark mode variables */
+:root {
+  --background-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #1976d2;
+  --secondary-color: #ff9800;
+}
+
+[data-theme='dark'] {
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --primary-color: #90caf9;
+  --secondary-color: #ffd54f;
+}
+
+/* Typography */
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Responsive helpers */
+@media (max-width: 768px) {
+  .mobile-hidden {
+    display: none;
+  }
+}
+
+/* Animation helpers */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
+/* Focus styles for accessibility */
+:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+  
+  /* Hide elements not needed for printing */
+  .no-print {
+    display: none;
+  }
+}

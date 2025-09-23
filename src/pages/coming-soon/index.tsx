@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { ComingSoon } from "@/components/StatusPage";
+import { ComingSoon } from "@/components/common/StatusPage";
 
-const ComingSoonPage = () => {
+const ComingSoonPage: React.FC = () => {
   const theme = useTheme();
 
   return <ComingSoon />;

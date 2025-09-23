@@ -1,5 +1,5 @@
 import React from "react";
-import { Maintenance } from "@/components/StatusPage";
+import { Maintenance } from "@/components/common/StatusPage";
 
 const MaintenancePage = () => {
   return <Maintenance />;
