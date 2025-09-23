@@ -1,14 +1,20 @@
 import React from "react";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
-import { ThemeProvider, useThemeContext } from "../context/ThemeContext";
-import Layout from "../components/Layout";
+import { ThemeProvider, useThemeContext } from "@/context/ThemeContext";
+import Layout from "@/components/common/Layout";
+import GlobalErrorBoundary from "@/components/common/GlobalErrorBoundary";
 import type { AppProps } from "next/app";
-import "@fontsource/orbitron";
-import "@fontsource/poppins";
 import { VisitorProvider } from "@/context/VisitorContext";
+import "@/styles/globals.css";
+import { setupGlobalErrorHandlers } from "@/utils/errorHandler";
 
-const AppContent: React.FC<AppProps> = ({ Component, pageProps }) => {
+// Setup global error handlers
+if (typeof window !== 'undefined') {
+  setupGlobalErrorHandlers();
+}
+
+function MyAppContent({ Component, pageProps }: AppProps) {
   const { theme, toggleTheme, isDarkMode } = useThemeContext();
 
   return (
@@ -19,14 +25,16 @@ const AppContent: React.FC<AppProps> = ({ Component, pageProps }) => {
       </Layout>
     </MuiThemeProvider>
   );
-};
+}
 
-export default function MyApp(props: AppProps) {
+export default function App(props: AppProps) {
   return (
-    <VisitorProvider>
-      <ThemeProvider>
-        <AppContent {...props} />
-      </ThemeProvider>
-    </VisitorProvider>
+    <ThemeProvider>
+      <VisitorProvider>
+        <GlobalErrorBoundary>
+          <MyAppContent {...props} />
+        </GlobalErrorBoundary>
+      </VisitorProvider>
+    </ThemeProvider>
   );
 }
