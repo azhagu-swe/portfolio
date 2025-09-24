@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
-import { Box, Typography, TextField, Chip } from '@mui/material';
+import { Box, Typography, TextField, Chip, IconButton, Button } from '@mui/material';
+import { useRouter } from 'next/router';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import HomeIcon from '@mui/icons-material/Home';
 
 interface TerminalProps {
   initialLines?: string[];
@@ -18,6 +22,7 @@ const Terminal: React.FC<TerminalProps> = ({
   welcomeMessage = 'Type "help" to see available commands',
   showCursor = true
 }) => {
+  const router = useRouter();
   const [lines, setLines] = useState<string[]>([...initialLines]);
   const [input, setInput] = useState<string>('');
   const [currentPrompt, setCurrentPrompt] = useState<string>('user@portfolio:~$ ');
@@ -29,6 +34,7 @@ const Terminal: React.FC<TerminalProps> = ({
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [typingTimeoutIds, setTypingTimeoutIds] = useState<NodeJS.Timeout[]>([]);
   const [currentPath, setCurrentPath] = useState<string>('/home/azhagu');
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [fileSystem, setFileSystem] = useState<Record<string, any>>({
     'home': {
       'azhagu': {
@@ -61,10 +67,10 @@ const Terminal: React.FC<TerminalProps> = ({
   const cursorIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Available commands for suggestions
-  const availableCommands = [
+  const availableCommands = React.useMemo(() => [
     'help', 'about', 'skills', 'experience', 'contact', 'projects', 'clear', 
-    'education', 'certifications', 'resume', 'github', 'linkedin', 'ls', 'cd', 'pwd', 'cat', 'whoami', 'date'
-  ];
+    'education', 'certifications', 'resume', 'github', 'linkedin', 'ls', 'cd', 'pwd', 'cat', 'whoami', 'date', 'quit', 'exit'
+  ], []);
 
   // Helper function to get current directory object
   const getCurrentDir = () => {
@@ -142,7 +148,7 @@ const Terminal: React.FC<TerminalProps> = ({
       setAutoSuggestions([]);
       setShowSuggestions(false);
     }
-  }, [input]);
+  }, [input, availableCommands]);
 
   const addTypedLines = (newLines: string[], callback?: () => void) => {
     setIsTyping(true);
@@ -227,7 +233,9 @@ const Terminal: React.FC<TerminalProps> = ({
           'pwd         - Print working directory',
           'cat         - Print file contents',
           'whoami      - Display current user',
-          'date        - Show current date and time'
+          'date        - Show current date and time',
+          'quit        - Exit terminal and go to home page',
+          'exit        - Exit terminal and go to home page'
         ];
         break;
       case 'about':
@@ -411,6 +419,15 @@ const Terminal: React.FC<TerminalProps> = ({
           }
         }
         break;
+      case 'quit':
+      case 'exit':
+        responseLines = ['Exiting terminal...', 'Redirecting to home page...'];
+        addTypedLines(responseLines, () => {
+          setTimeout(() => {
+            router.push('/');
+          }, 1000);
+        });
+        return; // Don't continue with normal flow
       case 'clear':
         setLines(['Type "help" to see available commands']);
         setInput('');
@@ -471,14 +488,18 @@ const Terminal: React.FC<TerminalProps> = ({
         color: '#68D391',
         fontFamily: 'monospace',
         fontSize: '0.9rem',
-        padding: 2,
+        padding: isFullscreen ? 3 : 2,
         borderRadius: '8px',
         border: '1px solid #68D391',
         overflow: 'hidden',
-        minHeight: '400px',
-        maxHeight: '500px',
+        minHeight: isFullscreen ? '100vh' : '400px',
+        maxHeight: isFullscreen ? '100vh' : '500px',
         overflowY: 'auto',
         position: 'relative',
+        margin: isFullscreen ? 0 : 'auto',
+        width: isFullscreen ? '100vw' : '100%',
+        height: isFullscreen ? '100vh' : 'auto',
+        zIndex: isFullscreen ? 1300 : 'auto', // Ensure proper stacking context
         '&::-webkit-scrollbar': {
           width: '6px',
         },
@@ -491,33 +512,44 @@ const Terminal: React.FC<TerminalProps> = ({
         }
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Box
-          sx={{
-            width: 12,
-            height: 12,
-            borderRadius: '50%',
-            backgroundColor: '#ff5f56',
-            mr: 1
-          }}
-        />
-        <Box
-          sx={{
-            width: 12,
-            height: 12,
-            borderRadius: '50%',
-            backgroundColor: '#ffbd2e',
-            mr: 1
-          }}
-        />
-        <Box
-          sx={{
-            width: 12,
-            height: 12,
-            borderRadius: '50%',
-            backgroundColor: '#27c93f',
-          }}
-        />
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              borderRadius: '50%',
+              backgroundColor: '#ff5f56',
+              mr: 1
+            }}
+          />
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              borderRadius: '50%',
+              backgroundColor: '#ffbd2e',
+              mr: 1
+            }}
+          />
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              borderRadius: '50%',
+              backgroundColor: '#27c93f',
+            }}
+          />
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <IconButton 
+            size="small" 
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            sx={{ color: '#68D391', '&:hover': { backgroundColor: 'rgba(104, 211, 145, 0.1)' } }}
+          >
+            {isFullscreen ? <FullscreenExitIcon fontSize="small" /> : <FullscreenIcon fontSize="small" />}
+          </IconButton>
+        </Box>
       </Box>
       
       {lines.map((line, index) => (

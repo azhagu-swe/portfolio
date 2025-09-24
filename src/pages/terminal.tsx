@@ -1,10 +1,18 @@
 import React from 'react';
-import { Container, Box, Typography } from '@mui/material';
+import { Container, Box, Typography, Button } from '@mui/material';
 import Terminal from '@/components/ui/Terminal';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import HomeIcon from '@mui/icons-material/Home';
 
 const TerminalPage = () => {
+  const router = useRouter();
+
+  const handleGoHome = () => {
+    router.push('/');
+  };
+
   return (
     <>
       <Head>
@@ -21,9 +29,23 @@ const TerminalPage = () => {
             <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 700 }}>
               Interactive Terminal
             </Typography>
-            <Typography variant="h6" color="text.secondary">
+            <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
               Type commands to explore my technical skills
             </Typography>
+            <Button
+              variant="contained"
+              startIcon={<HomeIcon />}
+              onClick={handleGoHome}
+              sx={{
+                backgroundColor: '#68D391',
+                color: 'black',
+                '&:hover': {
+                  backgroundColor: '#58b371',
+                }
+              }}
+            >
+              Go to Home
+            </Button>
           </motion.div>
         </Box>
 
@@ -34,7 +56,7 @@ const TerminalPage = () => {
         >
           <Terminal 
             initialLines={[
-              '// Welcome to Azhagu SWE\'s Portfolio Terminal',
+              "// Welcome to Azhagu SWE's Portfolio Terminal",
               '// Type "help" to see available commands',
               ''
             ]}
