@@ -77,7 +77,7 @@ const ProjectCaseStudyPage = ({
 
   const imageUrl = frontmatter.thumbnail.startsWith("http")
     ? frontmatter.thumbnail
-    : `${basePath}/${frontmatter.thumbnail}`;
+    : `${basePath}${frontmatter.thumbnail}`;
   const components = {
     h2: H2,
     h3: H3,

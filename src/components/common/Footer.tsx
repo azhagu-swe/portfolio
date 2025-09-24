@@ -7,7 +7,6 @@ import {
   Divider,
   IconButton,
   Grid,
-  Link as MuiLink,
   Tooltip,
   Paper,
   Container,
@@ -23,9 +22,10 @@ import { useTouchDevice } from "@/hooks/useTouchDevice";
 
 // Enhanced styled components for the new footer
 const FooterRoot = styled("footer")(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" 
-    ? `linear-gradient(135deg, ${theme.palette.background.default}, #1a202c)` 
-    : `linear-gradient(135deg, ${theme.palette.background.paper}, #e2e8f0)`,
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? `linear-gradient(135deg, ${theme.palette.background.default}, #1a202c)`
+      : `linear-gradient(135deg, ${theme.palette.background.paper}, #e2e8f0)`,
   color: theme.palette.text.secondary,
   padding: theme.spacing(6, 2),
   borderTop: `1px solid ${theme.palette.divider}`,
@@ -56,7 +56,7 @@ const FooterRoot = styled("footer")(({ theme }) => ({
     backgroundImage: `radial-gradient(circle at 10% 20%, ${theme.palette.primary.main}10 0%, transparent 20%),
                      radial-gradient(circle at 90% 80%, ${theme.palette.secondary.main}10 0%, transparent 20%)`,
     pointerEvents: "none",
-  }
+  },
 }));
 
 const FooterContainer = styled(Container)(({ theme }) => ({
@@ -79,12 +79,14 @@ const SocialIconWrapper = styled(Box)(({ theme }) => ({
   width: 50,
   height: 50,
   borderRadius: "50%",
-  background: theme.palette.mode === "dark" 
-    ? `linear-gradient(145deg, ${theme.palette.grey[800]}, ${theme.palette.grey[900]})`
-    : `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.grey[200]})`,
-  boxShadow: theme.palette.mode === "dark"
-    ? `0 4px 15px rgba(0, 0, 0, 0.3)`
-    : `0 4px 15px rgba(0, 0, 0, 0.1)`,
+  background:
+    theme.palette.mode === "dark"
+      ? `linear-gradient(145deg, ${theme.palette.grey[800]}, ${theme.palette.grey[900]})`
+      : `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.grey[200]})`,
+  boxShadow:
+    theme.palette.mode === "dark"
+      ? `0 4px 15px rgba(0, 0, 0, 0.3)`
+      : `0 4px 15px rgba(0, 0, 0, 0.1)`,
   overflow: "hidden",
   transition: "all 0.3s ease",
   "&::before": {
@@ -94,16 +96,18 @@ const SocialIconWrapper = styled(Box)(({ theme }) => ({
     left: 0,
     width: "100%",
     height: "100%",
-    background: theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, 0.05)"
-      : "rgba(255, 255, 255, 0.1)",
+    background:
+      theme.palette.mode === "dark"
+        ? "rgba(255, 255, 255, 0.05)"
+        : "rgba(255, 255, 255, 0.1)",
     borderRadius: "50%",
   },
   "&:hover": {
     transform: "translateY(-5px) scale(1.05)",
-    boxShadow: theme.palette.mode === "dark"
-      ? `0 8px 25px rgba(0, 0, 0, 0.4)`
-      : `0 8px 25px rgba(0, 0, 0, 0.2)`,
+    boxShadow:
+      theme.palette.mode === "dark"
+        ? `0 8px 25px rgba(0, 0, 0, 0.4)`
+        : `0 8px 25px rgba(0, 0, 0, 0.2)`,
   },
 }));
 
@@ -143,18 +147,14 @@ const FooterVisitorStats = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}>
-      <Stack 
-        direction={{ xs: "column", md: "row" }} 
-        spacing={2} 
-        justifyContent="center" 
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={2}
+        justifyContent="center"
         alignItems="center"
-        sx={{ mt: 2, gap: 2 }}
-      >
+        sx={{ mt: 2, gap: 2 }}>
         {/* Unique Visitors Counter */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Paper
             variant="elevation"
             elevation={3}
@@ -164,18 +164,23 @@ const FooterVisitorStats = () => {
               gap: 1,
               p: isTouchDevice ? "10px 20px" : "8px 16px",
               borderRadius: "50px",
-              background: theme.palette.mode === "dark"
-                ? `linear-gradient(145deg, ${theme.palette.grey[800]}, ${theme.palette.grey[900]})`
-                : `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.grey[200]})`,
-              boxShadow: theme.palette.mode === "dark"
-                ? `0 4px 15px rgba(0, 0, 0, 0.3)`
-                : `0 4px 15px rgba(0, 0, 0, 0.1)`,
+              background:
+                theme.palette.mode === "dark"
+                  ? `linear-gradient(145deg, ${theme.palette.grey[800]}, ${theme.palette.grey[900]})`
+                  : `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.grey[200]})`,
+              boxShadow:
+                theme.palette.mode === "dark"
+                  ? `0 4px 15px rgba(0, 0, 0, 0.3)`
+                  : `0 4px 15px rgba(0, 0, 0, 0.1)`,
               color: theme.palette.text.primary,
               border: `1px solid ${theme.palette.divider}`,
               cursor: "default",
             }}>
             <PeopleAltOutlinedIcon
-              sx={{ fontSize: isTouchDevice ? 24 : 20, color: theme.palette.primary.main }}
+              sx={{
+                fontSize: isTouchDevice ? 24 : 20,
+                color: theme.palette.primary.main,
+              }}
             />
             <Typography
               variant="body2"
@@ -187,10 +192,7 @@ const FooterVisitorStats = () => {
         </motion.div>
 
         {/* Total Visits Counter */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Paper
             variant="elevation"
             elevation={3}
@@ -200,18 +202,23 @@ const FooterVisitorStats = () => {
               gap: 1,
               p: isTouchDevice ? "10px 20px" : "8px 16px",
               borderRadius: "50px",
-              background: theme.palette.mode === "dark"
-                ? `linear-gradient(145deg, ${theme.palette.grey[800]}, ${theme.palette.grey[900]})`
-                : `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.grey[200]})`,
-              boxShadow: theme.palette.mode === "dark"
-                ? `0 4px 15px rgba(0, 0, 0, 0.3)`
-                : `0 4px 15px rgba(0, 0, 0, 0.1)`,
+              background:
+                theme.palette.mode === "dark"
+                  ? `linear-gradient(145deg, ${theme.palette.grey[800]}, ${theme.palette.grey[900]})`
+                  : `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.grey[200]})`,
+              boxShadow:
+                theme.palette.mode === "dark"
+                  ? `0 4px 15px rgba(0, 0, 0, 0.3)`
+                  : `0 4px 15px rgba(0, 0, 0, 0.1)`,
               color: theme.palette.text.primary,
               border: `1px solid ${theme.palette.divider}`,
               cursor: "default",
             }}>
             <VisibilityOutlinedIcon
-              sx={{ fontSize: isTouchDevice ? 24 : 20, color: theme.palette.secondary.main }}
+              sx={{
+                fontSize: isTouchDevice ? 24 : 20,
+                color: theme.palette.secondary.main,
+              }}
             />
             <Typography
               variant="body2"
@@ -235,19 +242,6 @@ const Footer = () => {
     width: isTouchDevice ? 44 : 40,
     height: isTouchDevice ? 44 : 40,
     minHeight: isTouchDevice ? 44 : 40,
-  };
-
-  // Animation variants for footer sections
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
   };
 
   return (
@@ -278,21 +272,22 @@ const Footer = () => {
                       height: "3px",
                       background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                       borderRadius: "2px",
-                    }
+                    },
                   }}>
                   Azhagu-swe
                 </Typography>
                 <Typography
                   variant="body2"
-                  sx={{ 
-                    mt: 3, 
-                    lineHeight: 1.7, 
-                    textAlign: { xs: "center", md: "left" }, 
+                  sx={{
+                    mt: 3,
+                    lineHeight: 1.7,
+                    textAlign: { xs: "center", md: "left" },
                     fontSize: { xs: "0.9rem", sm: "0.95rem" },
-                    color: theme.palette.text.secondary
+                    color: theme.palette.text.secondary,
                   }}>
-                  A Full Stack Developer passionate about creating modern, scalable
-                  web applications with attention to detail and user experience.
+                  A Full Stack Developer passionate about creating modern,
+                  scalable web applications with attention to detail and user
+                  experience.
                 </Typography>
               </FooterSection>
             </motion.div>
@@ -302,11 +297,11 @@ const Footer = () => {
           <Grid item xs={12} md={4}>
             <motion.div initial="hidden" animate="visible">
               <FooterSection>
-                <Typography 
-                  variant="h6" 
-                  color="text.primary" 
-                  gutterBottom 
-                  sx={{ 
+                <Typography
+                  variant="h6"
+                  color="text.primary"
+                  gutterBottom
+                  sx={{
                     fontSize: { xs: "1.2rem", sm: "1.3rem" },
                     fontWeight: "bold",
                     color: theme.palette.primary.main,
@@ -321,15 +316,14 @@ const Footer = () => {
                       height: "2px",
                       background: theme.palette.primary.main,
                       borderRadius: "1px",
-                    }
+                    },
                   }}>
                   Quick Links
                 </Typography>
-                <Stack 
-                  spacing={1.5} 
+                <Stack
+                  spacing={1.5}
                   alignItems={{ xs: "center", md: "flex-start" }}
-                  component="nav"
-                >
+                  component="nav">
                   {[
                     { href: "/about", label: "About Me" },
                     { href: "/projects", label: "Projects" },
@@ -341,16 +335,14 @@ const Footer = () => {
                       key={link.href}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 * index }}
-                    >
+                      transition={{ delay: 0.1 * index }}>
                       <FooterLink href={link.href} passHref>
-                        <Typography 
+                        <Typography
                           variant="body2"
-                          sx={{ 
+                          sx={{
                             fontWeight: 500,
                             color: "inherit",
-                          }}
-                        >
+                          }}>
                           {link.label}
                         </Typography>
                       </FooterLink>
@@ -363,13 +355,13 @@ const Footer = () => {
 
           {/* Connect Section */}
           <Grid item xs={12} md={4}>
-            <motion.div  initial="hidden" animate="visible">
+            <motion.div initial="hidden" animate="visible">
               <FooterSection>
-                <Typography 
-                  variant="h6" 
-                  color="text.primary" 
-                  gutterBottom 
-                  sx={{ 
+                <Typography
+                  variant="h6"
+                  color="text.primary"
+                  gutterBottom
+                  sx={{
                     fontSize: { xs: "1.2rem", sm: "1.3rem" },
                     fontWeight: "bold",
                     color: theme.palette.primary.main,
@@ -384,7 +376,7 @@ const Footer = () => {
                       height: "2px",
                       background: theme.palette.primary.main,
                       borderRadius: "1px",
-                    }
+                    },
                   }}>
                   Connect With Me
                 </Typography>
@@ -393,20 +385,22 @@ const Footer = () => {
                   spacing={2}
                   justifyContent={{ xs: "center", md: "flex-start" }}
                   flexWrap="wrap"
-                  gap={1.5}
-                >
+                  gap={1.5}>
                   {CONTACT_DATA.socialLinks.map((social, index) => (
                     <motion.div
                       key={social.platform}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.1 * index, type: "spring", stiffness: 300 }}
-                      whileHover={{ 
+                      transition={{
+                        delay: 0.1 * index,
+                        type: "spring",
+                        stiffness: 300,
+                      }}
+                      whileHover={{
                         y: -5,
                         scale: 1.1,
                       }}
-                      whileTap={{ scale: 0.9 }}
-                    >
+                      whileTap={{ scale: 0.9 }}>
                       <Tooltip title={social.platform} arrow>
                         <SocialIconWrapper>
                           <IconButton
@@ -415,20 +409,21 @@ const Footer = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={social.platform}
-                            sx={{                          
-                              color: theme.palette.mode === "dark" 
-                                ? `${social.color}CC`  
-                                : social.color,
+                            sx={{
+                              color:
+                                theme.palette.mode === "dark"
+                                  ? `${social.color}CC`
+                                  : social.color,
                               transition: "all 0.3s ease",
                               "&:hover": {
                                 backgroundColor: "transparent",
                               },
                               ...touchIconStyles,
                             }}>
-                            <Icon 
-                              icon={social.icon} 
-                              width={isTouchDevice ? "26" : "22"} 
-                              height={isTouchDevice ? "26" : "22"} 
+                            <Icon
+                              icon={social.icon}
+                              width={isTouchDevice ? "26" : "22"}
+                              height={isTouchDevice ? "26" : "22"}
                             />
                           </IconButton>
                         </SocialIconWrapper>
@@ -441,87 +436,103 @@ const Footer = () => {
           </Grid>
         </Grid>
 
-        <Divider 
-          sx={{ 
-            my: 4, 
+        <Divider
+          sx={{
+            my: 4,
             borderColor: theme.palette.divider,
             opacity: 0.3,
             background: `linear-gradient(90deg, transparent, ${theme.palette.divider}, transparent)`,
-          }} 
+          }}
         />
 
         <Box sx={{ textAlign: "center" }}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            <Typography 
-              variant="body2" 
-              sx={{ 
+            transition={{ delay: 0.5, duration: 0.5 }}>
+            <Typography
+              variant="body2"
+              sx={{
                 fontSize: { xs: "0.85rem", sm: "0.9rem" },
                 color: theme.palette.text.secondary,
                 mb: 1,
-              }}
-            >
+              }}>
               &copy; {new Date().getFullYear()} Azhagu-swe. All rights reserved.
             </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
+            <Typography
+              variant="body2"
+              sx={{
                 fontSize: { xs: "0.85rem", sm: "0.9rem" },
                 color: theme.palette.text.secondary,
                 mb: 2,
-              }}
-            >
-              Crafted with ❤️ using Next.js, TypeScript, and Material-UI
+              }}>
+              Crafted with ❤️ by <strong>Azhagu-swe</strong>{" "}
             </Typography>
           </motion.div>
 
           <FooterVisitorStats />
         </Box>
       </FooterContainer>
-      
+
       {/* Animated decorative elements */}
-      <Box 
-        sx={{ 
-          position: "absolute", 
-          top: "20%", 
-          right: "5%", 
-          width: "100px", 
-          height: "100px", 
-          borderRadius: "50%", 
+      <Box
+        sx={{
+          position: "absolute",
+          top: "20%",
+          right: "5%",
+          width: "100px",
+          height: "100px",
+          borderRadius: "50%",
           background: `radial-gradient(circle, ${theme.palette.primary.main}30, transparent 70%)`,
           opacity: 0.2,
           animation: "pulse 6s infinite",
         }}
       />
-      <Box 
-        sx={{ 
-          position: "absolute", 
-          bottom: "10%", 
-          left: "5%", 
-          width: "80px", 
-          height: "80px", 
-          borderRadius: "50%", 
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: "10%",
+          left: "5%",
+          width: "80px",
+          height: "80px",
+          borderRadius: "50%",
           background: `radial-gradient(circle, ${theme.palette.secondary.main}30, transparent 70%)`,
           opacity: 0.2,
           animation: "float 8s infinite",
         }}
       />
-      
+
       <style jsx>{`
         @keyframes pulse {
-          0% { transform: scale(1); opacity: 0.2; }
-          50% { transform: scale(1.1); opacity: 0.1; }
-          100% { transform: scale(1); opacity: 0.2; }
+          0% {
+            transform: scale(1);
+            opacity: 0.2;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 0.1;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 0.2;
+          }
         }
         @keyframes float {
-          0% { transform: translateY(0) translateX(0); }
-          25% { transform: translateY(-10px) translateX(5px); }
-          50% { transform: translateY(0) translateX(10px); }
-          75% { transform: translateY(5px) translateX(5px); }
-          100% { transform: translateY(0) translateX(0); }
+          0% {
+            transform: translateY(0) translateX(0);
+          }
+          25% {
+            transform: translateY(-10px) translateX(5px);
+          }
+          50% {
+            transform: translateY(0) translateX(10px);
+          }
+          75% {
+            transform: translateY(5px) translateX(5px);
+          }
+          100% {
+            transform: translateY(0) translateX(0);
+          }
         }
       `}</style>
     </FooterRoot>
