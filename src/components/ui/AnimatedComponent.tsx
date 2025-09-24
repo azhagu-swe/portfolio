@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { useOnScreen } from '@/hooks/useOnScreen';
 import { Box, BoxProps } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
 interface AnimatedComponentProps extends BoxProps {
   children: React.ReactNode;
@@ -22,7 +21,6 @@ const AnimatedComponent: React.FC<AnimatedComponentProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref, { threshold });
-  const theme = useTheme();
 
   // Define animation styles based on type
   const getAnimationSx = () => {

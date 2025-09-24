@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Skeleton, SkeletonProps } from '@mui/material';
+import {  Skeleton, SkeletonProps } from '@mui/material';
 import { motion } from 'framer-motion';
 
 interface AnimatedSkeletonProps extends SkeletonProps {
