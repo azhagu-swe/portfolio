@@ -75,22 +75,55 @@ const ContactPage = () => {
     }
   };
 
-  const handleEmailMessage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    // In a real application, you would send the data to a backend service
+    // For now we'll simulate the process and open the email client
     const { name, email, message } = formData;
     const subject = `Message from ${name}`;
-    const body = `${message}\n\nFrom: ${name} (${email})`;
+    const body = `${message}
+
+From: ${name} (${email})`;
     const mailtoLink = `mailto:azhagu.swe@gmail.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`;
-    window.open(mailtoLink, "_blank");
-  };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validateForm()) {
-      handleEmailMessage();
-      // Reset form after successful submission
+    try {
+      // Reset form before opening email client to prevent resubmission
       setFormData({ name: "", email: "", message: "" });
+
+      // Check if running in test environment or if window.location is available
+      if (typeof window !== "undefined" && window.location) {
+        // Open email client
+        window.location.href = mailtoLink;
+      } else {
+        // For testing purposes, just log the action
+        console.log("Mailto link would be:", mailtoLink);
+      }
+
+      setSubmitSuccess(true);
+
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 3000);
+    } catch (error) {
+      setSubmitError("Failed to send message. Please try again.");
+      console.error("Submission error:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -112,7 +145,6 @@ const ContactPage = () => {
             ? "rgba(45, 55, 72, 0.9)"
             : "rgba(255, 255, 255, 0.9)"
         })`,
-        pb: 8,
       }}>
       <Container maxWidth="lg">
         <Box
@@ -328,6 +360,37 @@ const ContactPage = () => {
                 possible.
               </Typography>
 
+              {/* Success/Error Messages */}
+              {submitSuccess && (
+                <Box
+                  sx={{
+                    mb: 2,
+                    p: 2,
+                    borderRadius: "8px",
+                    backgroundColor: "success.light",
+                    color: "success.contrastText",
+                  }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                    Message sent successfully! Opening email client...
+                  </Typography>
+                </Box>
+              )}
+
+              {submitError && (
+                <Box
+                  sx={{
+                    mb: 2,
+                    p: 2,
+                    borderRadius: "8px",
+                    backgroundColor: "error.light",
+                    color: "error.contrastText",
+                  }}>
+                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                    {submitError}
+                  </Typography>
+                </Box>
+              )}
+
               <Paper
                 component="form"
                 elevation={0}
@@ -404,6 +467,7 @@ const ContactPage = () => {
                   variant="contained"
                   color="primary"
                   size="large"
+                  disabled={isSubmitting}
                   sx={{
                     alignSelf: "flex-start",
                     fontWeight: "bold",
@@ -412,12 +476,30 @@ const ContactPage = () => {
                     borderRadius: "8px",
                     mt: 1,
                     "&:hover": {
-                      transform: "translateY(-2px)",
-                      boxShadow: `0 6px 15px ${theme.palette.primary.main}44`,
+                      transform: isSubmitting ? "none" : "translateY(-2px)",
+                      boxShadow: isSubmitting
+                        ? `0 4px 15px -5px ${theme.palette.primary.main}99`
+                        : `0 6px 15px ${theme.palette.primary.main}44`,
+                    },
+                    "&:disabled": {
+                      opacity: 0.7,
+                      transform: "none",
                     },
                   }}>
-                  <Icon icon="mdi:send" style={{ marginRight: 8 }} />
-                  {CONTACT_DATA.form.submitText}
+                  {isSubmitting ? (
+                    <>
+                      <Icon
+                        icon="svg-spinners:3-dots-fade"
+                        style={{ marginRight: 8 }}
+                      />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Icon icon="mdi:send" style={{ marginRight: 8 }} />
+                      {CONTACT_DATA.form.submitText}
+                    </>
+                  )}
                 </Button>
               </Paper>
             </Card>
