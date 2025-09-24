@@ -6,6 +6,7 @@ import Layout from "@/components/common/Layout";
 import GlobalErrorBoundary from "@/components/common/GlobalErrorBoundary";
 import PageTransition from "@/components/ui/PageTransition";
 import SplashScreen from "@/components/ui/SplashScreen";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 import type { AppProps } from "next/app";
 import { VisitorProvider } from "@/context/VisitorContext";
 import "@/styles/globals.css";
@@ -22,6 +23,7 @@ function MyAppContent({ Component, pageProps }: AppProps) {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
+      <AnimatedBackground type="network" enabled={true} />
       <Layout toggleTheme={toggleTheme} isDarkMode={isDarkMode}>
         <PageTransition>
           <Component {...pageProps} />

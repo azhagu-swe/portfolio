@@ -64,6 +64,7 @@ const HeroSection: React.FC = () => {
         alignItems: "center",
         py: { xs: 4, sm: 6, md: 8 },
       }}>
+
       <Grid
         container
         spacing={{ xs: 4, sm: 6, md: 8 }}

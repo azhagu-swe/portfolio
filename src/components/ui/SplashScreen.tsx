@@ -86,40 +86,43 @@ const SplashScreen: React.FC<SplashScreenProps> = ({
         </Typography>
       </motion.div>
       
-      <motion.div
-        initial={{ width: '0%' }}
-        animate={{ width: '100%' }}
-        transition={{ duration: 1.5, ease: "easeInOut", delay: 0.8 }}
+      <Box
         sx={{ mt: 3, width: '100%', maxWidth: 200 }}
       >
-        <Box
-          sx={{
-            height: '4px',
-            backgroundColor: theme.palette.primary.main,
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}
+        <motion.div
+          initial={{ width: '0%' }}
+          animate={{ width: '100%' }}
+          transition={{ duration: 1.5, ease: "easeInOut", delay: 0.8 }}
         >
-          <motion.div
-            animate={{ 
-              background: [
-                theme.palette.primary.main,
-                theme.palette.secondary.main,
-                theme.palette.primary.main
-              ] 
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
+          <Box
             sx={{
-              width: '100%',
-              height: '100%',
+              height: '4px',
+              backgroundColor: theme.palette.primary.main,
+              borderRadius: '2px',
+              overflow: 'hidden',
             }}
-          />
-        </Box>
-      </motion.div>
+          >
+            <motion.div
+              animate={{ 
+                background: [
+                  theme.palette.primary.main,
+                  theme.palette.secondary.main,
+                  theme.palette.primary.main
+                ] 
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
+            />
+          </Box>
+        </motion.div>
+      </Box>
     </Box>
   );
 };

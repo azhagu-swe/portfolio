@@ -40,6 +40,14 @@ export const MENU_ITEMS = [
       link: "/projects",
     },
     {
+      text: "Terminal",
+      icon: {
+        outline: "mynaui:terminal",
+        filled: "mynaui:terminal-solid",
+      },
+      link: "/terminal",
+    },
+    {
       text: "Contact",
       icon: {
         outline: "fluent:mail-24-regular",
