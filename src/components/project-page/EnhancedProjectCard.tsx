@@ -90,18 +90,20 @@ const EnhancedProjectCard = React.memo(({ project, basePath }: EnhancedProjectCa
         }}
       >
         <CardMedia
-          component="img"
-          sx={{
-            height: { xs: 200, sm: 180, md: 200 },
-            objectFit: "cover",
-            transition: "transform 0.3s ease",
-            "&:hover": {
-              transform: "scale(1.05)",
-            },
-          }}
-          image={imageUrl}
-          alt={project.title}
-        />
+            component="img"
+            sx={{
+              height: { xs: 200, sm: 180, md: 200 },
+              objectFit: "cover",
+              transition: "transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.05)",
+                filter: "brightness(1.1)",
+                boxShadow: `0 5px 15px ${theme.palette.primary.main}40`,
+              },
+            }}
+            image={imageUrl}
+            alt={project.title}
+          />
         <CardContent
           sx={{
             flexGrow: 1,

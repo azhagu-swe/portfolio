@@ -94,32 +94,50 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
         <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
           <Tooltip title={!open ? item.text : ""} placement="right" arrow>
             <ListItemButton
-              component={Link}
-              href={item.link}
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-                borderRadius: "8px",
-                margin: "4px 8px",
-                color: isActive
-                  ? theme.palette.primary.main
-                  : theme.palette.text.secondary,
-                backgroundColor: isActive
-                  ? theme.palette.action.selected
-                  : "transparent",
-                "&:hover": {
-                  backgroundColor: theme.palette.action.hover,
-                  color: theme.palette.primary.dark,
-                },
-                // Add focus styles for keyboard navigation
-                "&:focus-visible": {
-                  outline: `2px solid ${theme.palette.primary.main}`,
-                  outlineOffset: "2px",
-                },
-              }}
-              aria-label={item.text}
-            >
+                component={Link}
+                href={item.link}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                  borderRadius: "8px",
+                  margin: "4px 8px",
+                  color: isActive
+                    ? theme.palette.primary.main
+                    : theme.palette.text.secondary,
+                  backgroundColor: isActive
+                    ? theme.palette.action.selected
+                    : "transparent",
+                  position: "relative", // Needed for the pseudo-element
+                  "&:before": {
+                    content: "''",
+                    position: "absolute",
+                    width: 0,
+                    height: "2px",
+                    bottom: "-4px",
+                    left: 0,
+                    background: theme.palette.primary.main,
+                    transition: "width 0.3s ease-in-out",
+                  },
+                  "&:hover:before": {
+                    width: "100%",
+                  },
+                  "&:hover": {
+                    backgroundColor: theme.palette.action.hover,
+                    color: theme.palette.primary.dark,
+                  },
+                  // Add focus styles for keyboard navigation
+                  "&:focus-visible": {
+                    outline: `2px solid ${theme.palette.primary.main}`,
+                    outlineOffset: "2px",
+                  },
+                  // Remove default hover effect to use our custom underline
+                  "&:hover .MuiListItemText-root": {
+                    transform: "none"
+                  }
+                }}
+                aria-label={item.text}
+              >
               <ListItemIcon
                 sx={{
                   minWidth: 0,

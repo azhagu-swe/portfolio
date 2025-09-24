@@ -12,6 +12,7 @@ import { getSortedProjectsData, ProjectFrontmatter } from "@/lib/projects";
 import { getSortedPostsData, PostFrontmatter } from "@/lib/blog";
 import { getSortedTutorialsData, TutorialFrontmatter } from "@/lib/tutorials";
 import ContentPreview from "@/components/home/ContentPreview";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 
 interface HomePageProps {
   projects: (ProjectFrontmatter & { slug: string })[];

@@ -14,6 +14,7 @@ import { HERO_ANIMATION_CONFIG } from "@/utils/animationConfig";
 import Image from "next/image";
 import { useTouchDevice } from "@/hooks/useTouchDevice";
 import { withTouchStyles, getTouchTargetSize } from "@/utils/touchUtils";
+import AnimatedComponent from "@/components/ui/AnimatedComponent";
 
 const HeroSection: React.FC = () => {
   const theme = useTheme();
@@ -63,6 +64,7 @@ const HeroSection: React.FC = () => {
         alignItems: "center",
         py: { xs: 4, sm: 6, md: 8 },
       }}>
+
       <Grid
         container
         spacing={{ xs: 4, sm: 6, md: 8 }}
@@ -85,15 +87,10 @@ const HeroSection: React.FC = () => {
             flexDirection: "column",
             justifyContent: "center",
           }}>
-          <motion.div
-            variants={HERO_ANIMATION_CONFIG.textContainer}
-            initial="hidden"
-            animate="show">
+          <AnimatedComponent animationType="fade-in" delay={100}>
             <Typography
-              component={motion.h1}
               variant="h1"
               gutterBottom
-              variants={HERO_ANIMATION_CONFIG.item}
               sx={{
                 fontSize: {
                   xs: "2rem",
@@ -127,13 +124,13 @@ const HeroSection: React.FC = () => {
                 />
               </span>
             </Typography>
+          </AnimatedComponent>
 
+          <AnimatedComponent animationType="fade-in" delay={200}>
             <Typography
-              component={motion.h2}
               variant="h2"
               gutterBottom
               color="text.primary"
-              variants={HERO_ANIMATION_CONFIG.item}
               sx={{
                 fontSize: {
                   xs: "1.2rem",
@@ -158,12 +155,12 @@ const HeroSection: React.FC = () => {
                 delaySpeed={1500}
               />
             </Typography>
+          </AnimatedComponent>
 
+          <AnimatedComponent animationType="fade-in" delay={300}>
             <Typography
-              component={motion.p}
               variant="h6"
               color="text.secondary"
-              variants={HERO_ANIMATION_CONFIG.item}
               sx={{
                 mt: { xs: 1, sm: 2 },
                 lineHeight: 1.6,
@@ -178,115 +175,115 @@ const HeroSection: React.FC = () => {
               }}>
               {HERO_DATA.description}
             </Typography>
+          </AnimatedComponent>
 
-            {/* Skills/Tags */}
-            <motion.div variants={HERO_ANIMATION_CONFIG.item}>
-              <Stack
-                direction="row"
-                spacing={{ xs: 0.5, sm: 1 }}
-                useFlexGap
-                flexWrap="wrap"
+          {/* Skills/Tags */}
+          <AnimatedComponent animationType="fade-in" delay={400}>
+            <Stack
+              direction="row"
+              spacing={{ xs: 0.5, sm: 1 }}
+              useFlexGap
+              flexWrap="wrap"
+              sx={{
+                mt: { xs: 2, sm: 3, md: 4 },
+                mb: { xs: 2, sm: 3 },
+                justifyContent: { xs: "center", md: "flex-start" },
+              }}>
+              <Chip
+                label="Java"
+                size="small"
                 sx={{
-                  mt: { xs: 2, sm: 3, md: 4 },
-                  mb: { xs: 2, sm: 3 },
-                  justifyContent: { xs: "center", md: "flex-start" },
-                }}>
-                <Chip
-                  label="Java"
-                  size="small"
-                  sx={{
-                    backgroundColor: theme.palette.primary.main,
-                    color: theme.palette.primary.contrastText,
-                    fontWeight: 600,
-                    fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
-                    minWidth: 60, // Minimum width for touch
-                  }}
-                />
-                <Chip
-                  label="Spring Boot"
-                  variant="outlined"
-                  size="small"
-                  sx={{
-                    borderColor: theme.palette.primary.main,
-                    color: theme.palette.primary.main,
-                    fontWeight: 600,
-                    fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
-                    minWidth: 100, // Minimum width for touch
-                  }}
-                />
-                <Chip
-                  label="React"
-                  size="small"
-                  sx={{
-                    backgroundColor: theme.palette.secondary.main,
-                    color: theme.palette.secondary.contrastText,
-                    fontWeight: 600,
-                    fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
-                    minWidth: 60, // Minimum width for touch
-                  }}
-                />
-                <Chip
-                  label="Microservices"
-                  variant="outlined"
-                  size="small"
-                  sx={{
-                    borderColor: theme.palette.secondary.main,
-                    color: theme.palette.secondary.main,
-                    fontWeight: 600,
-                    fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
-                    minWidth: 110, // Minimum width for touch
-                  }}
-                />
-              </Stack>
-            </motion.div>
-
-            {/* CTA Buttons */}
-            <motion.div variants={HERO_ANIMATION_CONFIG.item}>
-              <Box
+                  backgroundColor: theme.palette.primary.main,
+                  color: theme.palette.primary.contrastText,
+                  fontWeight: 600,
+                  fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                  height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                  minWidth: 60, // Minimum width for touch
+                }}
+              />
+              <Chip
+                label="Spring Boot"
+                variant="outlined"
+                size="small"
                 sx={{
-                  mt: { xs: 2, sm: 3 },
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  gap: { xs: 1.5, sm: 2 },
-                  justifyContent: { xs: "center", md: "flex-start" },
-                  alignItems: { xs: "center", sm: "flex-start" },
-                }}>
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={handleHireMe}
-                  sx={touchButtonStyles}
-                  role="button"
-                  aria-label="Contact me for hiring opportunities"
-                  tabIndex={0}>
-                  {HERO_DATA.buttons.hire}
-                </Button>
+                  borderColor: theme.palette.primary.main,
+                  color: theme.palette.primary.main,
+                  fontWeight: 600,
+                  fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                  height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                  minWidth: 100, // Minimum width for touch
+                }}
+              />
+              <Chip
+                label="React"
+                size="small"
+                sx={{
+                  backgroundColor: theme.palette.secondary.main,
+                  color: theme.palette.secondary.contrastText,
+                  fontWeight: 600,
+                  fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                  height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                  minWidth: 60, // Minimum width for touch
+                }}
+              />
+              <Chip
+                label="Microservices"
+                variant="outlined"
+                size="small"
+                sx={{
+                  borderColor: theme.palette.secondary.main,
+                  color: theme.palette.secondary.main,
+                  fontWeight: 600,
+                  fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
+                  height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                  minWidth: 110, // Minimum width for touch
+                }}
+              />
+            </Stack>
+          </AnimatedComponent>
 
-                <Button
-                  variant="outlined"
-                  size="large"
-                  onClick={handleDownloadResume}
-                  sx={{
-                    ...touchButtonStyles,
-                    boxShadow: "none",
+          {/* CTA Buttons */}
+          <AnimatedComponent animationType="fade-in" delay={500}>
+            <Box
+              sx={{
+                mt: { xs: 2, sm: 3 },
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: { xs: 1.5, sm: 2 },
+                justifyContent: { xs: "center", md: "flex-start" },
+                alignItems: { xs: "center", sm: "flex-start" },
+              }}>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={handleHireMe}
+                sx={touchButtonStyles}
+                role="button"
+                aria-label="Contact me for hiring opportunities"
+                tabIndex={0}>
+                {HERO_DATA.buttons.hire}
+              </Button>
+
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={handleDownloadResume}
+                sx={{
+                  ...touchButtonStyles,
+                  boxShadow: "none",
+                  borderWidth: "2px",
+                  "&:hover": {
+                    transform: "translateY(-3px)",
                     borderWidth: "2px",
-                    "&:hover": {
-                      transform: "translateY(-3px)",
-                      borderWidth: "2px",
-                    },
-                  }}
-                  role="button"
-                  aria-label="Download my resume"
-                  tabIndex={0}>
-                  {HERO_DATA.buttons.resume}
-                </Button>
-              </Box>
-            </motion.div>
-          </motion.div>
+                  },
+                }}
+                role="button"
+                aria-label="Download my resume"
+                tabIndex={0}>
+                {HERO_DATA.buttons.resume}
+              </Button>
+            </Box>
+          </AnimatedComponent>
         </Grid>
 
         {/* Profile Image */}
@@ -301,15 +298,7 @@ const HeroSection: React.FC = () => {
             order: { xs: 1, md: 2 },
             mb: { xs: 2, sm: 3, md: 0 },
           }}>
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={HERO_ANIMATION_CONFIG.image}
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}>
+          <AnimatedComponent animationType="slide-left" delay={200}>
             <Box
               sx={{
                 position: "relative",
@@ -369,7 +358,7 @@ const HeroSection: React.FC = () => {
                 />
               </Box>
             </Box>
-          </motion.div>
+          </AnimatedComponent>
         </Grid>
       </Grid>
     </Box>
