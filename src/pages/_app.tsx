@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import { ThemeProvider, useThemeContext } from "@/context/ThemeContext";
 import Layout from "@/components/common/Layout";
 import GlobalErrorBoundary from "@/components/common/GlobalErrorBoundary";
+import PageTransition from "@/components/ui/PageTransition";
+import SplashScreen from "@/components/ui/SplashScreen";
 import type { AppProps } from "next/app";
 import { VisitorProvider } from "@/context/VisitorContext";
 import "@/styles/globals.css";
@@ -21,18 +23,35 @@ function MyAppContent({ Component, pageProps }: AppProps) {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <Layout toggleTheme={toggleTheme} isDarkMode={isDarkMode}>
-        <Component {...pageProps} />
+        <PageTransition>
+          <Component {...pageProps} />
+        </PageTransition>
       </Layout>
     </MuiThemeProvider>
   );
 }
 
 export default function App(props: AppProps) {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    // Set a timeout to hide the splash screen after initial load
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 1500); // Show splash for 1.5 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <ThemeProvider>
       <VisitorProvider>
         <GlobalErrorBoundary>
-          <MyAppContent {...props} />
+          {showSplash ? (
+            <SplashScreen />
+          ) : (
+            <MyAppContent {...props} />
+          )}
         </GlobalErrorBoundary>
       </VisitorProvider>
     </ThemeProvider>
