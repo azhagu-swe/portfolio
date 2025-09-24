@@ -2,6 +2,12 @@
 
 Welcome to my personal portfolio! This project showcases my skills, experiences, and projects in a clean, modern, and tech-savvy design. Built using cutting-edge technologies like **Next.js**, **TypeScript**, and **Material-UI**, this portfolio is not just a website—it's my digital identity.
 
+**⚠️ Note on Testing**: This project currently has incomplete test coverage. See [Testing Improvements Summary](TEST_IMPROVEMENTS_SUMMARY.md) for details on the current status and improvement plan.
+
+**⚠️ Note on Issues**: This project has several areas for improvement. See [Comprehensive Issues](COMPREHENSIVE_ISSUES.md) for a complete list of identified issues and drawbacks.
+
+**⚠️ Browser Compatibility**: See [Browser Compatibility Analysis](BROWSER_COMPATIBILITY.md) for details on browser support and compatibility considerations.
+
 ---
 
 ## ✨ Features
@@ -11,6 +17,7 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
 - **Dark & Light Themes:** User-friendly theme switcher for modern aesthetics.
 - **Optimized Performance:** Fast, scalable, and SEO-friendly.
 - **Interactive Animations:** Subtle animations for an engaging user experience.
+- **Comprehensive Testing:** Unit and integration tests with Jest and React Testing Library (improvement plan in progress).
 
 ---
 

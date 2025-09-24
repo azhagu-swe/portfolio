@@ -21,6 +21,7 @@ import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import MailIcon from "@mui/icons-material/Mail";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Book } from "@mui/icons-material";
+import { useTouchDevice } from "@/hooks/useTouchDevice";
 
 const drawerWidth = 240;
 
@@ -58,6 +59,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   [theme.breakpoints.down("sm")]: {
     paddingBottom: "70px",
+    padding: theme.spacing(1),
   },
 }));
 
@@ -69,6 +71,7 @@ const Layout: React.FC<{
   const theme = useTheme();
   const router = useRouter();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTouchDevice = useTouchDevice();
 
   const [open, setOpen] = React.useState(!isMobile);
 
@@ -99,9 +102,17 @@ const Layout: React.FC<{
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Touch-friendly fab styles
+  const touchFabStyles = {
+    width: isTouchDevice ? 56 : 40,
+    height: isTouchDevice ? 56 : 40,
+    minHeight: isTouchDevice ? 56 : 40,
+  };
+
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }} role="main">
       <CssBaseline />
+      {/* <SkipNavigation /> */}
       <AppBarTop
         open={!isMobile && open}
         handleDrawerToggle={handleDrawerToggle}
@@ -118,7 +129,9 @@ const Layout: React.FC<{
         <Main open={!isMobile && open}>
           <Box sx={theme.mixins.toolbar} />
 
-          <ContentBox>{children}</ContentBox>
+          <ContentBox id="main-content" component="main">
+            {children}
+          </ContentBox>
           <Footer />
         </Main>
       </Box>
@@ -133,6 +146,7 @@ const Layout: React.FC<{
             position: "fixed",
             bottom: 32,
             right: 32,
+            ...touchFabStyles,
           }}>
           <KeyboardArrowUpIcon />
         </Fab>

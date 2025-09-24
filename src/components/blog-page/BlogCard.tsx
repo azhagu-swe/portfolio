@@ -1,31 +1,25 @@
 import React from "react";
 import Link from "next/link";
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  useTheme,
-  Chip,
-  Stack,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import useTheme from "@mui/material/styles/useTheme";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { PostFrontmatter } from "@/lib/blog";
+import { ANIMATION_VARIANTS } from "@/utils/constants";
 
 interface BlogCardProps {
   post: PostFrontmatter & { slug: string };
   basePath: string;
 }
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-const BlogCard = ({ post, basePath }: BlogCardProps) => {
+const BlogCard = React.memo(({ post, basePath }: BlogCardProps) => {
   const theme = useTheme();
   const router = useRouter();
   const imageUrl = post.coverImage.startsWith("http")
@@ -47,7 +41,7 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
   };
 
   return (
-    <motion.div variants={itemVariants} style={{ height: "100%" }}>
+    <motion.div variants={ANIMATION_VARIANTS.ITEM} style={{ height: "100%" }}>
       <Card
         onClick={handleCardClick}
         sx={{
@@ -163,6 +157,9 @@ const BlogCard = ({ post, basePath }: BlogCardProps) => {
       </Card>
     </motion.div>
   );
-};
+});
+
+// Add display name for debugging
+BlogCard.displayName = 'BlogCard';
 
 export default BlogCard;

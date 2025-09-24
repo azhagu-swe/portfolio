@@ -1,8 +1,8 @@
 export const CONTACT_DATA = {
-  title: "Contact Me",
-  subtitle: "Connect with Me",
+  title: "Get In Touch",
+  subtitle: "Let's Connect",
   description:
-    "Feel free to reach out using the form below. I’ll get back to you as soon as possible.",
+    "I'm currently available for freelance opportunities, consulting projects, or full-time roles. Whether you have a question, want to work together, or just want to say hi, feel free to reach out!",
   form: {
     nameLabel: "Your Name",
     emailLabel: "Your Email",
@@ -37,7 +37,7 @@ export const CONTACT_DATA = {
       color: "#000000",
     },
     {
-      platform: "X",
+      platform: "X (Twitter)",
       icon: "pajamas:twitter",
       link: "https://twitter.com/azhagu_swe",
       username: "@azhagu_swe",
@@ -45,7 +45,7 @@ export const CONTACT_DATA = {
     },
     {
       platform: "Instagram",
-      icon: "mdi:instagram",
+    icon: "mdi:instagram",
       link: "https://instagram.com/azhagu.swe",
       username: "@azhagu.swe",
       color: "#E4405F",

@@ -1,24 +1,25 @@
 import React, { useMemo } from "react";
-import { 
-  Box, 
-  Typography, 
-  Button, 
-  useTheme, 
-  Grid,
-  Chip,
-  Stack
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import useTheme from "@mui/material/styles/useTheme";
+import Grid from "@mui/material/Grid";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/router";
 import { HERO_DATA } from "@/utils/heroData";
 import { HERO_ANIMATION_CONFIG } from "@/utils/animationConfig";
 import Image from "next/image";
+import { useTouchDevice } from "@/hooks/useTouchDevice";
+import { withTouchStyles, getTouchTargetSize } from "@/utils/touchUtils";
 
 const HeroSection: React.FC = () => {
   const theme = useTheme();
   const router = useRouter();
   const { basePath } = router;
+  const isTouchDevice = useTouchDevice();
 
   // Memoize the image URL to prevent unnecessary re-renders
   const profileImageUrl = useMemo(() => {
@@ -33,36 +34,56 @@ const HeroSection: React.FC = () => {
     window.open(`${basePath}${HERO_DATA.images.resume}`, "_blank");
   };
 
+  // Touch-friendly button styles
+  const touchButtonStyles = withTouchStyles(
+    {
+      px: { xs: 3, sm: 4, md: 6 },
+      py: { xs: 1.5, sm: 2, md: 2.5 }, // Increased padding for touch targets
+      fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" }, // Larger font for touch
+      fontWeight: 600,
+      borderRadius: "50px",
+      boxShadow: `0 4px 20px ${theme.palette.primary.main}40`,
+      "&:hover": {
+        transform: "translateY(-3px)",
+        boxShadow: `0 6px 25px ${theme.palette.primary.main}60`,
+      },
+      transition: "all 0.3s ease",
+      width: { xs: "100%", sm: "auto" },
+      maxWidth: { xs: 320, sm: "none" }, // Max width for touch targets
+      minHeight: `${getTouchTargetSize("button")}px`, // Ensure minimum touch target size
+    },
+    isTouchDevice
+  );
+
   return (
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         minHeight: { xs: "auto", sm: "auto", md: "90vh" },
         display: "flex",
         alignItems: "center",
-        py: { xs: 4, sm: 6, md: 8 }
-      }}
-    >
+        py: { xs: 4, sm: 6, md: 8 },
+      }}>
       <Grid
         container
         spacing={{ xs: 4, sm: 6, md: 8 }}
         alignItems="center"
         justifyContent="center"
-        sx={{ 
+        sx={{
           width: "100%",
           mx: "auto",
-          px: { xs: 2, sm: 3, lg: 4 }
+          px: { xs: 2, sm: 3, lg: 4 },
         }}>
         {/* Text Content */}
         <Grid
           item
           xs={12}
           md={7}
-          sx={{ 
+          sx={{
             textAlign: { xs: "center", md: "left" },
             order: { xs: 2, md: 1 },
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center"
+            justifyContent: "center",
           }}>
           <motion.div
             variants={HERO_ANIMATION_CONFIG.textContainer}
@@ -74,16 +95,22 @@ const HeroSection: React.FC = () => {
               gutterBottom
               variants={HERO_ANIMATION_CONFIG.item}
               sx={{
-                fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem", lg: "3.5rem" },
+                fontSize: {
+                  xs: "2rem",
+                  sm: "2.5rem",
+                  md: "3rem",
+                  lg: "3.5rem",
+                },
                 fontWeight: 800,
                 lineHeight: 1.2,
-                mb: { xs: 1, sm: 2 }
+                mb: { xs: 1, sm: 2 },
               }}>
               Hi, I&apos;m{" "}
-              <span style={{ 
-                color: theme.palette.primary.main,
-                position: "relative"
-              }}>
+              <span
+                style={{
+                  color: theme.palette.primary.main,
+                  position: "relative",
+                }}>
                 {HERO_DATA.name}
                 <Box
                   component="span"
@@ -95,7 +122,7 @@ const HeroSection: React.FC = () => {
                     height: { xs: "4px", sm: "6px" },
                     background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                     borderRadius: "2px",
-                    opacity: 0.5
+                    opacity: 0.5,
                   }}
                 />
               </span>
@@ -108,13 +135,18 @@ const HeroSection: React.FC = () => {
               color="text.primary"
               variants={HERO_ANIMATION_CONFIG.item}
               sx={{
-                fontSize: { xs: "1.2rem", sm: "1.5rem", md: "1.8rem", lg: "2.2rem" },
+                fontSize: {
+                  xs: "1.2rem",
+                  sm: "1.5rem",
+                  md: "1.8rem",
+                  lg: "2.2rem",
+                },
                 fontWeight: 700,
                 minHeight: { xs: 60, sm: 70, md: 80 },
                 mb: { xs: 2, sm: 3 },
                 display: "flex",
                 alignItems: "center",
-                justifyContent: { xs: "center", md: "flex-start" }
+                justifyContent: { xs: "center", md: "flex-start" },
               }}>
               <Typewriter
                 words={HERO_DATA.roles}
@@ -132,74 +164,82 @@ const HeroSection: React.FC = () => {
               variant="h6"
               color="text.secondary"
               variants={HERO_ANIMATION_CONFIG.item}
-              sx={{ 
+              sx={{
                 mt: { xs: 1, sm: 2 },
                 lineHeight: 1.6,
                 maxWidth: { md: "90%" },
-                fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem", lg: "1.25rem" },
-                textAlign: { xs: "center", md: "left" }
+                fontSize: {
+                  xs: "0.9rem",
+                  sm: "1rem",
+                  md: "1.1rem",
+                  lg: "1.25rem",
+                },
+                textAlign: { xs: "center", md: "left" },
               }}>
               {HERO_DATA.description}
             </Typography>
 
             {/* Skills/Tags */}
             <motion.div variants={HERO_ANIMATION_CONFIG.item}>
-              <Stack 
-                direction="row" 
+              <Stack
+                direction="row"
                 spacing={{ xs: 0.5, sm: 1 }}
                 useFlexGap
                 flexWrap="wrap"
-                sx={{ 
+                sx={{
                   mt: { xs: 2, sm: 3, md: 4 },
                   mb: { xs: 2, sm: 3 },
-                  justifyContent: { xs: "center", md: "flex-start" }
-                }}
-              >
-                <Chip 
-                  label="Java" 
-                  size="small" 
-                  sx={{ 
+                  justifyContent: { xs: "center", md: "flex-start" },
+                }}>
+                <Chip
+                  label="Java"
+                  size="small"
+                  sx={{
                     backgroundColor: theme.palette.primary.main,
                     color: theme.palette.primary.contrastText,
                     fontWeight: 600,
                     fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 24, sm: 28, md: 32 }
-                  }} 
+                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                    minWidth: 60, // Minimum width for touch
+                  }}
                 />
-                <Chip 
-                  label="Spring Boot" 
-                  variant="outlined" 
+                <Chip
+                  label="Spring Boot"
+                  variant="outlined"
                   size="small"
-                  sx={{ 
+                  sx={{
                     borderColor: theme.palette.primary.main,
                     color: theme.palette.primary.main,
                     fontWeight: 600,
                     fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 24, sm: 28, md: 32 }
-                  }} 
+                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                    minWidth: 100, // Minimum width for touch
+                  }}
                 />
-                <Chip 
-                  label="React" 
+                <Chip
+                  label="React"
                   size="small"
-                  sx={{ 
+                  sx={{
                     backgroundColor: theme.palette.secondary.main,
                     color: theme.palette.secondary.contrastText,
                     fontWeight: 600,
                     fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 24, sm: 28, md: 32 }
-                  }} 
+                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                    minWidth: 60, // Minimum width for touch
+                  }}
                 />
-                <Chip 
-                  label="Microservices" 
-                  variant="outlined" 
+                <Chip
+                  label="Microservices"
+                  variant="outlined"
                   size="small"
-                  sx={{ 
+                  sx={{
                     borderColor: theme.palette.secondary.main,
                     color: theme.palette.secondary.main,
                     fontWeight: 600,
                     fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                    height: { xs: 24, sm: 28, md: 32 }
-                  }} 
+                    height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
+                    minWidth: 110, // Minimum width for touch
+                  }}
                 />
               </Stack>
             </motion.div>
@@ -213,29 +253,16 @@ const HeroSection: React.FC = () => {
                   flexDirection: { xs: "column", sm: "row" },
                   gap: { xs: 1.5, sm: 2 },
                   justifyContent: { xs: "center", md: "flex-start" },
-                  alignItems: { xs: "center", sm: "flex-start" }
+                  alignItems: { xs: "center", sm: "flex-start" },
                 }}>
                 <Button
                   variant="contained"
                   size="large"
                   onClick={handleHireMe}
-                  sx={{ 
-                    px: { xs: 3, sm: 4, md: 6 },
-                    py: { xs: 1, sm: 1.5 },
-                    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
-                    fontWeight: 600,
-                    borderRadius: "50px",
-                    boxShadow: `0 4px 20px ${theme.palette.primary.main}40`,
-                    "&:hover": { 
-                      transform: "translateY(-3px)",
-                      boxShadow: `0 6px 25px ${theme.palette.primary.main}60`
-                    },
-                    transition: "all 0.3s ease",
-                    width: { xs: "100%", sm: "auto" },
-                    maxWidth: { xs: 280, sm: "none" }
-                  }}
+                  sx={touchButtonStyles}
                   role="button"
-                  aria-label="Contact me for hiring opportunities">
+                  aria-label="Contact me for hiring opportunities"
+                  tabIndex={0}>
                   {HERO_DATA.buttons.hire}
                 </Button>
 
@@ -243,23 +270,18 @@ const HeroSection: React.FC = () => {
                   variant="outlined"
                   size="large"
                   onClick={handleDownloadResume}
-                  sx={{ 
-                    px: { xs: 3, sm: 4, md: 6 },
-                    py: { xs: 1, sm: 1.5 },
-                    fontSize: { xs: "0.9rem", sm: "1rem", md: "1.1rem" },
-                    fontWeight: 600,
-                    borderRadius: "50px",
+                  sx={{
+                    ...touchButtonStyles,
+                    boxShadow: "none",
                     borderWidth: "2px",
-                    "&:hover": { 
+                    "&:hover": {
                       transform: "translateY(-3px)",
-                      borderWidth: "2px"
+                      borderWidth: "2px",
                     },
-                    transition: "all 0.3s ease",
-                    width: { xs: "100%", sm: "auto" },
-                    maxWidth: { xs: 280, sm: "none" }
                   }}
                   role="button"
-                  aria-label="Download my resume">
+                  aria-label="Download my resume"
+                  tabIndex={0}>
                   {HERO_DATA.buttons.resume}
                 </Button>
               </Box>
@@ -277,14 +299,17 @@ const HeroSection: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             order: { xs: 1, md: 2 },
-            mb: { xs: 2, sm: 3, md: 0 }
+            mb: { xs: 2, sm: 3, md: 0 },
           }}>
-          <motion.div 
-            initial="hidden" 
-            animate="show" 
+          <motion.div
+            initial="hidden"
+            animate="show"
             variants={HERO_ANIMATION_CONFIG.image}
-            style={{ width: "100%", display: "flex", justifyContent: "center" }}
-          >
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}>
             <Box
               sx={{
                 position: "relative",
@@ -318,23 +343,25 @@ const HeroSection: React.FC = () => {
                 },
                 "@keyframes rotate": {
                   "0%": { transform: "rotate(0deg)" },
-                  "100%": { transform: "rotate(360deg)" }
-                }
+                  "100%": { transform: "rotate(360deg)" },
+                },
               }}>
-              <Box sx={{ 
-                position: "relative", 
-                width: "95%", 
-                height: "95%", 
-                borderRadius: "50%",
-                overflow: "hidden",
-                zIndex: 2
-              }}>
+              <Box
+                sx={{
+                  position: "relative",
+                  width: "95%",
+                  height: "95%",
+                  borderRadius: "50%",
+                  overflow: "hidden",
+                  zIndex: 2,
+                }}>
                 <Image
                   src={profileImageUrl}
                   alt={HERO_DATA.name}
                   fill
                   style={{
                     objectFit: "cover",
+                    objectPosition: "center 10%",
                     borderRadius: "50%",
                   }}
                   sizes="(max-width: 600px) 200px, (max-width: 768px) 250px, (max-width: 900px) 300px, (max-width: 1200px) 350px, 350px"

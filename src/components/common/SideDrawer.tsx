@@ -112,7 +112,14 @@ const SideDrawer: React.FC<SideDrawerProps> = ({
                   backgroundColor: theme.palette.action.hover,
                   color: theme.palette.primary.dark,
                 },
-              }}>
+                // Add focus styles for keyboard navigation
+                "&:focus-visible": {
+                  outline: `2px solid ${theme.palette.primary.main}`,
+                  outlineOffset: "2px",
+                },
+              }}
+              aria-label={item.text}
+            >
               <ListItemIcon
                 sx={{
                   minWidth: 0,

@@ -30,7 +30,7 @@ const AnimatedNumber = ({ value }: { value: number }) => {
     }
   }, [isInView, value]);
 
-  return <span ref={ref} aria-label={`${value} visitors`}>0</span>;
+  return <span ref={ref} aria-label={`${value} visitors`} tabIndex={0}>{value.toLocaleString()}</span>;
 };
 
 const VisitorCounter: React.FC = () => {
@@ -39,7 +39,7 @@ const VisitorCounter: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: { xs: 6, sm: 8 } }} role="status">
+      <Box sx={{ display: "flex", justifyContent: "center", my: { xs: 6, sm: 8 } }} role="status" aria-live="polite">
         <CircularProgress />
         <span className="sr-only">Loading visitor statistics...</span>
       </Box>
@@ -48,7 +48,7 @@ const VisitorCounter: React.FC = () => {
 
   if (error) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: { xs: 6, sm: 8 } }}>
+      <Box sx={{ display: "flex", justifyContent: "center", my: { xs: 6, sm: 8 } }} role="alert" aria-live="assertive">
         <Typography color="error">{error}</Typography>
       </Box>
     );
@@ -215,7 +215,7 @@ const VisitorCounter: React.FC = () => {
                   </Box>
                 </Box>
                 <Typography variant="h6" component="h3" sx={{ mb: { xs: 1, sm: 2 } }}>
-                  Total Page Views
+                  Total Views
                 </Typography>
                 <Typography
                   variant="h2"

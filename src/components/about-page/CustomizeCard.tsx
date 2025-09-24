@@ -28,8 +28,7 @@ const CustomizeCard = ({ img, description }: CustomizeCardProps) => (
       display: "flex",
       flexDirection: "column",
       height: "100%",
-    }}
-  >
+    }}>
     {/* Image Container with fixed aspect ratio */}
     <Box
       sx={{
@@ -37,22 +36,22 @@ const CustomizeCard = ({ img, description }: CustomizeCardProps) => (
         width: "100%",
         height: 250,
         flexShrink: 0,
-      }}
-    >
+      }}>
       <Image
         src={img}
         alt={description}
         fill
         style={{
           objectFit: "cover",
+          objectPosition: "center 5%",
         }}
         sizes="(max-width: 768px) 100vw, 50vw"
       />
     </Box>
-    
+
     {/* Description Text */}
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         padding: "10px",
         backgroundColor: "primary.main",
         borderRadius: "0 0 12px 12px",
@@ -60,8 +59,7 @@ const CustomizeCard = ({ img, description }: CustomizeCardProps) => (
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-      }}
-    >
+      }}>
       <Typography
         variant="body2"
         sx={{
@@ -72,8 +70,7 @@ const CustomizeCard = ({ img, description }: CustomizeCardProps) => (
           WebkitLineClamp: 3,
           WebkitBoxOrient: "vertical",
           textOverflow: "ellipsis",
-        }}
-      >
+        }}>
         {description}
       </Typography>
     </Box>

@@ -1,7 +1,4 @@
 /* Global Styles */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Custom global styles */
 * {
@@ -37,27 +34,6 @@ body {
   font-family: 'Orbitron', sans-serif;
 }
 
-/* Responsive helpers */
-@media (max-width: 768px) {
-  .mobile-hidden {
-    display: none;
-  }
-}
-
-/* Animation helpers */
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
@@ -87,10 +63,5 @@ body {
   body {
     background-color: white;
     color: black;
-  }
-  
-  /* Hide elements not needed for printing */
-  .no-print {
-    display: none;
   }
 }

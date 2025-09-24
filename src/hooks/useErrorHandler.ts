@@ -1,21 +1,33 @@
-// src/hooks/useErrorHandler.ts
 import { useState, useCallback } from 'react';
 import { logError } from '@/utils/errorHandler';
 
+interface UseErrorHandlerReturn {
+  error: Error | null;
+  isLoading: boolean;
+  handleError: (error: Error, context?: Record<string, any>) => void;
+  resetError: () => void;
+  withErrorHandling: <T extends (...args: any[]) => Promise<any>>(
+    asyncFunction: T,
+    context?: Record<string, any>
+  ) => (...args: Parameters<T>) => Promise<Awaited<ReturnType<T>> | undefined>;
+}
+
 /**
  * Custom hook for handling errors in components
+ * @returns {UseErrorHandlerReturn} Object containing error state and helper functions
  */
-export const useErrorHandler = () => {
+export const useErrorHandler = (): UseErrorHandlerReturn => {
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   /**
-   * Handle an error by logging it and setting it in state
+   * Handle an error by logging it and setting the error state
+   * @param {Error} error - The error to handle
+   * @param {Record<string, any>} context - Additional context for the error
    */
   const handleError = useCallback((error: Error, context?: Record<string, any>) => {
-    logError(error, context);
     setError(error);
-    setIsLoading(false);
+    logError(error, context);
   }, []);
 
   /**
@@ -27,20 +39,27 @@ export const useErrorHandler = () => {
 
   /**
    * Wrap an async function with error handling
+   * @param {Function} asyncFunction - The async function to wrap
+   * @param {Record<string, any>} context - Additional context for errors
+   * @returns {Function} Wrapped function with error handling
    */
   const withErrorHandling = useCallback(<T extends (...args: any[]) => Promise<any>>(
-    asyncFn: T
-  ): ((...args: Parameters<T>) => Promise<Awaited<ReturnType<T>> | undefined>) => {
+    asyncFunction: T,
+    context?: Record<string, any>
+  ) => {
     return async (...args: Parameters<T>) => {
       try {
         setIsLoading(true);
-        setError(null);
-        const result = await asyncFn(...args);
+        const result = await asyncFunction(...args);
         setIsLoading(false);
         return result;
       } catch (err) {
-        handleError(err as Error);
-        return undefined;
+        setIsLoading(false);
+        if (err instanceof Error) {
+          handleError(err, context);
+        } else {
+          handleError(new Error(`Unknown error: ${err}`), context);
+        }
       }
     };
   }, [handleError]);

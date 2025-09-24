@@ -1,0 +1,20 @@
+{
+  "components": {
+    "structure": {
+      "common": "Shared layout components (AppBar, Footer, Layout, etc.)",
+      "home": "Components specific to the homepage",
+      "ui": "Reusable UI components that can be used across different pages",
+      "blog-page": "Components related to blog functionality",
+      "project-page": "Components related to project display",
+      "tutorial-page": "Components related to tutorial functionality",
+      "about-page": "Components related to the about page",
+      "style": "Styling utilities and components",
+      "mdx": "MDX-related components"
+    },
+    "naming-convention": {
+      "directory-names": "kebab-case for all directories",
+      "page-specific": "directories suffixed with '-page' for page-specific components",
+      "reusable": "directories without suffix for reusable components"
+    }
+  }
+}

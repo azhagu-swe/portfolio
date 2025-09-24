@@ -5,10 +5,9 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
+import { API_ENDPOINTS } from "@/utils/constants";
 
-const API_URL = "https://portfolio-util-ntv3.vercel.app/api/visitors";
-
-const isBot = (userAgent: string): boolean => {
+export const isBot = (userAgent: string): boolean => {
   return /bot|crawl|spider|slurp|googlebot|bingbot/i.test(userAgent);
 };
 
@@ -69,7 +68,7 @@ export const VisitorProvider = ({ children }: { children: ReactNode }) => {
 
     const trackAndFetchCounts = async () => {
       try {
-        const response = await fetch(API_URL, { 
+        const response = await fetch(API_ENDPOINTS.VISITORS, { 
           method: "POST",
           // Add a timeout to prevent hanging requests
           signal: AbortSignal.timeout(5000)
