@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Box, Typography } from '@mui/material';
+import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
+import { Box, Typography, TextField } from '@mui/material';
 
 interface TerminalProps {
-  codeLines?: string[];
+  initialLines?: string[];
   cursorSymbol?: string;
-  typingSpeed?: number;
-  pauseDuration?: number;
+  welcomeMessage?: string;
   showCursor?: boolean;
 }
 
 const Terminal: React.FC<TerminalProps> = ({
-  codeLines = [
+  initialLines = [
     '// Software Engineer Portfolio',
     'const portfolio = {',
     '  name: "Azhagu SWE",',
@@ -24,17 +23,25 @@ const Terminal: React.FC<TerminalProps> = ({
     'portfolio.startCareer();'
   ],
   cursorSymbol = '_',
-  typingSpeed = 50,
-  pauseDuration = 1000,
+  welcomeMessage = 'Type "help" to see available commands',
   showCursor = true
 }) => {
-  const [displayedText, setDisplayedText] = useState<string[]>([]);
-  const [currentLine, setCurrentLine] = useState(0);
-  const [currentChar, setCurrentChar] = useState(0);
-  const [isTyping, setIsTyping] = useState(true);
-  const [showCursorBlink, setShowCursorBlink] = useState(true);
+  const [lines, setLines] = useState<string[]>([...initialLines, '', welcomeMessage]);
+  const [input, setInput] = useState<string>('');
+  const [currentPrompt, setCurrentPrompt] = useState<string>('user@portfolio:~$ ');
+  const [showCursorBlink, setShowCursorBlink] = useState<boolean>(true);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const cursorIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  
+
+  // Scroll to bottom when lines change
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [lines]);
+
+  // Handle cursor blinking
   useEffect(() => {
     if (showCursor) {
       cursorIntervalRef.current = setInterval(() => {
@@ -49,38 +56,81 @@ const Terminal: React.FC<TerminalProps> = ({
     };
   }, [showCursor]);
 
+  // Focus input when component mounts
   useEffect(() => {
-    if (currentLine >= codeLines.length) {
-      setIsTyping(false);
-      return;
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const executeCommand = (cmd: string) => {
+    const command = cmd.trim().toLowerCase();
+    let newLines = [...lines];
+
+    // Add the command that was entered
+    newLines.push(currentPrompt + cmd);
+
+    // Process the command
+    switch (command) {
+      case 'help':
+        newLines.push('Available commands: help, about, skills, experience, contact, clear, projects');
+        break;
+      case 'about':
+        newLines.push('Azhagu SWE - Software Engineer with 3+ years of experience');
+        newLines.push('Specializing in Java, Spring Boot, React, and Microservices');
+        newLines.push('Based in Chennai, India');
+        break;
+      case 'skills':
+        newLines.push('Technical Skills:');
+        newLines.push('- Backend: Java, Spring Boot, Spring Security, Hibernate');
+        newLines.push('- Frontend: React, Next.js, TypeScript, Material UI');
+        newLines.push('- Databases: PostgreSQL, MySQL, Redis, MongoDB');
+        newLines.push('- DevOps: Docker, AWS, CI/CD, Kubernetes');
+        newLines.push('- Other: Microservices, REST APIs, Git');
+        break;
+      case 'experience':
+        newLines.push('Software Engineer - 3+ years of experience building scalable systems');
+        newLines.push('Expertise in full-stack development with focus on enterprise applications');
+        newLines.push('Proficient in designing and implementing microservices architectures');
+        break;
+      case 'contact':
+        newLines.push('Email: azhagu.swe@gmail.com');
+        newLines.push('LinkedIn: linkedin.com/in/azhagu-swe');
+        newLines.push('GitHub: github.com/azhagu-swe');
+        break;
+      case 'projects':
+        newLines.push('Featured Projects:');
+        newLines.push('- E-commerce Platform (Java Spring Boot, React)');
+        newLines.push('- Microservices Architecture (Docker, Kubernetes)');
+        newLines.push('- Payment Gateway Integration (Java, REST APIs)');
+        newLines.push('- Real-time Notification Service (Spring Boot, Redis)');
+        break;
+      case 'clear':
+        setLines([welcomeMessage]);
+        return; // Don't add the empty prompt line
+      case '':
+        // Just pressed enter with empty command
+        break;
+      default:
+        newLines.push(`Command not found: ${cmd}. Type 'help' for available commands.`);
     }
 
-    if (currentChar < codeLines[currentLine].length) {
-      const timeout = setTimeout(() => {
-        setDisplayedText(prev => {
-          const newLines = [...prev];
-          if (newLines.length <= currentLine) {
-            newLines[currentLine] = '';
-          }
-          newLines[currentLine] = newLines[currentLine] + codeLines[currentLine][currentChar];
-          return newLines;
-        });
-        setCurrentChar(prev => prev + 1);
-      }, typingSpeed);
+    // Add new prompt line
+    newLines.push('');
 
-      return () => clearTimeout(timeout);
-    } else {
-      const timeout = setTimeout(() => {
-        setCurrentLine(prev => prev + 1);
-        setCurrentChar(0);
-      }, pauseDuration);
+    setLines(newLines);
+    setInput('');
+  };
 
-      return () => clearTimeout(timeout);
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      executeCommand(input);
     }
-  }, [currentLine, currentChar, codeLines, typingSpeed, pauseDuration]);
+  };
 
   return (
     <Box
+      ref={containerRef}
       sx={{
         background: 'rgba(0, 0, 0, 0.85)',
         color: '#68D391',
@@ -90,8 +140,8 @@ const Terminal: React.FC<TerminalProps> = ({
         borderRadius: '8px',
         border: '1px solid #68D391',
         overflow: 'hidden',
-        minHeight: '300px',
-        maxHeight: '400px',
+        minHeight: '400px',
+        maxHeight: '500px',
         overflowY: 'auto',
         position: 'relative',
         '&::-webkit-scrollbar': {
@@ -135,44 +185,77 @@ const Terminal: React.FC<TerminalProps> = ({
         />
       </Box>
       
-      {displayedText.map((line, index) => (
+      {lines.map((line, index) => (
         <Typography
-          key={`${index}-${line}`}
+          key={index}
           component="div"
           sx={{
             whiteSpace: 'pre',
-            paddingBottom: '2px'
+            paddingBottom: '2px',
+            lineHeight: '1.4'
           }}
         >
           {line}
         </Typography>
       ))}
       
-      {isTyping && (
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
         <Typography
-          component="div"
+          component="span"
           sx={{
-            display: 'inline',
-            whiteSpace: 'pre'
+            mr: 1,
+            whiteSpace: 'nowrap'
           }}
         >
-          {showCursor && showCursorBlink && (
-            <span style={{ color: '#FFC107' }}>{cursorSymbol}</span>
-          )}
+          {currentPrompt}
         </Typography>
-      )}
-      
-      {!isTyping && showCursor && (
-        <Typography
-          component="div"
+        <TextField
+          inputRef={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          variant="standard"
           sx={{
-            display: 'inline-block',
-            whiteSpace: 'pre'
+            flex: 1,
+            '& .MuiInputBase-input': {
+              padding: 0,
+              color: '#68D391',
+              fontFamily: 'monospace',
+              fontSize: '0.9rem',
+              backgroundColor: 'transparent',
+              border: 'none',
+              outline: 'none',
+              boxShadow: 'none',
+              '&:focus': {
+                border: 'none',
+                outline: 'none',
+                boxShadow: 'none',
+              },
+            },
+            '& .MuiInput-underline:before': {
+              borderBottom: 'none',
+            },
+            '& .MuiInput-underline:after': {
+              borderBottom: 'none',
+            },
+            '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+              borderBottom: 'none',
+            },
           }}
-        >
-          <span style={{ color: '#FFC107' }}>{cursorSymbol}</span>
-        </Typography>
-      )}
+          autoFocus
+        />
+        {showCursor && showCursorBlink && (
+          <Typography
+            component="span"
+            sx={{
+              color: '#FFC107',
+              ml: 0.5
+            }}
+          >
+            {cursorSymbol}
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };
