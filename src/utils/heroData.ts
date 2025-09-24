@@ -17,7 +17,7 @@ export const HERO_DATA = {
     resume: "Get My Resume",
   },
   images: {
-    profile: "/image/profile.jpg",
+    profile: "/image/profile.png",
     // background: "/path/to/background.jpg",
     resume: "/pdf/azhagu-resume.pdf",
   },

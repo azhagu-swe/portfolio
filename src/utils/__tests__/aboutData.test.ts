@@ -8,7 +8,7 @@ describe('AboutData', () => {
     expect(profile.role).toBe('Software Developer | Full Stack Engineer');
     expect(profile.intro).toBeDefined();
     expect(typeof profile.intro).toBe('string');
-    expect(profile.avatar).toBe('/test-base-path/image/profile.jpg');
+    expect(profile.avatar).toBe('/test-base-path/image/profile.png');
   });
 
   it('should have SKILLS_DATA array', () => {

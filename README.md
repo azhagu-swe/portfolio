@@ -6,6 +6,8 @@ Welcome to my personal portfolio! This project showcases my skills, experiences,
 
 **⚠️ Note on Issues**: This project has several areas for improvement. See [Comprehensive Issues](COMPREHENSIVE_ISSUES.md) for a complete list of identified issues and drawbacks.
 
+**⚠️ Browser Compatibility**: See [Browser Compatibility Analysis](BROWSER_COMPATIBILITY.md) for details on browser support and compatibility considerations.
+
 ---
 
 ## ✨ Features

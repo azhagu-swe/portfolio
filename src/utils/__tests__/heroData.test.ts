@@ -14,7 +14,7 @@ describe('Hero Data', () => {
     expect(HERO_DATA.buttons.hire).toBe("Let's Connect");
     expect(HERO_DATA.buttons.resume).toBe('Get My Resume');
     expect(HERO_DATA.images).toBeDefined();
-    expect(HERO_DATA.images.profile).toBe('/image/profile.jpg');
+    expect(HERO_DATA.images.profile).toBe('/image/profile.png');
     expect(HERO_DATA.images.resume).toBe('/pdf/azhagu-resume.pdf');
   });
 

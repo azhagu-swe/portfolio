@@ -3,7 +3,7 @@ export const PROFILE = (basePath: string) => ({
   role: "Software Developer | Full Stack Engineer", 
   intro:
     "I build scalable, high-performance applications that solve real-world problems. With expertise in Java, Spring Boot, and modern web technologies, I transform complex requirements into elegant, efficient solutions. Experienced with AI tools like Qwen CLI and Google's Gemini CLI for enhanced development workflows. Let's create something amazing together!",
-  avatar: `${basePath}/image/profile.jpg`,
+  avatar: `${basePath}/image/profile.png`,
 });
 
 export const SKILLS_DATA = [

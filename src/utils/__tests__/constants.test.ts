@@ -9,7 +9,7 @@ describe('Constants', () => {
   it('should have correct base URLs', () => {
     expect(constants.BASE_URLS).toBeDefined();
     expect(constants.BASE_URLS.PORTFOLIO).toBe('https://azhagu-swe.github.io/portfolio');
-    expect(constants.BASE_URLS.PROFILE_IMAGE).toBe('/image/profile.jpg');
+    expect(constants.BASE_URLS.PROFILE_IMAGE).toBe('/image/profile.png');
     expect(constants.BASE_URLS.RESUME).toBe('/pdf/azhagu-resume.pdf');
   });
 

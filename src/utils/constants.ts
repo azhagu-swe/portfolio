@@ -8,7 +8,7 @@ export const API_ENDPOINTS = {
 // Base URLs
 export const BASE_URLS = {
   PORTFOLIO: "https://azhagu-swe.github.io/portfolio",
-  PROFILE_IMAGE: "/image/profile.jpg",
+  PROFILE_IMAGE: "/image/profile.png",
   RESUME: "/pdf/azhagu-resume.pdf",
 };
 
