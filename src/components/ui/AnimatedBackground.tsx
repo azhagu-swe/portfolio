@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Box } from '@mui/material';
 import NetworkBackground from '@/components/ui/NetworkBackground';
 
 interface AnimatedBackgroundProps {
@@ -9,13 +8,9 @@ interface AnimatedBackgroundProps {
 const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({
   enabled = true
 }) => {
-  // Disable background on mobile devices to preserve performance
   useEffect(() => {
     const handleResize = () => {
       const isMobile = window.innerWidth < 768;
-      if (isMobile) {
-        // You could add additional mobile-specific logic here if needed
-      }
     };
 
     handleResize();
