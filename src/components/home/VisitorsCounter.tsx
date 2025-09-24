@@ -215,7 +215,7 @@ const VisitorCounter: React.FC = () => {
                   </Box>
                 </Box>
                 <Typography variant="h6" component="h3" sx={{ mb: { xs: 1, sm: 2 } }}>
-                  Total Page Views
+                  Total Views
                 </Typography>
                 <Typography 
                   variant="h2" 

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material/styles';
 import { lightTheme } from '@/styles/theme';
-import ContactPage from '../index';
+import ContactPage from '@/pages/contact/index';
 
 // Mock the CONTACT_DATA
 jest.mock('@/utils/contactData', () => ({
@@ -53,6 +53,17 @@ describe('ContactPage', () => {
     Object.defineProperty(window, 'open', {
       writable: true,
       value: jest.fn(),
+    });
+    
+    // Mock window.location to avoid JSDOM navigation error
+    const mockLocation = {
+      href: '',
+      assign: jest.fn(),
+      replace: jest.fn(),
+    };
+    Object.defineProperty(window, 'location', {
+      value: mockLocation,
+      writable: true
     });
   });
 
