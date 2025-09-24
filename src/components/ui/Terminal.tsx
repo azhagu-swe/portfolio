@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
-import { Box, Typography, TextField, Chip, IconButton, Button } from '@mui/material';
+import { Box, Typography, TextField, IconButton } from '@mui/material';
 import { useRouter } from 'next/router';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
-import HomeIcon from '@mui/icons-material/Home';
 
 interface TerminalProps {
   initialLines?: string[];

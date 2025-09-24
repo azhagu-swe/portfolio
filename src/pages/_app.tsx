@@ -12,7 +12,6 @@ import { VisitorProvider } from "@/context/VisitorContext";
 import "@/styles/globals.css";
 import { setupGlobalErrorHandlers } from "@/utils/errorHandler";
 
-// Setup global error handlers
 if (typeof window !== 'undefined') {
   setupGlobalErrorHandlers();
 }
@@ -23,7 +22,7 @@ function MyAppContent({ Component, pageProps }: AppProps) {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <AnimatedBackground type="network" enabled={true} />
+      <AnimatedBackground enabled={true} />
       <Layout toggleTheme={toggleTheme} isDarkMode={isDarkMode}>
         <PageTransition>
           <Component {...pageProps} />
