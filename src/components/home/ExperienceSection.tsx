@@ -1,31 +1,25 @@
 import React from "react";
-import { 
-  Box, 
-  Typography, 
+import {
+  Box,
+  Typography,
   useTheme,
   Paper,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { 
-  Work, 
-  School, 
+import {
+  Work,
+  School,
 } from "@mui/icons-material";
+import { EXPERIENCE_DATA } from "@/utils";
 
 const experienceData = [
-  {
-    year: "2022 - Present",
-    title: "junior Software Developer",
-    company: "MEmob+ PVT LTD",
-    description: "Full-stack development using Java, Spring Boot, and React. Building scalable microservices and RESTful APIs. Working with PostgreSQL and Redis for data management.",
+  ...EXPERIENCE_DATA.roles.map(role => ({
+    year: role.duration,
+    title: role.title,
+    company: role.company,
+    responsibilities: role.responsibilities,
     icon: <Work sx={{ fontSize: { xs: 24, sm: 28, md: 32 } }} />
-  },
-  {
-    year: "2020",
-    title: "M.Sc Computer Science",
-    company: "Bharathidasan University",
-    description: "Advanced studies in software engineering, algorithms, and distributed systems. Specialized in Java technologies and web application development.",
-    icon: <School sx={{ fontSize: { xs: 24, sm: 28, md: 32 } }} />
-  }
+  }))
 ];
 
 const containerVariants = {
@@ -76,7 +70,7 @@ const ExperienceSection: React.FC = () => {
             fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem", lg: "3rem" }
           }}
         >
-          Professional Journey
+          {EXPERIENCE_DATA.header.title}
         </Typography>
         <Typography
           variant="h6"
@@ -91,7 +85,7 @@ const ExperienceSection: React.FC = () => {
             fontSize: { xs: "0.95rem", sm: "1.05rem", md: "1.1rem" }
           }}
         >
-          Over 3+ years of experience building scalable applications and solving complex technical challenges
+          {EXPERIENCE_DATA.header.subtitle}
         </Typography>
       </Box>
 
@@ -203,15 +197,36 @@ const ExperienceSection: React.FC = () => {
                     {exp.company}
                   </Typography>
                   
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    sx={{
-                      fontSize: { xs: "0.85rem", sm: "0.9rem", md: "0.95rem" }
-                    }}
-                  >
-                    {exp.description}
-                  </Typography>
+                  <Box sx={{ mt: 1 }}>
+                    {exp.responsibilities.map((responsibility, idx) => (
+                      <Box key={idx} sx={{ display: "flex", alignItems: "flex-start", mb: 0.5 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: theme.palette.primary.main,
+                            mr: 1,
+                            mt: "4px",
+                            fontSize: "1rem"
+                          }}
+                        >
+                          •
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="text.secondary"
+                          sx={{
+                            fontSize: { xs: "0.85rem", sm: "0.9rem", md: "0.95rem" },
+                            flex: 1,
+                            "& strong": {
+                              fontWeight: 600,
+                              color: theme.palette.text.primary
+                            }
+                          }}
+                          dangerouslySetInnerHTML={{ __html: responsibility }}
+                        />
+                      </Box>
+                    ))}
+                  </Box>
                 </Paper>
               </Box>
             </motion.div>
