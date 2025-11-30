@@ -1,10 +1,9 @@
 import React, { useMemo } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { ProjectFrontmatter } from "@/lib/projects";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -16,13 +15,13 @@ const TechStackVisualization = ({ projects }: TechStackVisualizationProps) => {
   // Count technology usage across all projects
   const techCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    
+
     projects.forEach(project => {
       project.technologies.forEach(tech => {
         counts[tech] = (counts[tech] || 0) + 1;
       });
     });
-    
+
     return counts;
   }, [projects]);
 
@@ -38,7 +37,7 @@ const TechStackVisualization = ({ projects }: TechStackVisualizationProps) => {
         {
           data: sortedTechList.map(([, count]) => count),
           backgroundColor: [
-            "#3498db", "#e74c3c", "#2ecc71", "#f1c40f", 
+            "#3498db", "#e74c3c", "#2ecc71", "#f1c40f",
             "#9b59b6", "#1abc9c", "#34495e", "#e67e22"
           ],
           borderWidth: 1,
@@ -57,75 +56,51 @@ const TechStackVisualization = ({ projects }: TechStackVisualizationProps) => {
   }, [projects]);
 
   return (
-    <Box sx={{ py: 4, mb: 4 }}>
-      <Typography 
-        variant="h4" 
-        align="center" 
-        sx={{ 
-          fontWeight: "bold", 
-          mb: 4,
-          fontFamily: "Orbitron, sans-serif",
-        }}
-      >
+    <div className="py-8 mb-8">
+      <h2 className="text-3xl font-bold text-center mb-8 font-orbitron">
         Technology Stack Insights
-      </Typography>
-      
-      <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 4, alignItems: "center" }}>
-        <Box sx={{ width: { xs: "100%", md: "50%" }, height: 300 }}>
-          <Pie data={pieData} options={{ maintainAspectRatio: false }} />
-        </Box>
-        
-        <Box sx={{ width: { xs: "100%", md: "50%" } }}>
-          <Paper 
-            elevation={3} 
-            sx={{ 
-              p: 3, 
-              height: "100%", 
-              display: "flex", 
-              flexDirection: "column",
-              backgroundColor: "background.paper",
-            }}
-          >
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", mb: 2 }}>
-              Technologies Used
-            </Typography>
-            
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-              {allTechnologies.map((tech, index) => (
-                <Box
-                  key={tech}
-                  sx={{
-                    backgroundColor: "primary.main",
-                    color: "primary.contrastText",
-                    px: 2,
-                    py: 0.5,
-                    borderRadius: 20,
-                    fontSize: "0.8rem",
-                  }}
-                >
-                  {tech}
-                  <Typography component="span" sx={{ ml: 1, fontSize: "0.7rem", opacity: 0.8 }}>
-                    ({techCounts[tech]})
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
-            
-            <Box sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: "divider" }}>
-              <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", mb: 1 }}>
-                Project Statistics
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                Total Projects: <strong>{projects.length}</strong>
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Unique Technologies: <strong>{allTechnologies.length}</strong>
-              </Typography>
-            </Box>
-          </Paper>
-        </Box>
-      </Box>
-    </Box>
+      </h2>
+
+      <div className="flex flex-col md:flex-row gap-8 items-center">
+        <div className="w-full md:w-1/2 h-[300px]">
+          <Pie data={pieData} options={{ maintainAspectRatio: false, responsive: true }} />
+        </div>
+
+        <div className="w-full md:w-1/2">
+          <Card className="h-full bg-card/50 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold">Technologies Used</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {allTechnologies.map((tech) => (
+                  <Badge
+                    key={tech}
+                    variant="secondary"
+                    className="px-3 py-1 text-sm rounded-full"
+                  >
+                    {tech}
+                    <span className="ml-2 text-xs opacity-70">
+                      ({techCounts[tech]})
+                    </span>
+                  </Badge>
+                ))}
+              </div>
+
+              <div className="pt-4 border-t border-border">
+                <h4 className="font-bold mb-2">Project Statistics</h4>
+                <p className="text-sm text-muted-foreground mb-1">
+                  Total Projects: <strong className="text-foreground">{projects.length}</strong>
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Unique Technologies: <strong className="text-foreground">{allTechnologies.length}</strong>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 };
 

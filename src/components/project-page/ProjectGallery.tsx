@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import useTheme from "@mui/material/styles/useTheme";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { ProjectFrontmatter } from "@/lib/projects";
-import { COMMON_STYLES } from "@/utils/constants";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { Github, ExternalLink } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface ProjectGalleryProps {
   projects: (ProjectFrontmatter & { slug: string })[];
@@ -19,7 +15,6 @@ interface ProjectGalleryProps {
 }
 
 const ProjectGallery = ({ projects, basePath }: ProjectGalleryProps) => {
-  const theme = useTheme();
   const router = useRouter();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -40,20 +35,12 @@ const ProjectGallery = ({ projects, basePath }: ProjectGalleryProps) => {
   };
 
   return (
-    <Box sx={{ py: 4 }}>
-      <Typography 
-        variant="h4" 
-        align="center" 
-        sx={{ 
-          fontWeight: "bold", 
-          mb: 4,
-          fontFamily: "Orbitron, sans-serif",
-        }}
-      >
+    <div className="py-8">
+      <h2 className="text-3xl font-bold text-center mb-8 font-orbitron">
         Interactive Project Gallery
-      </Typography>
-      
-      <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }, gap: 3 }}>
+      </h2>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {projects.map((project, index) => (
           <motion.div
             key={project.slug}
@@ -66,105 +53,54 @@ const ProjectGallery = ({ projects, basePath }: ProjectGalleryProps) => {
           >
             <Card
               onClick={() => handleProjectClick(project.slug)}
-              sx={{
-                borderRadius: COMMON_STYLES.BORDER_RADIUS.CARD,
-                boxShadow: 3,
-                transition: "all 0.3s ease",
-                cursor: "pointer",
-                overflow: "visible",
-                position: "relative",
-                backgroundColor:
-                  theme.palette.mode === "dark"
-                    ? "rgba(255, 255, 255, 0.05)"
-                    : "rgba(0, 0, 0, 0.02)",
-                backdropFilter: "blur(10px)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-                "&:hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
-                },
-              }}
+              className={cn(
+                "rounded-xl overflow-hidden cursor-pointer transition-all duration-300 relative",
+                "bg-white/5 dark:bg-white/5 backdrop-blur-md border-white/10",
+                "hover:shadow-xl hover:shadow-primary/20 hover:-translate-y-1"
+              )}
             >
-              <CardMedia
-                component="img"
-                height="140"
-                image={
-                  project.thumbnail.startsWith("http")
-                    ? project.thumbnail
-                    : `${basePath}${project.thumbnail}`
-                }
-                alt={project.title}
-                sx={{
-                  transition: "transform 0.3s ease",
-                  "&:hover": {
-                    transform: "scale(1.05)",
-                  },
-                }}
-              />
-              
-              <CardContent sx={{ p: 2 }}>
-                <Typography 
-                  variant="h6" 
-                  component="h3"
-                  sx={{ 
-                    fontWeight: "bold", 
-                    mb: 1,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
+              <div className="relative h-[140px] overflow-hidden">
+                <Image
+                  src={
+                    project.thumbnail.startsWith("http")
+                      ? project.thumbnail
+                      : `${basePath}${project.thumbnail}`
+                  }
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
+
+              <CardContent className="p-4">
+                <h3 className="text-lg font-bold mb-1 line-clamp-2">
                   {project.title}
-                </Typography>
-                <Typography 
-                  variant="body2" 
-                  color="text.secondary"
-                  sx={{ 
-                    mb: 2,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                   {project.description}
-                </Typography>
-                
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mb: 2 }}>
+                </p>
+
+                <div className="flex flex-wrap gap-1 mb-4">
                   {project.technologies.slice(0, 3).map((tech, idx) => (
-                    <Box
+                    <Badge
                       key={idx}
-                      sx={{
-                        backgroundColor: theme.palette.primary.main,
-                        color: theme.palette.primary.contrastText,
-                        px: 1,
-                        py: 0.25,
-                        borderRadius: 1,
-                        fontSize: "0.7rem",
-                      }}
+                      variant="default"
+                      className="text-[0.7rem] px-2 py-0.5"
                     >
                       {tech}
-                    </Box>
+                    </Badge>
                   ))}
                   {project.technologies.length > 3 && (
-                    <Box
-                      sx={{
-                        backgroundColor: theme.palette.grey[600],
-                        color: theme.palette.common.white,
-                        px: 1,
-                        py: 0.25,
-                        borderRadius: 1,
-                        fontSize: "0.7rem",
-                      }}
+                    <Badge
+                      variant="secondary"
+                      className="text-[0.7rem] px-2 py-0.5"
                     >
                       +{project.technologies.length - 3}
-                    </Box>
+                    </Badge>
                   )}
-                </Box>
-                
+                </div>
+
                 <AnimatePresence>
                   {(hoveredIndex === index) && (
                     <motion.div
@@ -172,28 +108,26 @@ const ProjectGallery = ({ projects, basePath }: ProjectGalleryProps) => {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.2 }}
-                      style={{ display: "flex", gap: 1 }}
+                      className="flex gap-2"
                     >
                       {project.liveDemo && (
                         <Button
-                          size="small"
-                          variant="contained"
-                          color="primary"
-                          startIcon={<OpenInNewIcon />}
+                          size="sm"
+                          variant="default"
+                          className="flex-1 text-xs h-8"
                           onClick={(e) => handleLiveDemo(e, project.liveDemo)}
-                          sx={{ flex: 1, textTransform: "none", fontSize: "0.75rem" }}
                         >
+                          <ExternalLink className="w-3 h-3 mr-2" />
                           Live Demo
                         </Button>
                       )}
                       <Button
-                        size="small"
-                        variant="outlined"
-                        color="secondary"
-                        startIcon={<GitHubIcon />}
+                        size="sm"
+                        variant="outline"
+                        className="flex-1 text-xs h-8"
                         onClick={(e) => handleGitHub(e, project.github)}
-                        sx={{ flex: 1, textTransform: "none", fontSize: "0.75rem" }}
                       >
+                        <Github className="w-3 h-3 mr-2" />
                         Code
                       </Button>
                     </motion.div>
@@ -203,8 +137,8 @@ const ProjectGallery = ({ projects, basePath }: ProjectGalleryProps) => {
             </Card>
           </motion.div>
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

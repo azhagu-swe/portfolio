@@ -1,17 +1,16 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import CardMedia from "@mui/material/CardMedia";
-import Chip from "@mui/material/Chip";
-import Button from "@mui/material/Button";
-import CloseIcon from "@mui/icons-material/Close";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Github, ExternalLink } from "lucide-react";
 import { ProjectFrontmatter } from "@/lib/projects";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ProjectPreviewModalProps {
   open: boolean;
@@ -36,111 +35,72 @@ const ProjectPreviewModal = ({ open, onClose, project, basePath }: ProjectPrevie
   };
 
   return (
-    <Dialog 
-      open={open} 
-      onClose={onClose}
-      maxWidth="md"
-      fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: "16px",
-          overflow: "hidden",
-        }
-      }}
-    >
-      <DialogTitle 
-        sx={{ 
-          display: "flex", 
-          justifyContent: "space-between", 
-          alignItems: "center",
-          backgroundColor: "background.paper",
-          borderBottom: 1,
-          borderColor: "divider",
-          m: 0,
-          p: 2 
-        }}
-      >
-        <Typography variant="h5" component="div" sx={{ fontWeight: "bold" }}>
-          {project.title}
-        </Typography>
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{ color: (theme) => theme.palette.grey[500] }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      
-      <DialogContent 
-        dividers
-        sx={{ 
-          backgroundColor: "background.default",
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          p: 0 
-        }}
-      >
-        <CardMedia
-          component="img"
-          height="300"
-          image={
-            project.thumbnail.startsWith("http")
-              ? project.thumbnail
-              : `${basePath}${project.thumbnail}`
-          }
-          alt={project.title}
-        />
-        
-        <Box sx={{ p: 3 }}>
-          <Typography variant="body1" paragraph>
-            {project.description}
-          </Typography>
-          
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h6" component="h3" sx={{ fontWeight: "bold", mb: 1 }}>
-              Technologies Used
-            </Typography>
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-              {project.technologies.map((tech, idx) => (
-                <Chip
-                  key={idx}
-                  label={tech}
-                  size="small"
-                  variant="outlined"
-                  sx={{
-                    height: 28,
-                    fontSize: "0.8rem",
-                  }}
-                />
-              ))}
-            </Box>
-          </Box>
-          
-          <Box sx={{ display: "flex", gap: 2, mt: 2 }}>
-            {project.liveDemo && (
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<OpenInNewIcon />}
-                onClick={handleLiveDemo}
-                sx={{ flex: 1, py: 1.5 }}
-              >
-                Live Demo
-              </Button>
-            )}
-            <Button
-              variant="outlined"
-              color="secondary"
-              startIcon={<GitHubIcon />}
-              onClick={handleGitHub}
-              sx={{ flex: 1, py: 1.5 }}
-            >
-              GitHub Repository
-            </Button>
-          </Box>
-        </Box>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
+      <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background">
+        <DialogHeader className="p-6 pb-2 border-b">
+          <DialogTitle className="text-2xl font-bold">
+            {project.title}
+          </DialogTitle>
+        </DialogHeader>
+
+        <ScrollArea className="max-h-[80vh]">
+          <div className="flex flex-col gap-6">
+            <div className="relative w-full h-[300px] sm:h-[400px]">
+              <Image
+                src={
+                  project.thumbnail.startsWith("http")
+                    ? project.thumbnail
+                    : `${basePath}${project.thumbnail}`
+                }
+                alt={project.title}
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            <div className="p-6 pt-0">
+              <p className="text-base leading-relaxed text-muted-foreground mb-6">
+                {project.description}
+              </p>
+
+              <div className="mb-6">
+                <h3 className="text-lg font-bold mb-3">Technologies Used</h3>
+                <div className="flex flex-wrap gap-2">
+                  {project.technologies.map((tech, idx) => (
+                    <Badge
+                      key={idx}
+                      variant="outline"
+                      className="text-sm px-3 py-1"
+                    >
+                      {tech}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                {project.liveDemo && (
+                  <Button
+                    variant="default"
+                    className="flex-1"
+                    onClick={handleLiveDemo}
+                  >
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    Live Demo
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={handleGitHub}
+                >
+                  <Github className="w-4 h-4 mr-2" />
+                  GitHub Repository
+                </Button>
+              </div>
+            </div>
+          </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

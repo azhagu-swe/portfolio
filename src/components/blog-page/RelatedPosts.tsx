@@ -1,16 +1,8 @@
 import React from "react";
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
 import Link from "next/link";
+import Image from "next/image";
 import { PostFrontmatter } from "../../lib/blog";
+import { Card, CardContent } from "@/components/ui/card";
 
 type PostWithSlug = PostFrontmatter & { slug: string };
 
@@ -24,45 +16,37 @@ const RelatedPosts = ({ posts }: RelatedPostsProps) => {
   }
 
   return (
-    <Box sx={{ mt: 8 }}>
-      <Typography
-        variant="h5"
-        component="h2"
-        gutterBottom
-        sx={{ fontWeight: "bold" }}>
+    <div className="mt-16">
+      <h2 className="text-2xl font-bold mb-4">
         Related Posts
-      </Typography>
-      <Divider sx={{ mb: 4 }} />
-      <Grid container spacing={4}>
+      </h2>
+      <div className="h-px bg-border mb-8" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {posts.map((post) => (
-          <Grid item xs={12} md={4} key={post.slug}>
-            <Card
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-              }}>
-              <CardActionArea component={Link} href={`/blog/${post.slug}`}>
-                <CardMedia
-                  component="img"
-                  height="160"
-                  image={post.coverImage}
+          <Link href={`/blog/${post.slug}`} key={post.slug} className="group h-full block">
+            <Card className="h-full overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col border-border bg-card">
+              <div className="relative h-40 w-full overflow-hidden">
+                <Image
+                  src={post.coverImage}
                   alt={post.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 300px"
                 />
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h6" component="div">
-                    {post.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {post.excerpt}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
+              </div>
+              <CardContent className="flex-grow p-4 flex flex-col">
+                <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                  {post.title}
+                </h3>
+                <p className="text-sm text-muted-foreground line-clamp-3">
+                  {post.excerpt}
+                </p>
+              </CardContent>
             </Card>
-          </Grid>
+          </Link>
         ))}
-      </Grid>
-    </Box>
+      </div>
+    </div>
   );
 };
 

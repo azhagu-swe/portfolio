@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CssBaseline } from "@mui/material";
-import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
-import { ThemeProvider, useThemeContext } from "@/context/ThemeContext";
+import { ThemeProvider } from "@/components/theme-provider";
 import Layout from "@/components/common/Layout";
 import GlobalErrorBoundary from "@/components/common/GlobalErrorBoundary";
 import PageTransition from "@/components/ui/PageTransition";
@@ -16,23 +14,8 @@ if (typeof window !== 'undefined') {
   setupGlobalErrorHandlers();
 }
 
-function MyAppContent({ Component, pageProps }: AppProps) {
-  const { theme, toggleTheme, isDarkMode } = useThemeContext();
-
-  return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <AnimatedBackground enabled={true} />
-      <Layout toggleTheme={toggleTheme} isDarkMode={isDarkMode}>
-        <PageTransition>
-          <Component {...pageProps} />
-        </PageTransition>
-      </Layout>
-    </MuiThemeProvider>
-  );
-}
-
 export default function App(props: AppProps) {
+  const { Component, pageProps } = props;
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
@@ -45,13 +28,25 @@ export default function App(props: AppProps) {
   }, []);
 
   return (
-    <ThemeProvider>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
       <VisitorProvider>
         <GlobalErrorBoundary>
           {showSplash ? (
             <SplashScreen />
           ) : (
-            <MyAppContent {...props} />
+            <>
+              <AnimatedBackground enabled={true} />
+              <Layout>
+                <PageTransition>
+                  <Component {...pageProps} />
+                </PageTransition>
+              </Layout>
+            </>
           )}
         </GlobalErrorBoundary>
       </VisitorProvider>

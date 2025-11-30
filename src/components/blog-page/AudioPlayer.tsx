@@ -1,18 +1,10 @@
 // components/blog/AudioPlayer.tsx
 import React, { useState, useEffect, useRef } from "react";
-import {
-  IconButton,
-  Stack,
-  Typography,
-  CircularProgress,
-  Grid,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Slider,
-} from "@mui/material";
-import { PlayArrow, Pause, Stop } from "@mui/icons-material";
+import { Play, Pause, Square, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Label } from "@/components/ui/label";
 
 // UPDATE: Add a callback prop for sentence highlighting
 interface AudioPlayerProps {
@@ -28,7 +20,7 @@ const AudioPlayer = ({ text, onBoundary }: AudioPlayerProps) => {
   // ADD: State for voice and speed controls
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoiceURI, setSelectedVoiceURI] = useState<string | undefined>();
-  const [speed, setSpeed] = useState(1);
+  const [speed, setSpeed] = useState([1]); // Slider expects an array
 
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
@@ -73,12 +65,12 @@ const AudioPlayer = ({ text, onBoundary }: AudioPlayerProps) => {
 
     utteranceRef.current.voice =
       voices.find((v) => v.voiceURI === selectedVoiceURI) || null;
-    utteranceRef.current.rate = speed;
+    utteranceRef.current.rate = speed[0];
 
     utteranceRef.current.onend = () => {
       setIsPlaying(false);
       setIsPaused(false);
-      onBoundary(-1); 
+      onBoundary(-1);
     };
 
     if (isPaused) {
@@ -101,74 +93,81 @@ const AudioPlayer = ({ text, onBoundary }: AudioPlayerProps) => {
     window.speechSynthesis.cancel();
     setIsPlaying(false);
     setIsPaused(false);
-    onBoundary(-1); 
+    onBoundary(-1);
   };
 
   if (isLoading) {
     return (
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <CircularProgress size={24} />
-        <Typography variant="body2" color="text.secondary">
+      <div className="flex items-center gap-2">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <span className="text-sm text-muted-foreground">
           Loading audio player...
-        </Typography>
-      </Stack>
+        </span>
+      </div>
     );
   }
 
   return (
-    <Stack spacing={2} sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: '12px' }}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h6" fontWeight="bold">
+    <div className="p-4 border border-border rounded-xl space-y-4 bg-card text-card-foreground shadow-sm">
+      <div className="flex items-center justify-between">
+        <h6 className="text-lg font-bold">
           Listen to Article
-        </Typography>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        </h6>
+        <div className="flex items-center gap-2">
           {!isPlaying ? (
-            <IconButton onClick={handlePlay} aria-label="play" color="primary">
-              <PlayArrow />
-            </IconButton>
+            <Button onClick={handlePlay} size="icon" variant="outline" aria-label="play">
+              <Play className="h-4 w-4" />
+            </Button>
           ) : (
-            <IconButton onClick={handlePause} aria-label="pause" color="primary">
-              <Pause />
-            </IconButton>
+            <Button onClick={handlePause} size="icon" variant="outline" aria-label="pause">
+              <Pause className="h-4 w-4" />
+            </Button>
           )}
-          <IconButton onClick={handleStop} aria-label="stop" disabled={!isPlaying && !isPaused}>
-            <Stop />
-          </IconButton>
-        </Stack>
-      </Stack>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} md={6}>
-          <FormControl fullWidth size="small">
-            <InputLabel id="voice-select-label">Voice</InputLabel>
-            <Select
-              labelId="voice-select-label"
-              value={selectedVoiceURI || ""}
-              label="Voice"
-              onChange={(e) => setSelectedVoiceURI(e.target.value)}
-            >
+          <Button
+            onClick={handleStop}
+            size="icon"
+            variant="ghost"
+            aria-label="stop"
+            disabled={!isPlaying && !isPaused}
+          >
+            <Square className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+        <div className="w-full">
+          <Label htmlFor="voice-select" className="mb-2 block">Voice</Label>
+          <Select
+            value={selectedVoiceURI || ""}
+            onValueChange={(value) => setSelectedVoiceURI(value)}
+          >
+            <SelectTrigger id="voice-select" className="w-full">
+              <SelectValue placeholder="Select a voice" />
+            </SelectTrigger>
+            <SelectContent>
               {voices.map((voice) => (
-                <MenuItem key={voice.voiceURI} value={voice.voiceURI}>
+                <SelectItem key={voice.voiceURI} value={voice.voiceURI}>
                   {`${voice.name} (${voice.lang})`}
-                </MenuItem>
+                </SelectItem>
               ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography gutterBottom variant="caption" component="div">
-            Playback Speed: {speed.toFixed(2)}x
-          </Typography>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="w-full">
+          <Label className="mb-2 block">
+            Playback Speed: {speed[0].toFixed(2)}x
+          </Label>
           <Slider
             value={speed}
-            onChange={(_, newValue) => setSpeed(newValue as number)}
+            onValueChange={setSpeed}
             min={0.5}
             max={2}
             step={0.25}
-            aria-labelledby="speed-slider"
+            aria-label="Playback Speed"
           />
-        </Grid>
-      </Grid>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -31,15 +31,17 @@ export const useOnScreen = (
       setIntersecting(entry.isIntersecting);
     }, defaultOptions);
 
+    const currentElement = ref.current;
+
     // Start observing the element
-    if (ref.current) {
-      observer.observe(ref.current);
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
     // Cleanup function
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentElement) {
+        observer.unobserve(currentElement);
       }
     };
   }, [ref, options]);

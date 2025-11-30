@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { Box, IconButton, Tooltip, Typography, useTheme } from '@mui/material';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import CheckIcon from '@mui/icons-material/Check';
+import { Copy, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const CodeBlock = (props: React.HTMLAttributes<HTMLPreElement>) => {
-  const theme = useTheme();
   const [copied, setCopied] = useState(false);
-  
+
   // Find the 'code' element among the children passed to the 'pre' tag
   const codeElement = React.Children.toArray(props.children).find(
     (child: any) => child.type === 'code'
@@ -23,55 +28,42 @@ const CodeBlock = (props: React.HTMLAttributes<HTMLPreElement>) => {
 
   const handleCopy = () => {
     if (codeString) {
-        navigator.clipboard.writeText(codeString);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // Reset icon after 2 seconds
+      navigator.clipboard.writeText(codeString as string);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset icon after 2 seconds
     }
   };
 
   return (
-    <Box sx={{ position: 'relative', my: 3, borderRadius: '8px', border: `1px solid ${theme.palette.divider}` }}>
+    <div className="relative my-6 rounded-lg border border-border">
       {/* Header for the code block */}
-      <Box
-        sx={{
-          backgroundColor: theme.palette.mode === 'dark' ? '#0D1117' : '#F6F8FA',
-          color: theme.palette.text.secondary,
-          p: 1,
-          px: 2,
-          borderTopLeftRadius: 'inherit',
-          borderTopRightRadius: 'inherit',
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="caption" sx={{ textTransform: 'uppercase', fontFamily: 'monospace' }}>
+      <div className="flex items-center justify-between px-4 py-2 bg-muted border-b border-border rounded-t-lg">
+        <span className="text-xs font-mono uppercase text-muted-foreground">
           {language}
-        </Typography>
-        <Tooltip title={copied ? "Copied!" : "Copy code"} placement="top">
-          <IconButton onClick={handleCopy} size="small">
-            {copied ? <CheckIcon fontSize="small" sx={{ color: theme.palette.primary.main }} /> : <ContentCopyIcon fontSize="small" />}
-          </IconButton>
-        </Tooltip>
-      </Box>
-      
+        </span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleCopy}>
+                {copied ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{copied ? "Copied!" : "Copy code"}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+
       {/* The actual code block */}
-      <Box
-        component="pre"
+      <pre
         {...props}
-        sx={{
-          m: 0,
-          p: 2,
-          overflowX: 'auto',
-          backgroundColor: theme.palette.mode === 'dark' ? '#161B22' : '#FFFFFF',
-          borderBottomLeftRadius: 'inherit',
-          borderBottomRightRadius: 'inherit',
-          fontFamily: 'monospace',
-          fontSize: '0.9rem',
-        }}
+        className={cn(
+          "m-0 p-4 overflow-x-auto bg-card rounded-b-lg font-mono text-sm",
+          props.className
+        )}
       />
-    </Box>
+    </div>
   );
 };
 

@@ -1,24 +1,16 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { getSortedPostsData, PostFrontmatter } from "../../lib/blog";
-import {
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  useTheme,
-  Chip,
-  TextField,
-  Stack,
-} from "@mui/material";
 import { motion } from "framer-motion";
-import SearchIcon from "@mui/icons-material/Search";
+import { Search } from "lucide-react";
 import { useRouter } from "next/router";
 import BlogCard from "@/components/blog-page/BlogCard";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 // --- TYPE DEFINITIONS ---
 interface BlogIndexProps {
@@ -40,7 +32,6 @@ const itemVariants = {
 };
 
 const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
-  const theme = useTheme();
   const router = useRouter();
   const { basePath } = router;
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -65,173 +56,94 @@ const BlogIndexPage = ({ allPostsData }: BlogIndexProps) => {
   };
 
   return (
-    <Box
-      component={motion.div}
+    <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{ 
-        p: { xs: 2, sm: 3, md: 4 }, 
-        maxWidth: "1200px", 
-        mx: "auto",
-        width: "100%"
-      }}
+      className="p-4 sm:p-6 md:p-8 max-w-[1200px] mx-auto w-full"
     >
-      <Box
-        sx={{ textAlign: "center", mb: { xs: 4, sm: 5, md: 6 } }}
-        component={motion.div}
+      <motion.div
+        className="text-center mb-8 sm:mb-12 md:mb-16"
         variants={itemVariants}
       >
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: "bold",
-            color: theme.palette.primary.main,
-            fontFamily: "Orbitron, sans-serif",
-            fontSize: { xs: "2rem", sm: "2.5rem", md: "3rem" },
-            mb: 1
-          }}
-        >
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary font-orbitron mb-2">
           My Blog
-        </Typography>
-        <Typography 
-          variant="h6" 
-          color="text.secondary"
-          sx={{ fontSize: { xs: "1rem", sm: "1.1rem" } }}
-        >
+        </h1>
+        <p className="text-base sm:text-lg text-muted-foreground">
           Innovating Code, Sharing Thoughts
-        </Typography>
-      </Box>
+        </p>
+      </motion.div>
 
-      <Box sx={{ display: "flex", justifyContent: "center", mb: { xs: 4, sm: 5, md: 6 } }}>
-        <TextField
-          variant="outlined"
-          placeholder="Search articles by title or tag..."
-          size="small"
-          onChange={handleSearchChange}
-          InputProps={{
-            startAdornment: (
-              <SearchIcon sx={{ mr: 1, color: "text.secondary" }} />
-            ),
-          }}
-          sx={{ 
-            width: { xs: "100%", sm: "80%", md: "60%" },
-            maxWidth: "600px",
-            "& .MuiInputBase-root": {
-              fontSize: { xs: "0.9rem", sm: "1rem" }
-            }
-          }}
-        />
-      </Box>
+      <div className="flex justify-center mb-8 sm:mb-12 md:mb-16">
+        <div className="relative w-full sm:w-4/5 md:w-3/5 max-w-[600px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search articles by title or tag..."
+            onChange={handleSearchChange}
+            className="pl-10 h-10 sm:h-12 text-base"
+          />
+        </div>
+      </div>
 
       {featuredPost && (
-        <Box sx={{ mb: { xs: 4, sm: 5, md: 6 } }} component={motion.div} variants={itemVariants}>
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: "bold",
-              mb: 2,
-              textAlign: "center",
-              fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.125rem" }
-            }}
-          >
+        <motion.div className="mb-8 sm:mb-12 md:mb-16" variants={itemVariants}>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center">
             Featured Article
-          </Typography>
-          <Link href={`/blog/${featuredPost.slug}`} passHref>
-            <Card
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", md: "row" },
-                borderRadius: "16px",
-                boxShadow: 3,
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                cursor: "pointer",
-                "&:hover": {
-                  transform: { xs: "none", md: "translateY(-10px)" },
-                  boxShadow: `0 20px 40px ${theme.palette.primary.main}44`,
-                },
-              }}
-            >
-              <CardMedia
-                component="img"
-                sx={{
-                  width: { xs: "100%", md: "45%" },
-                  height: { xs: 250, md: "auto" },
-                  objectFit: "cover",
-                }}
-                image={
-                  featuredPost.coverImage.startsWith("http")
-                    ? featuredPost.coverImage
-                    : `${basePath}${featuredPost.coverImage}`
-                }
-                alt={featuredPost.title}
-              />
-              <CardContent
-                sx={{
-                  p: { xs: 2, sm: 3, md: 4 },
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  width: { xs: "100%", md: "55%" },
-                }}
-              >
-                <Stack direction="row" spacing={1} sx={{ mb: 2, alignSelf: "flex-start" }}>
+          </h2>
+          <Link href={`/blog/${featuredPost.slug}`} className="block group">
+            <Card className="flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer border-border bg-card">
+              <div className="relative w-full md:w-[45%] h-[250px] md:h-auto overflow-hidden">
+                <Image
+                  src={
+                    featuredPost.coverImage.startsWith("http")
+                      ? featuredPost.coverImage
+                      : `${basePath}${featuredPost.coverImage}`
+                  }
+                  alt={featuredPost.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+              <CardContent className="p-4 sm:p-6 md:p-8 flex flex-col justify-center w-full md:w-[55%]">
+                <div className="flex flex-wrap gap-2 mb-4 self-start">
                   {(Array.isArray(featuredPost.category) ? featuredPost.category : [featuredPost.category]).map((cat) => (
-                    <Chip
+                    <Badge
                       key={cat}
-                      label={cat}
-                      color="primary"
-                      size="small"
-                      variant="outlined"
-                      clickable
+                      variant="outline"
+                      className="cursor-pointer hover:bg-primary/10 transition-colors text-[0.65rem] sm:text-xs h-5 sm:h-6"
                       onClick={(e) => handleChipClick(e, `/categories/${cat.toLowerCase().replace(/\s+/g, '-')}`)}
-                      sx={{
-                        height: { xs: 20, sm: 24 },
-                        fontSize: { xs: "0.65rem", sm: "0.75rem" }
-                      }}
-                    />
+                    >
+                      {cat}
+                    </Badge>
                   ))}
-                </Stack>
+                </div>
 
-                <Typography
-                  variant="h5"
-                  component="h2"
-                  sx={{ fontWeight: "bold", mb: 1, fontSize: { xs: "1.25rem", sm: "1.5rem" } }}
-                >
+                <h2 className="text-xl sm:text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
                   {featuredPost.title}
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  sx={{ mb: 2, fontSize: { xs: "0.9rem", sm: "1rem" } }}
-                >
+                </h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-4 line-clamp-3">
                   {featuredPost.excerpt}
-                </Typography>
-                <Button 
-                  variant="contained"
-                  sx={{
-                    px: { xs: 2, sm: 3 },
-                    py: { xs: 1, sm: 1.5 },
-                    fontSize: { xs: "0.9rem", sm: "1rem" },
-                    alignSelf: "flex-start"
-                  }}
+                </p>
+                <Button
+                  className="self-start"
                 >
                   Start Reading
                 </Button>
               </CardContent>
             </Card>
           </Link>
-        </Box>
+        </motion.div>
       )}
 
-      <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
         {otherPosts.map((post) => (
-          <Grid item xs={12} sm={6} md={4} key={post.slug}>
+          <div key={post.slug} className="h-full">
             <BlogCard post={post} basePath={router.basePath} />
-          </Grid>
+          </div>
         ))}
-      </Grid>
-    </Box>
+      </div>
+    </motion.div>
   );
 };
 

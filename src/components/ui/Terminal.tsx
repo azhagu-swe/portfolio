@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, KeyboardEvent } from 'react';
-import { Box, Typography, TextField, IconButton } from '@mui/material';
 import { useRouter } from 'next/router';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
+import { Maximize2, Minimize2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface TerminalProps {
   initialLines?: string[];
@@ -67,7 +67,7 @@ const Terminal: React.FC<TerminalProps> = ({
 
   // Available commands for suggestions
   const availableCommands = React.useMemo(() => [
-    'help', 'about', 'skills', 'experience', 'contact', 'projects', 'clear', 
+    'help', 'about', 'skills', 'experience', 'contact', 'projects', 'clear',
     'education', 'certifications', 'resume', 'github', 'linkedin', 'ls', 'cd', 'pwd', 'cat', 'whoami', 'date', 'quit', 'exit'
   ], []);
 
@@ -75,7 +75,7 @@ const Terminal: React.FC<TerminalProps> = ({
   const getCurrentDir = () => {
     const pathParts = currentPath.split('/').filter(part => part !== '');
     let current = fileSystem;
-    
+
     for (const part of pathParts) {
       if (current[part] && typeof current[part] === 'object') {
         current = current[part];
@@ -83,7 +83,7 @@ const Terminal: React.FC<TerminalProps> = ({
         return null;
       }
     }
-    
+
     return current;
   };
 
@@ -138,7 +138,7 @@ const Terminal: React.FC<TerminalProps> = ({
   // Handle auto-suggestions based on input
   useEffect(() => {
     if (input.trim()) {
-      const suggestions = availableCommands.filter(cmd => 
+      const suggestions = availableCommands.filter(cmd =>
         cmd.includes(input.toLowerCase()) && cmd !== input.toLowerCase()
       );
       setAutoSuggestions(suggestions.slice(0, 5)); // Show up to 5 suggestions
@@ -154,30 +154,30 @@ const Terminal: React.FC<TerminalProps> = ({
     // Clear any existing typing timeouts to prevent conflicts
     typingTimeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
     setTypingTimeoutIds([]);
-    
+
     // Don't add an extra empty line if newLines already ends with one
     const linesToAdd = newLines[newLines.length - 1] === '' ? [...newLines] : [...newLines, ''];
-    
+
     let currentIndex = 0;
     const timeoutIds: NodeJS.Timeout[] = [];
-    
+
     const typeNextLine = () => {
       if (currentIndex < linesToAdd.length) {
         setLines(prev => [...prev, linesToAdd[currentIndex]]);
         currentIndex++;
-        
+
         // Adjust typing speed based on line length
         const currentLine = linesToAdd[currentIndex - 1];
         const baseDelay = 30;
         const lengthFactor = Math.min(currentLine.length * 2, 100); // Max additional delay based on line length
         const delay = baseDelay + Math.random() * 50 + lengthFactor;
-        
+
         const timeoutId = setTimeout(() => {
           // Remove this timeout from the list once executed
           setTypingTimeoutIds(prev => prev.filter(id => id !== timeoutId));
           typeNextLine();
         }, delay);
-        
+
         // Add the new timeout to the list for potential cleanup
         timeoutIds.push(timeoutId);
         setTypingTimeoutIds(prev => [...prev, timeoutId]);
@@ -187,7 +187,7 @@ const Terminal: React.FC<TerminalProps> = ({
         if (callback) callback();
       }
     };
-    
+
     typeNextLine();
   };
 
@@ -198,7 +198,7 @@ const Terminal: React.FC<TerminalProps> = ({
       setTypingTimeoutIds([]);
       setIsTyping(false);
     }
-    
+
     const command = cmd.trim().toLowerCase();
     const commandWithPrompt = [...lines, currentPrompt + cmd]; // Add command to current lines
 
@@ -372,16 +372,16 @@ const Terminal: React.FC<TerminalProps> = ({
         {
           const pathParts = cmd.split(' ');
           let newPath = currentPath;
-          
+
           if (pathParts.length > 1) {
             const targetDir = pathParts[1];
             newPath = changeDirectory(targetDir);
-            
+
             // Validate if directory exists
             const pathToCheck = targetDir.startsWith('/') ? targetDir : (currentPath + '/' + targetDir);
             const pathPartsCheck = pathToCheck.split('/').filter(part => part !== '');
             let current = fileSystem;
-            
+
             for (const part of pathPartsCheck) {
               if (current && current[part] && typeof current[part] === 'object') {
                 current = current[part];
@@ -394,7 +394,7 @@ const Terminal: React.FC<TerminalProps> = ({
           } else {
             newPath = '/home/azhagu'; // Default to home
           }
-          
+
           if (responseLines.length === 0) { // If no error occurred
             setCurrentPath(newPath);
             setCurrentPrompt(`user@portfolio:${newPath}$ `);
@@ -407,7 +407,7 @@ const Terminal: React.FC<TerminalProps> = ({
           if (pathParts.length > 1) {
             const fileName = pathParts[1];
             const currentDir = getCurrentDir();
-            
+
             if (currentDir && currentDir[fileName] && typeof currentDir[fileName] !== 'object') {
               responseLines = [`${currentDir[fileName]}`];
             } else {
@@ -480,175 +480,63 @@ const Terminal: React.FC<TerminalProps> = ({
   };
 
   return (
-    <Box
+    <div
       ref={containerRef}
-      sx={{
-        background: 'rgba(0, 0, 0, 0.85)',
-        color: '#68D391',
-        fontFamily: 'monospace',
-        fontSize: '0.9rem',
-        padding: isFullscreen ? 3 : 2,
-        borderRadius: '8px',
-        border: '1px solid #68D391',
-        overflow: 'hidden',
-        minHeight: isFullscreen ? '100vh' : '400px',
-        maxHeight: isFullscreen ? '100vh' : '500px',
-        overflowY: 'auto',
-        position: 'relative',
-        margin: isFullscreen ? 0 : 'auto',
-        width: isFullscreen ? '100vw' : '100%',
-        height: isFullscreen ? '100vh' : 'auto',
-        zIndex: isFullscreen ? 1300 : 'auto', // Ensure proper stacking context
-        '&::-webkit-scrollbar': {
-          width: '6px',
-        },
-        '&::-webkit-scrollbar-track': {
-          background: 'rgba(0, 0, 0, 0.2)',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          background: '#68D391',
-          borderRadius: '3px',
-        }
-      }}
+      className={cn(
+        "bg-black/85 text-[#68D391] font-mono text-sm p-4 rounded-lg border border-[#68D391] overflow-hidden overflow-y-auto relative",
+        isFullscreen ? "fixed inset-0 w-screen h-screen z-[1300] m-0 p-6" : "w-full min-h-[400px] max-h-[500px] mx-auto"
+      )}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box
-            sx={{
-              width: 12,
-              height: 12,
-              borderRadius: '50%',
-              backgroundColor: '#ff5f56',
-              mr: 1
-            }}
-          />
-          <Box
-            sx={{
-              width: 12,
-              height: 12,
-              borderRadius: '50%',
-              backgroundColor: '#ffbd2e',
-              mr: 1
-            }}
-          />
-          <Box
-            sx={{
-              width: 12,
-              height: 12,
-              borderRadius: '50%',
-              backgroundColor: '#27c93f',
-            }}
-          />
-        </Box>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <IconButton 
-            size="small" 
-            onClick={() => setIsFullscreen(!isFullscreen)}
-            sx={{ color: '#68D391', '&:hover': { backgroundColor: 'rgba(104, 211, 145, 0.1)' } }}
-          >
-            {isFullscreen ? <FullscreenExitIcon fontSize="small" /> : <FullscreenIcon fontSize="small" />}
-          </IconButton>
-        </Box>
-      </Box>
-      
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+          <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+          <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsFullscreen(!isFullscreen)}
+          className="text-[#68D391] hover:bg-[#68D391]/10 h-6 w-6"
+        >
+          {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+        </Button>
+      </div>
+
       {lines.map((line, index) => (
-        <Typography
+        <div
           key={index}
-          component="div"
-          sx={{
-            whiteSpace: 'pre',
-            paddingBottom: '2px',
-            lineHeight: '1.4'
-          }}
+          className="whitespace-pre pb-0.5 leading-relaxed"
         >
           {line}
-        </Typography>
+        </div>
       ))}
-      
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, position: 'relative' }}>
-        <Typography
-          component="span"
-          sx={{
-            mr: 1,
-            whiteSpace: 'nowrap'
-          }}
-        >
+
+      <div className="flex items-center mt-1 relative">
+        <span className="mr-2 whitespace-nowrap">
           {currentPrompt}
-        </Typography>
-        <TextField
-          inputRef={inputRef}
+        </span>
+        <input
+          ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          variant="standard"
-          sx={{
-            flex: 1,
-            '& .MuiInputBase-input': {
-              padding: 0,
-              color: '#68D391',
-              fontFamily: 'monospace',
-              fontSize: '0.9rem',
-              backgroundColor: 'transparent',
-              border: 'none',
-              outline: 'none',
-              boxShadow: 'none',
-              '&:focus': {
-                border: 'none',
-                outline: 'none',
-                boxShadow: 'none',
-              },
-            },
-            '& .MuiInput-underline:before': {
-              borderBottom: 'none',
-            },
-            '& .MuiInput-underline:after': {
-              borderBottom: 'none',
-            },
-            '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
-              borderBottom: 'none',
-            },
-          }}
+          className="flex-1 bg-transparent border-none outline-none shadow-none text-[#68D391] font-mono text-sm p-0 focus:ring-0"
           autoFocus
         />
         {showCursor && showCursorBlink && (
-          <Typography
-            component="span"
-            sx={{
-              color: '#FFC107',
-              ml: 0.5
-            }}
-          >
+          <span className="text-[#FFC107] ml-1">
             {cursorSymbol}
-          </Typography>
+          </span>
         )}
-        
+
         {/* Auto-suggestions dropdown */}
         {showSuggestions && autoSuggestions.length > 0 && (
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: '100%',
-              left: 0,
-              right: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.9)',
-              border: '1px solid #68D391',
-              borderRadius: '4px',
-              p: 1,
-              mb: 1,
-              zIndex: 10,
-            }}
-          >
+          <div className="absolute bottom-full left-0 right-0 bg-black/90 border border-[#68D391] rounded p-2 mb-2 z-10">
             {autoSuggestions.map((suggestion, idx) => (
-              <Box
+              <div
                 key={idx}
-                sx={{
-                  py: 0.5,
-                  px: 1,
-                  cursor: 'pointer',
-                  '&:hover': {
-                    backgroundColor: 'rgba(104, 211, 145, 0.2)',
-                  }
-                }}
+                className="py-0.5 px-2 cursor-pointer hover:bg-[#68D391]/20"
                 onClick={() => {
                   setInput(suggestion);
                   setShowSuggestions(false);
@@ -656,12 +544,12 @@ const Terminal: React.FC<TerminalProps> = ({
                 }}
               >
                 {suggestion}
-              </Box>
+              </div>
             ))}
-          </Box>
+          </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

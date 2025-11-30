@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, LinearProgress, Chip } from '@mui/material';
 import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface Skill {
   name: string;
@@ -72,21 +72,11 @@ const SkillsProgression: React.FC<SkillsProgressionProps> = ({
   };
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 800, mx: 'auto', p: 2 }}>
-      <Typography 
-        variant="h4" 
-        sx={{ 
-          textAlign: 'center', 
-          mb: 4, 
-          fontWeight: 700,
-          background: 'linear-gradient(90deg, #68D391, #FFC107)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent'
-        }}
-      >
+    <div className="w-full max-w-[800px] mx-auto p-4">
+      <h4 className="text-3xl text-center mb-8 font-bold bg-gradient-to-r from-[#68D391] to-[#FFC107] bg-clip-text text-transparent">
         Technical Skills
-      </Typography>
-      
+      </h4>
+
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -94,94 +84,48 @@ const SkillsProgression: React.FC<SkillsProgressionProps> = ({
       >
         {skills.map((skill, index) => {
           const isVisible = visibleSkills.includes(index);
-          
+
           return (
             <motion.div
               key={`${skill.name}-${index}`}
               variants={itemVariants}
-              style={{ marginBottom: '20px' }}
+              className="mb-5"
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Typography 
-                  variant="h6" 
-                  component="div"
-                  sx={{ 
-                    flex: 1, 
-                    fontWeight: 600,
-                    color: 'text.primary',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
+              <div className="flex items-center mb-2">
+                <div className="flex-1 font-semibold text-foreground flex items-center">
                   {showIcons && (
-                    <Box
-                      sx={{
-                        width: 24,
-                        height: 24,
-                        borderRadius: '50%',
-                        backgroundColor: 'primary.main',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        mr: 1,
-                        fontSize: '0.8rem',
-                        color: 'white'
-                      }}
-                    >
+                    <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center mr-2 text-xs text-primary-foreground">
                       {skill.name.charAt(0)}
-                    </Box>
+                    </div>
                   )}
                   {skill.name}
-                </Typography>
-                <Chip
-                  label={`${skill.level}%`}
-                  size="small"
-                  sx={{ 
-                    backgroundColor: 'rgba(104, 211, 145, 0.2)', 
-                    color: 'primary.main',
-                    fontWeight: 'bold'
-                  }}
-                />
-              </Box>
-              
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ flex: 1, mr: 2 }}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={isVisible ? skill.level : 0}
-                    sx={{
-                      height: 12,
-                      borderRadius: 6,
-                      backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                      '& .MuiLinearProgress-bar': {
-                        backgroundColor: index % 3 === 0 
-                          ? '#68D391' 
-                          : index % 3 === 1 
-                            ? '#FFC107' 
-                            : '#42A5F5',
-                        borderRadius: 6,
-                        transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0ms'
-                      }
-                    }}
-                  />
-                </Box>
-                <Typography
-                  variant="body2"
-                  sx={{ 
-                    minWidth: 60, 
-                    textAlign: 'right',
-                    color: 'text.secondary',
-                    fontWeight: 500
-                  }}
-                >
+                </div>
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-[#68D391]/20 text-primary">
+                  {skill.level}%
+                </span>
+              </div>
+
+              <div className="flex items-center">
+                <div className="flex-1 mr-4">
+                  <div className="h-3 rounded-full bg-black/10 dark:bg-white/20 overflow-hidden">
+                    <div
+                      className={cn(
+                        "h-full rounded-full transition-all duration-1000 ease-out",
+                        index % 3 === 0 ? "bg-[#68D391]" : index % 3 === 1 ? "bg-[#FFC107]" : "bg-[#42A5F5]"
+                      )}
+                      style={{ width: isVisible ? `${skill.level}%` : '0%' }}
+                    />
+                  </div>
+                </div>
+                <span className="min-w-[60px] text-right text-sm text-muted-foreground font-medium">
                   {skill.category}
-                </Typography>
-              </Box>
+                </span>
+              </div>
             </motion.div>
           );
         })}
       </motion.div>
-    </Box>
+    </div>
   );
 };
 

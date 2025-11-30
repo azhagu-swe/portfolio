@@ -1,17 +1,16 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
 
 const AboutSection: React.FC = () => {
   return (
-    <Box sx={{ padding: '40px 0', textAlign: 'center' }}>
-      <Typography variant="h3" component="h3" gutterBottom>
+    <div className="py-10 text-center">
+      <h3 className="text-3xl font-bold mb-4">
         About Me
-      </Typography>
-      <Typography paragraph>
+      </h3>
+      <p className="mb-4 text-muted-foreground max-w-2xl mx-auto">
         With 3 years of experience in the software development industry, I specialize in creating efficient and scalable
         web applications. My passion for technology drives me to continuously learn and adapt to new challenges.
-      </Typography>
-    </Box>
+      </p>
+    </div>
   );
 };
 

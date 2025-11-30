@@ -1,62 +1,35 @@
 import React from 'react';
-import { Button, ButtonProps } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Button, ButtonProps } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 interface ButtonWithHoverProps extends ButtonProps {
-  variant?: 'text' | 'outlined' | 'contained';
   hoverEffect?: 'scale' | 'shadow' | 'glow' | 'none';
 }
 
 const ButtonWithHover: React.FC<ButtonWithHoverProps> = ({
   children,
-  variant = 'contained',
+  className,
   hoverEffect = 'scale',
   ...props
 }) => {
-  const theme = useTheme();
-  
-  // Define different hover effects
-  const getHoverStyles = () => {
+
+  const getHoverClass = () => {
     switch (hoverEffect) {
       case 'scale':
-        return {
-          transform: 'scale(1.03)',
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-        };
+        return "hover:scale-105 transition-transform duration-300";
       case 'shadow':
-        return {
-          transform: 'translateY(-2px)',
-          boxShadow: `0 8px 25px ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`
-          ,
-          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-        };
+        return "hover:-translate-y-1 hover:shadow-lg transition-all duration-300";
       case 'glow':
-        return {
-          boxShadow: `0 0 15px ${theme.palette.primary.main}`,
-          transition: 'box-shadow 0.3s ease',
-        };
+        return "hover:shadow-[0_0_15px_rgba(var(--primary),0.5)] transition-shadow duration-300";
       default:
-        return {};
+        return "";
     }
-  };
-
-  const hoverStyles = getHoverStyles();
-  
-  // Combine custom hover effects with MUI Button styles
-  const buttonSx = {
-    ...props.sx,
-    ...(hoverEffect !== 'none' && { 
-      '&:hover': {
-        ...hoverStyles,
-        ...((props.sx as any)?.['&:hover'] || {})
-      }
-    }),
   };
 
   return (
     <Button
-      variant={variant}
-      sx={buttonSx}
+      className={cn(getHoverClass(), className)}
       {...props}
     >
       {children}

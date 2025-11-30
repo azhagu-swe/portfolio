@@ -1,18 +1,13 @@
 import React from "react";
-import Link from "next/link";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import useTheme from "@mui/material/styles/useTheme";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { PostFrontmatter } from "@/lib/blog";
 import { ANIMATION_VARIANTS } from "@/utils/constants";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface BlogCardProps {
   post: PostFrontmatter & { slug: string };
@@ -20,7 +15,6 @@ interface BlogCardProps {
 }
 
 const BlogCard = React.memo(({ post, basePath }: BlogCardProps) => {
-  const theme = useTheme();
   const router = useRouter();
   const imageUrl = post.coverImage.startsWith("http")
     ? post.coverImage
@@ -41,119 +35,76 @@ const BlogCard = React.memo(({ post, basePath }: BlogCardProps) => {
   };
 
   return (
-    <motion.div variants={ANIMATION_VARIANTS.ITEM} style={{ height: "100%" }}>
+    <motion.div variants={ANIMATION_VARIANTS.ITEM} className="h-full">
       <Card
         onClick={handleCardClick}
-        sx={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          borderRadius: "16px",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease",
-          backgroundColor:
-            theme.palette.mode === "dark"
-              ? "rgba(255, 255, 255, 0.05)"
-              : "rgba(0, 0, 0, 0.02)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
-          cursor: "pointer",
-          "&:hover": {
-            transform: { xs: "none", sm: "translateY(-8px)" },
-            boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
-          },
-        }}>
-        <CardMedia
-          component="img"
-          sx={{ 
-            height: { xs: 200, sm: 180, md: 200 },
-            objectFit: "cover" 
-          }}
-          image={imageUrl}
-          alt={post.title}
-        />
-        <CardContent
-          sx={{
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-            p: { xs: 2, sm: 3 },
-          }}>
-          {/* --- CORRECTED CATEGORY STACK --- */}
-          <Stack
-            direction="row"
-            spacing={1}
-            useFlexGap
-            flexWrap="wrap"
-            sx={{ mb: 1 }}>
+        className={cn(
+          "h-full flex flex-col rounded-2xl overflow-hidden cursor-pointer transition-all duration-300",
+          "bg-white/5 dark:bg-white/5 backdrop-blur-md border-white/10",
+          "hover:-translate-y-2 hover:shadow-xl hover:shadow-primary/20"
+        )}
+      >
+        <div className="relative h-[200px] sm:h-[180px] md:h-[200px] overflow-hidden">
+          <Image
+            src={imageUrl}
+            alt={post.title}
+            fill
+            className="object-cover transition-transform duration-500 hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
+
+        <CardContent className="flex-grow flex flex-col p-4 sm:p-6">
+          <div className="flex flex-wrap gap-2 mb-3">
             {(Array.isArray(post.category)
               ? post.category
               : [post.category]
             ).map((cat: string) => (
-              <Chip
+              <Badge
                 key={cat}
-                label={cat}
-                color="primary"
-                size="small"
-                variant="outlined"
-                clickable
+                variant="outline"
+                className="cursor-pointer hover:bg-primary/10 transition-colors text-[0.65rem] sm:text-xs h-5 sm:h-6"
                 onClick={(e) => handleCategoryClick(e, cat)}
-                sx={{
-                  height: { xs: 20, sm: 24 },
-                  fontSize: { xs: "0.65rem", sm: "0.75rem" }
-                }}
-              />
+              >
+                {cat}
+              </Badge>
             ))}
-          </Stack>
+          </div>
 
-          <Typography variant="caption" color="text.secondary">
+          <span className="text-xs text-muted-foreground mb-1 block">
             {post.readTime}
-          </Typography>
-          <Typography
-            variant="h6"
-            component="h2"
-            gutterBottom
-            sx={{ fontWeight: "bold", flexGrow: 1, mt: 1, fontSize: { xs: "1rem", sm: "1.1rem" } }}>
+          </span>
+
+          <h2 className="text-base sm:text-lg font-bold mb-2 line-clamp-2 flex-grow">
             {post.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontSize: { xs: "0.85rem", sm: "0.9rem" } }}>
+          </h2>
+
+          <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
             {post.excerpt}
-          </Typography>
-          <Stack
-            direction="row"
-            spacing={1}
-            useFlexGap
-            flexWrap="wrap"
-            sx={{ mt: "auto", mb: 2 }}>
+          </p>
+
+          <div className="flex flex-wrap gap-2 mt-auto mb-4">
             {post.tags.map((tag: string) => (
-              <Chip
+              <Badge
                 key={tag}
-                label={`#${tag}`}
-                size="small"
-                variant="filled"
-                clickable
-                sx={{ 
-                  backgroundColor: "action.hover",
-                  height: { xs: 20, sm: 24 },
-                  fontSize: { xs: "0.65rem", sm: "0.75rem" }
-                }}
+                variant="secondary"
+                className="cursor-pointer hover:bg-secondary/80 text-[0.65rem] sm:text-xs h-5 sm:h-6"
                 onClick={(e) => handleTagClick(e, tag)}
-              />
+              >
+                #{tag}
+              </Badge>
             ))}
-          </Stack>
+          </div>
+
+          <div className="mt-auto pt-2">
+            <Button
+              className="w-full text-sm"
+              size="sm"
+            >
+              Read More
+            </Button>
+          </div>
         </CardContent>
-        <Box sx={{ p: { xs: 1.5, sm: 2 }, pt: 0, mt: "auto" }}>
-          <Button 
-            fullWidth 
-            variant="contained" 
-            color="primary"
-            sx={{
-              px: { xs: 1, sm: 2 },
-              py: { xs: 0.8, sm: 1 },
-              fontSize: { xs: "0.85rem", sm: "0.95rem" }
-            }}>
-            Read More
-          </Button>
-        </Box>
       </Card>
     </motion.div>
   );

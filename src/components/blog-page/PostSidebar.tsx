@@ -1,20 +1,9 @@
 import React from "react";
-import {
-  Avatar,
-  Box,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { Twitter, LinkedIn, Link as LinkIcon } from "@mui/icons-material";
-import { HERO_DATA } from "@/utils/heroData";
 import { useRouter } from "next/router";
+import { Twitter, Linkedin, Link as LinkIcon } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { HERO_DATA } from "@/utils/heroData";
 
 interface Heading {
   text: string;
@@ -31,85 +20,75 @@ interface PostSidebarProps {
 
 const TableOfContents = ({ headings }: { headings: Heading[] }) => {
   return (
-    <List dense>
+    <ul className="space-y-1">
       {headings.map((heading) => (
-        <ListItem key={heading.slug} disablePadding>
-          <ListItemButton
-            component="a"
+        <li key={heading.slug}>
+          <a
             href={`#${heading.slug}`}
-            sx={{ pl: heading.level === 3 ? 4 : 2 }}>
-            <ListItemText primary={`${heading.number} ${heading.text}`} />
-          </ListItemButton>
-        </ListItem>
+            className={`block text-sm hover:text-primary transition-colors py-1 text-muted-foreground hover:underline ${heading.level === 3 ? "pl-8" : "pl-4"
+              }`}
+          >
+            {heading.number} {heading.text}
+          </a>
+        </li>
       ))}
-    </List>
+    </ul>
   );
 };
 
 const PostSidebar = ({ headings, postUrl, title }: PostSidebarProps) => {
   const { basePath } = useRouter();
 
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(postUrl);
+  };
+
   return (
-    <Box sx={{ position: "sticky", top: "80px" }}>
-      <Paper
-        elevation={2}
-        sx={{
-          p: 2,
-          borderRadius: "12px",
-          border: (theme) => `1px solid ${theme.palette.divider}`,
-        }}>
-        <Typography variant="h6" gutterBottom>
-          About the Author
-        </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Avatar
-            alt="Azhagu-swe"
-            src={`${basePath}${HERO_DATA.images.profile}`}
-            sx={{ width: 56, height: 56 }}
-          />
-          <Box>
-            <Typography variant="subtitle1" fontWeight="bold">
-              Alagappan P
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Full Stack Developer
-            </Typography>
-          </Box>
-        </Stack>
-        <Divider sx={{ my: 2 }} />
+    <div className="sticky top-[100px]">
+      <div className="p-4 rounded-xl border border-border bg-card text-card-foreground shadow-sm">
+        <h6 className="text-lg font-semibold mb-4">About the Author</h6>
+        <div className="flex items-center gap-4 mb-4">
+          <Avatar className="h-14 w-14">
+            <AvatarImage src={`${basePath}${HERO_DATA.images.profile}`} alt="Azhagu-swe" />
+            <AvatarFallback>AP</AvatarFallback>
+          </Avatar>
+          <div>
+            <div className="font-bold">Alagappan P</div>
+            <div className="text-sm text-muted-foreground">Full Stack Developer</div>
+          </div>
+        </div>
+        <div className="h-px bg-border my-4" />
 
-        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-          On this page
-        </Typography>
+        <h6 className="text-lg font-bold mb-2">On this page</h6>
         <TableOfContents headings={headings} />
-        <Divider sx={{ my: 2 }} />
+        <div className="h-px bg-border my-4" />
 
-        <Typography variant="h6" gutterBottom>
-          Share this post
-        </Typography>
-        <Stack direction="row" spacing={1}>
-          <IconButton
-            size="small"
-            component="a"
-            href={`https://twitter.com/intent/tweet?url=${postUrl}&text=${title}`}
-            target="_blank">
-            <Twitter />
-          </IconButton>
-          <IconButton
-            size="small"
-            component="a"
-            href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${title}`}
-            target="_blank">
-            <LinkedIn />
-          </IconButton>
-          <IconButton
-            size="small"
-            onClick={() => navigator.clipboard.writeText(postUrl)}>
-            <LinkIcon />
-          </IconButton>
-        </Stack>
-      </Paper>
-    </Box>
+        <h6 className="text-lg font-semibold mb-2">Share this post</h6>
+        <div className="flex gap-2">
+          <Button variant="ghost" size="icon" asChild className="h-8 w-8">
+            <a
+              href={`https://twitter.com/intent/tweet?url=${postUrl}&text=${title}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Twitter className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button variant="ghost" size="icon" asChild className="h-8 w-8">
+            <a
+              href={`https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${title}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Linkedin className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button variant="ghost" size="icon" onClick={handleCopyLink} className="h-8 w-8">
+            <LinkIcon className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 

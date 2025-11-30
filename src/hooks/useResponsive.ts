@@ -1,25 +1,28 @@
-import { useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery } from './use-media-query';
 
 /**
  * Hook to get responsive breakpoints
  * @returns Object with breakpoint boolean values
  */
 export const useResponsive = () => {
-  const theme = useTheme();
-  
-  // Breakpoints
-  const isXs = useMediaQuery(theme.breakpoints.only('xs'));
-  const isSm = useMediaQuery(theme.breakpoints.only('sm'));
-  const isMd = useMediaQuery(theme.breakpoints.only('md'));
-  const isLg = useMediaQuery(theme.breakpoints.only('lg'));
-  const isXl = useMediaQuery(theme.breakpoints.only('xl'));
-  
+  // Tailwind Breakpoints
+  // sm: 640px
+  // md: 768px
+  // lg: 1024px
+  // xl: 1280px
+
+  const isXs = useMediaQuery('(max-width: 639px)');
+  const isSm = useMediaQuery('(min-width: 640px) and (max-width: 767px)');
+  const isMd = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isLg = useMediaQuery('(min-width: 1024px) and (max-width: 1279px)');
+  const isXl = useMediaQuery('(min-width: 1280px)');
+
   // Combined breakpoints
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
-  
+  const isMobile = useMediaQuery('(max-width: 767px)'); // sm and below (MUI 'sm' is 600, Tailwind 'md' is 768. Adjusting to match common mobile definition < 768)
+  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const isLargeScreen = useMediaQuery('(min-width: 1280px)');
+
   return {
     isXs,
     isSm,

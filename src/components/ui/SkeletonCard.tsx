@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Skeleton } from '@mui/material';
+import { Skeleton } from '@/components/ui/skeleton';
 import { motion } from 'framer-motion';
 
 interface SkeletonCardProps {
@@ -7,9 +7,9 @@ interface SkeletonCardProps {
   count?: number;
 }
 
-const SkeletonCard: React.FC<SkeletonCardProps> = ({ 
-  variant = 'default', 
-  count = 1 
+const SkeletonCard: React.FC<SkeletonCardProps> = ({
+  variant = 'default',
+  count = 1
 }) => {
   const skeletons = Array.from({ length: count }, (_, index) => (
     <motion.div
@@ -19,197 +19,49 @@ const SkeletonCard: React.FC<SkeletonCardProps> = ({
       transition={{ duration: 0.3, delay: index * 0.1 }}
     >
       {variant === 'project' ? (
-        <Box 
-          sx={{ 
-            borderRadius: '16px', 
-            overflow: 'hidden',
-            boxShadow: 2
-          }}
-        >
-          <Skeleton 
-            variant="rectangular" 
-            height={200} 
-            animation="wave"
-          />
-          <Box sx={{ p: 2 }}>
-            <Skeleton 
-              variant="text" 
-              height={30} 
-              width="60%"
-              sx={{ mb: 1 }}
-              animation="wave"
-            />
-            <Skeleton 
-              variant="text" 
-              height={20} 
-              width="100%"
-              sx={{ mb: 1 }}
-              animation="wave"
-            />
-            <Skeleton 
-              variant="text" 
-              height={20} 
-              width="80%"
-              sx={{ mb: 2 }}
-              animation="wave"
-            />
-            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-              <Skeleton 
-                variant="rectangular" 
-                width={60} 
-                height={28} 
-                sx={{ borderRadius: 16 }}
-                animation="wave"
-              />
-              <Skeleton 
-                variant="rectangular" 
-                width={80} 
-                height={28} 
-                sx={{ borderRadius: 16 }}
-                animation="wave"
-              />
-              <Skeleton 
-                variant="rectangular" 
-                width={70} 
-                height={28} 
-                sx={{ borderRadius: 16 }}
-                animation="wave"
-              />
-            </Box>
-          </Box>
-        </Box>
+        <div className="rounded-2xl overflow-hidden shadow-md bg-card">
+          <Skeleton className="h-[200px] w-full rounded-none" />
+          <div className="p-4">
+            <Skeleton className="h-8 w-3/5 mb-2" />
+            <Skeleton className="h-5 w-full mb-2" />
+            <Skeleton className="h-5 w-4/5 mb-4" />
+            <div className="flex gap-2 flex-wrap">
+              <Skeleton className="h-7 w-16 rounded-full" />
+              <Skeleton className="h-7 w-20 rounded-full" />
+              <Skeleton className="h-7 w-18 rounded-full" />
+            </div>
+          </div>
+        </div>
       ) : variant === 'blog' ? (
-        <Box 
-          sx={{ 
-            borderRadius: '16px', 
-            overflow: 'hidden',
-            boxShadow: 2
-          }}
-        >
-          <Skeleton 
-            variant="rectangular" 
-            height={150} 
-            animation="wave"
-          />
-          <Box sx={{ p: 2 }}>
-            <Skeleton 
-              variant="text" 
-              height={25} 
-              width="70%"
-              sx={{ mb: 1 }}
-              animation="wave"
-            />
-            <Skeleton 
-              variant="text" 
-              height={18} 
-              width="100%"
-              sx={{ mb: 1 }}
-              animation="wave"
-            />
-            <Skeleton 
-              variant="text" 
-              height={18} 
-              width="90%"
-              sx={{ mb: 2 }}
-              animation="wave"
-            />
-            <Skeleton 
-              variant="text" 
-              height={16} 
-              width="40%"
-              animation="wave"
-            />
-          </Box>
-        </Box>
+        <div className="rounded-2xl overflow-hidden shadow-md bg-card">
+          <Skeleton className="h-[150px] w-full rounded-none" />
+          <div className="p-4">
+            <Skeleton className="h-6 w-[70%] mb-2" />
+            <Skeleton className="h-5 w-full mb-2" />
+            <Skeleton className="h-5 w-[90%] mb-4" />
+            <Skeleton className="h-4 w-[40%]" />
+          </div>
+        </div>
       ) : variant === 'experience' ? (
-        <Box 
-          sx={{ 
-            borderRadius: '16px', 
-            p: 2,
-            boxShadow: 2
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Skeleton 
-              variant="circular" 
-              width={50} 
-              height={50} 
-              sx={{ mr: 2 }}
-              animation="wave"
-            />
-            <Box sx={{ flex: 1 }}>
-              <Skeleton 
-                variant="text" 
-                height={24} 
-                width="60%"
-                sx={{ mb: 0.5 }}
-                animation="wave"
-              />
-              <Skeleton 
-                variant="text" 
-                height={18} 
-                width="80%"
-                animation="wave"
-              />
-            </Box>
-          </Box>
-          <Skeleton 
-            variant="text" 
-            height={20} 
-            width="100%"
-            sx={{ mb: 1 }}
-            animation="wave"
-          />
-          <Skeleton 
-            variant="text" 
-            height={20} 
-            width="95%"
-            sx={{ mb: 1 }}
-            animation="wave"
-          />
-          <Skeleton 
-            variant="text" 
-            height={20} 
-            width="90%"
-            animation="wave"
-          />
-        </Box>
+        <div className="rounded-2xl p-4 shadow-md bg-card">
+          <div className="flex items-center mb-4">
+            <Skeleton className="h-[50px] w-[50px] rounded-full mr-4" />
+            <div className="flex-1">
+              <Skeleton className="h-6 w-3/5 mb-1" />
+              <Skeleton className="h-5 w-4/5" />
+            </div>
+          </div>
+          <Skeleton className="h-5 w-full mb-2" />
+          <Skeleton className="h-5 w-[95%] mb-2" />
+          <Skeleton className="h-5 w-[90%]" />
+        </div>
       ) : (
-        <Box 
-          sx={{ 
-            borderRadius: 2,
-            p: 2,
-            boxShadow: 1
-          }}
-        >
-          <Skeleton 
-            variant="text" 
-            height={30} 
-            width="50%"
-            sx={{ mb: 1 }}
-            animation="wave"
-          />
-          <Skeleton 
-            variant="text" 
-            height={20} 
-            width="100%"
-            sx={{ mb: 1 }}
-            animation="wave"
-          />
-          <Skeleton 
-            variant="text" 
-            height={20} 
-            width="80%"
-            sx={{ mb: 2 }}
-            animation="wave"
-          />
-          <Skeleton 
-            variant="rectangular" 
-            height={100} 
-            width="100%"
-            animation="wave"
-          />
-        </Box>
+        <div className="rounded-lg p-4 shadow-sm bg-card">
+          <Skeleton className="h-8 w-1/2 mb-2" />
+          <Skeleton className="h-5 w-full mb-2" />
+          <Skeleton className="h-5 w-4/5 mb-4" />
+          <Skeleton className="h-[100px] w-full" />
+        </div>
       )}
     </motion.div>
   ));

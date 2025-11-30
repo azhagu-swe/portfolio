@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
-import { Box } from "@mui/material";
 
 interface ChartJSBlockProps {
-  children: string; 
+  children: string;
 }
 
 const ChartJSBlock: React.FC<ChartJSBlockProps> = ({ children }) => {
@@ -43,9 +42,9 @@ const ChartJSBlock: React.FC<ChartJSBlockProps> = ({ children }) => {
   }, [children]);
 
   return (
-    <Box sx={{ my: 2, height: "300px", position: "relative" }}>
+    <div className="my-4 h-[300px] relative">
       <canvas ref={canvasRef} />
-    </Box>
+    </div>
   );
 };
 

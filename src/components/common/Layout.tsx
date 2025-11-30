@@ -1,258 +1,122 @@
 import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import {
-  Box,
-  CssBaseline,
-  Fab,
-  useMediaQuery,
-  BottomNavigation,
-  BottomNavigationAction,
-  Paper,
-} from "@mui/material";
 import { useRouter } from "next/router";
-
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+import { useResponsive } from "@/hooks/useResponsive";
 import SideDrawer from "./SideDrawer";
 import AppBarTop from "./AppBarTop";
 import Footer from "./Footer";
-
-import HomeIcon from "@mui/icons-material/Home";
-import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
-import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import MailIcon from "@mui/icons-material/Mail";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Book } from "@mui/icons-material";
-import { useTouchDevice } from "@/hooks/useTouchDevice";
-
-const drawerWidth = 240;
-
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
-  open?: boolean;
-}>(({ theme, open }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create("margin", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  [theme.breakpoints.down("sm")]: {
-    paddingBottom: "56px",
-  },
-
-  [theme.breakpoints.up("sm")]: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    ...(open && {
-      marginLeft: 0,
-    }),
-    ...(!open && {
-      marginLeft: `-${drawerWidth - 50}px`,
-    }),
-  },
-}));
-
-const ContentBox = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2),
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: theme.shape.borderRadius,
-  flexGrow: 1,
-  [theme.breakpoints.down("sm")]: {
-    paddingBottom: "70px",
-    padding: theme.spacing(1),
-  },
-}));
+import { ArrowUp, Home, Briefcase, FolderGit2, Mail, BookOpen } from "lucide-react";
 
 const Layout: React.FC<{
   children: React.ReactNode;
-  toggleTheme: () => void;
-  isDarkMode: boolean;
-}> = ({ children, toggleTheme, isDarkMode }) => {
-  const theme = useTheme();
+}> = ({ children }) => {
+  const { theme, setTheme } = useTheme();
   const router = useRouter();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const isTouchDevice = useTouchDevice();
-
-  const [open, setOpen] = React.useState(!isMobile);
-
-  const handleDrawerToggle = () => {
-    setOpen(!open);
-  };
+  const { isMobile } = useResponsive();
+  const [open, setOpen] = React.useState(true);
+  const [showScrollUp, setShowScrollUp] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
+    setMounted(true);
     setOpen(!isMobile);
   }, [isMobile]);
 
-  const [bottomNavValue, setBottomNavValue] = React.useState(router.pathname);
   React.useEffect(() => {
-    setBottomNavValue(router.pathname);
-  }, [router.pathname]);
-
-  const [showScrollUp, setShowScrollUp] = React.useState(false);
-  const handleScroll = React.useCallback(() => {
-    setShowScrollUp(window.scrollY > 300);
-  }, []);
-
-  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollUp(window.scrollY > 300);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Touch-friendly fab styles
-  const touchFabStyles = {
-    width: isTouchDevice ? 56 : 40,
-    height: isTouchDevice ? 56 : 40,
-    minHeight: isTouchDevice ? 56 : 40,
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return null;
+  }
+
+  const isDarkMode = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  const navItems = [
+    { label: "Home", value: "/", icon: Home },
+    { label: "Experience", value: "/experience", icon: Briefcase },
+    { label: "Projects", value: "/projects", icon: FolderGit2 },
+    { label: "Contact", value: "/contact", icon: Mail },
+    { label: "Blog", value: "/blog", icon: BookOpen },
+  ];
+
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }} role="main">
-      <CssBaseline />
-      {/* <SkipNavigation /> */}
+    <div className="flex min-h-screen bg-background text-foreground">
       <AppBarTop
         open={!isMobile && open}
-        handleDrawerToggle={handleDrawerToggle}
+        handleDrawerToggle={() => setOpen(!open)}
         toggleTheme={toggleTheme}
         isDarkMode={isDarkMode}
       />
       <SideDrawer
         open={open}
-        handleDrawerToggle={handleDrawerToggle}
+        handleDrawerToggle={() => setOpen(!open)}
         isMobile={isMobile}
       />
 
-      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
-        <Main open={!isMobile && open}>
-          <Box sx={theme.mixins.toolbar} />
-
-          <ContentBox id="main-content" component="main">
+      <div className="flex flex-col flex-grow w-full">
+        <main
+          className={cn(
+            "flex-grow p-4 sm:p-6 transition-all duration-300 ease-in-out",
+            !isMobile && open ? "ml-[240px]" : "ml-0 sm:ml-[70px]", // Adjust based on sidebar state
+            "mt-16" // Toolbar height
+          )}
+        >
+          <div id="main-content" className="flex-grow bg-card rounded-lg p-4 mb-16 sm:mb-0 shadow-sm">
             {children}
-          </ContentBox>
+          </div>
           <Footer />
-        </Main>
-      </Box>
+        </main>
+      </div>
 
-      {!isMobile && (
-        <Fab
-          color="primary"
+      {!isMobile && showScrollUp && (
+        <button
           aria-label="scroll to top"
           onClick={scrollToTop}
-          sx={{
-            display: showScrollUp ? "flex" : "none",
-            position: "fixed",
-            bottom: 32,
-            right: 32,
-            ...touchFabStyles,
-          }}>
-          <KeyboardArrowUpIcon />
-        </Fab>
+          className="fixed bottom-8 right-8 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors z-50"
+        >
+          <ArrowUp className="w-6 h-6" />
+        </button>
       )}
 
       {isMobile && (
-        <Paper
-          sx={{ 
-            position: "fixed", 
-            bottom: 0, 
-            left: 0, 
-            right: 0,
-            zIndex: theme.zIndex.appBar + 1
-          }}
-          elevation={3}>
-          <BottomNavigation
-            showLabels
-            value={bottomNavValue}
-            onChange={(event: React.SyntheticEvent, newValue: string) => {
-              setBottomNavValue(newValue);
-              router.push(newValue);
-            }}
-            sx={{
-              height: "56px",
-              minHeight: "56px"
-            }}
-          >
-            <BottomNavigationAction
-              label="Home"
-              value="/"
-              icon={<HomeIcon />}
-              sx={{
-                minWidth: 0,
-                padding: "6px 0",
-                "& .MuiBottomNavigationAction-label": {
-                  fontSize: "0.75rem",
-                  "&.Mui-selected": {
-                    fontSize: "0.75rem",
-                  }
-                }
-              }}
-            />
-            <BottomNavigationAction
-              label="Experience"
-              value="/experience"
-              icon={<WorkHistoryIcon />}
-              sx={{
-                minWidth: 0,
-                padding: "6px 0",
-                "& .MuiBottomNavigationAction-label": {
-                  fontSize: "0.75rem",
-                  "&.Mui-selected": {
-                    fontSize: "0.75rem",
-                  }
-                }
-              }}
-            />
-            <BottomNavigationAction
-              label="Projects"
-              value="/projects"
-              icon={<AccountTreeIcon />}
-              sx={{
-                minWidth: 0,
-                padding: "6px 0",
-                "& .MuiBottomNavigationAction-label": {
-                  fontSize: "0.75rem",
-                  "&.Mui-selected": {
-                    fontSize: "0.75rem",
-                  }
-                }
-              }}
-            />
-            <BottomNavigationAction
-              label="Contact"
-              value="/contact"
-              icon={<MailIcon />}
-              sx={{
-                minWidth: 0,
-                padding: "6px 0",
-                "& .MuiBottomNavigationAction-label": {
-                  fontSize: "0.75rem",
-                  "&.Mui-selected": {
-                    fontSize: "0.75rem",
-                  }
-                }
-              }}
-            />
-            <BottomNavigationAction
-              label="Blog"
-              value="/blog"
-              icon={<Book />}
-              sx={{
-                minWidth: 0,
-                padding: "6px 0",
-                "& .MuiBottomNavigationAction-label": {
-                  fontSize: "0.75rem",
-                  "&.Mui-selected": {
-                    fontSize: "0.75rem",
-                  }
-                }
-              }}
-            />
-          </BottomNavigation>
-        </Paper>
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border shadow-lg">
+          <nav className="flex justify-around items-center h-14 px-2">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = router.pathname === item.value;
+              return (
+                <button
+                  key={item.value}
+                  onClick={() => router.push(item.value)}
+                  className={cn(
+                    "flex flex-col items-center justify-center w-full h-full space-y-1",
+                    isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="text-[10px] font-medium">{item.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

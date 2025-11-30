@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { useOnScreen } from '@/hooks/useOnScreen';
-import { Box, BoxProps } from '@mui/material';
+import { cn } from '@/lib/utils';
 
-interface AnimatedComponentProps extends BoxProps {
+interface AnimatedComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   animationType?: 'fade-in' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right';
   delay?: number;
@@ -16,73 +16,61 @@ const AnimatedComponent: React.FC<AnimatedComponentProps> = ({
   delay = 0,
   duration = 600,
   threshold = 0.1,
-  sx = {},
+  className,
+  style,
   ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref, { threshold });
 
   // Define animation styles based on type
-  const getAnimationSx = () => {
-    const baseSx = {
+  const getAnimationStyles = (): React.CSSProperties => {
+    const baseStyle: React.CSSProperties = {
       transition: `all ${duration}ms ease-out`,
-      transform: 'translate3d(0, 0, 0)', // Enable hardware acceleration
-      ...sx,
+      transitionDelay: `${delay}ms`,
+      opacity: isVisible ? 1 : 0,
     };
 
     switch (animationType) {
       case 'fade-in':
         return {
-          ...baseSx,
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? 'translateY(0)' : 'translateY(16px)', // Using pixels instead of tailwind classes
+          ...baseStyle,
+          transform: isVisible ? 'translateY(0)' : 'translateY(16px)',
         };
       case 'slide-up':
         return {
-          ...baseSx,
-          opacity: isVisible ? 1 : 0,
+          ...baseStyle,
           transform: isVisible ? 'translateY(0)' : 'translateY(32px)',
         };
       case 'slide-down':
         return {
-          ...baseSx,
-          opacity: isVisible ? 1 : 0,
+          ...baseStyle,
           transform: isVisible ? 'translateY(0)' : 'translateY(-32px)',
         };
       case 'slide-left':
         return {
-          ...baseSx,
-          opacity: isVisible ? 1 : 0,
+          ...baseStyle,
           transform: isVisible ? 'translateX(0)' : 'translateX(-32px)',
         };
       case 'slide-right':
         return {
-          ...baseSx,
-          opacity: isVisible ? 1 : 0,
+          ...baseStyle,
           transform: isVisible ? 'translateX(0)' : 'translateX(32px)',
         };
       default:
-        return {
-          ...baseSx,
-          opacity: isVisible ? 1 : 0,
-        };
+        return baseStyle;
     }
   };
 
-  // Apply delay if specified
-  const animationSx = {
-    ...getAnimationSx(),
-    transitionDelay: delay ? `${delay}ms` : '0ms',
-  };
-
   return (
-    <Box
+    <div
       ref={ref}
-      sx={animationSx}
+      className={cn("will-change-transform", className)}
+      style={{ ...style, ...getAnimationStyles() }}
       {...props}
     >
       {children}
-    </Box>
+    </div>
   );
 };
 

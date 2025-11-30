@@ -1,21 +1,15 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Container,
-  TextField,
-  Typography,
-  Button,
-  Grid,
-  Card,
-  useTheme,
-  Paper,
-  Divider,
-  Avatar,
-  Link,
-} from "@mui/material";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react";
 import { CONTACT_DATA } from "@/utils/contactData";
+import { useTheme } from "next-themes";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -39,8 +33,7 @@ const itemVariants = {
 };
 
 const ContactPage = () => {
-  const theme = useTheme();
-  // FIX: Removed the 'method' property from the state
+  const { theme } = useTheme();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -128,180 +121,87 @@ From: ${name} (${email})`;
   };
 
   return (
-    <Box
-      component={motion.div}
+    <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{
-        p: { xs: 2, sm: 4 },
-        minHeight: "100vh",
-        background: `linear-gradient(135deg, ${
-          theme.palette.mode === "dark"
-            ? "rgba(26, 32, 44, 0.8)"
-            : "rgba(247, 250, 252, 0.8)"
-        }, ${
-          theme.palette.mode === "dark"
-            ? "rgba(45, 55, 72, 0.9)"
-            : "rgba(255, 255, 255, 0.9)"
-        })`,
-      }}>
-      <Container maxWidth="lg">
-        <Box
-          sx={{
-            textAlign: "center",
-            mb: 6,
-            pt: 4,
-          }}
-          component={motion.div}
-          variants={itemVariants}>
-          <Typography
-            variant="h3"
-            sx={{
-              fontWeight: "bold",
-              color: theme.palette.primary.main,
-              fontFamily: "Orbitron, sans-serif",
-              mb: 1,
-            }}>
+      className="min-h-screen p-4 sm:p-8 bg-gradient-to-br from-background via-background to-secondary/5"
+    >
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          variants={itemVariants}
+          className="text-center mb-12 pt-4"
+        >
+          <h1 className="text-4xl sm:text-5xl font-bold text-primary font-orbitron mb-2">
             {CONTACT_DATA.title}
-          </Typography>
-          <Typography variant="h6" color="text.secondary" sx={{ mb: 3 }}>
+          </h1>
+          <h2 className="text-xl text-muted-foreground mb-6">
             {CONTACT_DATA.subtitle}
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{ maxWidth: 600, mx: "auto" }}>
+          </h2>
+          <p className="text-muted-foreground max-w-[600px] mx-auto">
             {CONTACT_DATA.description}
-          </Typography>
-        </Box>
+          </p>
+        </motion.div>
 
-        <Grid container spacing={6} alignItems="stretch">
-          <Grid
-            item
-            xs={12}
-            md={5}
-            component={motion.div}
-            variants={itemVariants}>
-            <Card
-              sx={{
-                height: "100%",
-                p: 3,
-                borderRadius: "16px",
-                background:
-                  theme.palette.mode === "dark"
-                    ? `linear-gradient(145deg, ${theme.palette.background.paper}, #1e293b)`
-                    : `linear-gradient(145deg, ${theme.palette.background.paper}, #ffffff)`,
-                boxShadow: theme.shadows[5],
-                border: `1px solid ${theme.palette.divider}`,
-              }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: "bold",
-                  mb: 3,
-                  color: theme.palette.primary.main,
-                }}>
-                Get in Touch
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-                Feel free to reach out using any of the methods below. I&apos;ll
-                get back to you as soon as possible.
-              </Typography>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+          <motion.div
+            variants={itemVariants}
+            className="md:col-span-5"
+          >
+            <Card className="h-full border-border bg-card/50 backdrop-blur-sm shadow-lg">
+              <CardContent className="p-6 sm:p-8 flex flex-col h-full">
+                <h2 className="text-2xl font-bold text-primary mb-6">
+                  Get in Touch
+                </h2>
+                <p className="text-muted-foreground mb-8">
+                  Feel free to reach out using any of the methods below. I&apos;ll
+                  get back to you as soon as possible.
+                </p>
 
-              <Box sx={{ mb: 4 }}>
-                <Divider sx={{ my: 2, borderColor: theme.palette.divider }} />
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: "bold",
-                    mb: 2,
-                    color: theme.palette.text.primary,
-                  }}>
-                  Contact Information
-                </Typography>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                  <Avatar
-                    sx={{
-                      bgcolor: theme.palette.primary.main,
-                      mr: 2,
-                      width: 40,
-                      height: 40,
-                    }}>
-                    <Icon icon="mdi:email-outline" width={24} height={24} />
-                  </Avatar>
-                  <Box>
-                    <Typography variant="body1" fontWeight="bold">
-                      Email
-                    </Typography>
-                    <Link
-                      href="mailto:azhagu.swe@gmail.com"
-                      color="text.primary">
-                      azhagu.swe@gmail.com
-                    </Link>
-                  </Box>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                  <Avatar
-                    sx={{
-                      bgcolor: theme.palette.secondary.main,
-                      mr: 2,
-                      width: 40,
-                      height: 40,
-                    }}>
-                    <Icon icon="mdi:phone" width={24} height={24} />
-                  </Avatar>
-                  <Box>
-                    <Typography variant="body1" fontWeight="bold">
-                      Phone
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Available upon request
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
+                <div className="space-y-6 mb-8">
+                  <Separator />
+                  <h3 className="text-lg font-bold">Contact Information</h3>
 
-              <Divider sx={{ my: 2, borderColor: theme.palette.divider }} />
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: "bold",
-                  mb: 2,
-                  color: theme.palette.text.primary,
-                }}>
-                Follow Me
-              </Typography>
-              <Grid container spacing={2}>
-                {CONTACT_DATA.socialLinks.map((item, index) => (
-                  <Grid item xs={6} sm={4} md={6} key={index}>
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-10 w-10 bg-primary flex items-center justify-center">
+                      <Icon icon="mdi:email-outline" width={24} height={24} className="text-primary-foreground" />
+                    </Avatar>
+                    <div>
+                      <p className="font-bold">Email</p>
+                      <a href="mailto:azhagu.swe@gmail.com" className="text-primary hover:underline">
+                        azhagu.swe@gmail.com
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-10 w-10 bg-secondary flex items-center justify-center">
+                      <Icon icon="mdi:phone" width={24} height={24} className="text-secondary-foreground" />
+                    </Avatar>
+                    <div>
+                      <p className="font-bold">Phone</p>
+                      <p className="text-muted-foreground text-sm">
+                        Available upon request
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <Separator className="mb-6" />
+                <h3 className="text-lg font-bold mb-4">Follow Me</h3>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {CONTACT_DATA.socialLinks.map((item, index) => (
                     <motion.div
+                      key={index}
                       whileHover={{ y: -5 }}
-                      style={{ height: "100%" }}>
+                      className="h-full"
+                    >
                       <Card
-                        sx={{
-                          p: 2,
-                          borderRadius: "12px",
-                          height: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          textAlign: "center",
-                          cursor: "pointer",
-                          border: `1px solid ${theme.palette.divider}`,
-                          transition: "border-color 0.3s, box-shadow 0.3s",
-                          background:
-                            theme.palette.mode === "dark"
-                              ? `linear-gradient(145deg, ${theme.palette.background.paper}, #1e293b)`
-                              : theme.palette.background.paper,
-                          "&:hover": {
-                            borderColor: item.color,
-                            boxShadow: `0 0 15px ${item.color}55`,
-                            transform: "translateY(-3px)",
-                          },
-                        }}
-                        onClick={() => window.open(item.link, "_blank")}>
+                        className="h-full p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-md transition-all duration-300 border-border bg-background"
+                        onClick={() => window.open(item.link, "_blank")}
+                        style={{ borderColor: 'transparent' }} // Override to use hover effect
+                      >
                         <Icon
                           icon={item.icon}
                           style={{
@@ -310,203 +210,127 @@ From: ${name} (${email})`;
                             marginBottom: "8px",
                           }}
                         />
-                        <Typography
-                          variant="subtitle2"
-                          sx={{ fontWeight: "bold", fontSize: "0.8rem" }}>
-                          {item.platform}
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          sx={{ wordBreak: "break-all", mt: 0.5 }}>
+                        <span className="text-xs font-bold">{item.platform}</span>
+                        <span className="text-[10px] text-muted-foreground break-all mt-1">
                           {item.username}
-                        </Typography>
+                        </span>
                       </Card>
                     </motion.div>
-                  </Grid>
-                ))}
-              </Grid>
+                  ))}
+                </div>
+              </CardContent>
             </Card>
-          </Grid>
+          </motion.div>
 
-          <Grid
-            item
-            xs={12}
-            md={7}
-            component={motion.div}
-            variants={itemVariants}>
-            <Card
-              sx={{
-                height: "100%",
-                p: 3,
-                borderRadius: "16px",
-                background:
-                  theme.palette.mode === "dark"
-                    ? `linear-gradient(145deg, ${theme.palette.background.paper}, #1e293b)`
-                    : `linear-gradient(145deg, ${theme.palette.background.paper}, #ffffff)`,
-                boxShadow: theme.shadows[5],
-                border: `1px solid ${theme.palette.divider}`,
-              }}>
-              <Typography
-                variant="h5"
-                sx={{
-                  fontWeight: "bold",
-                  mb: 3,
-                  color: theme.palette.primary.main,
-                }}>
-                Send a Message
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Fill out the form below and I&#39;ll get back to you as soon as
-                possible.
-              </Typography>
+          <motion.div
+            variants={itemVariants}
+            className="md:col-span-7"
+          >
+            <Card className="h-full border-border bg-card/50 backdrop-blur-sm shadow-lg">
+              <CardContent className="p-6 sm:p-8 flex flex-col h-full">
+                <h2 className="text-2xl font-bold text-primary mb-6">
+                  Send a Message
+                </h2>
+                <p className="text-muted-foreground mb-6">
+                  Fill out the form below and I&#39;ll get back to you as soon as
+                  possible.
+                </p>
 
-              {/* Success/Error Messages */}
-              {submitSuccess && (
-                <Box
-                  sx={{
-                    mb: 2,
-                    p: 2,
-                    borderRadius: "8px",
-                    backgroundColor: "success.light",
-                    color: "success.contrastText",
-                  }}>
-                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                {/* Success/Error Messages */}
+                {submitSuccess && (
+                  <div className="mb-4 p-4 rounded-lg bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 font-bold text-sm">
                     Message sent successfully! Opening email client...
-                  </Typography>
-                </Box>
-              )}
+                  </div>
+                )}
 
-              {submitError && (
-                <Box
-                  sx={{
-                    mb: 2,
-                    p: 2,
-                    borderRadius: "8px",
-                    backgroundColor: "error.light",
-                    color: "error.contrastText",
-                  }}>
-                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                {submitError && (
+                  <div className="mb-4 p-4 rounded-lg bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 font-bold text-sm">
                     {submitError}
-                  </Typography>
-                </Box>
-              )}
+                  </div>
+                )}
 
-              <Paper
-                component="form"
-                elevation={0}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 2.5,
-                  p: { xs: 2, sm: 3 },
-                  borderRadius: "12px",
-                  background: "transparent",
-                  height: "100%",
-                }}
-                onSubmit={handleSubmit}>
-                <TextField
-                  fullWidth
-                  label={CONTACT_DATA.form.nameLabel}
-                  variant="outlined"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  error={formErrors.name}
-                  helperText={formErrors.name ? "Please enter your name" : ""}
-                  InputProps={{
-                    sx: {
-                      borderRadius: "8px",
-                    },
-                  }}
-                />
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6 h-full">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-sm font-medium">
+                      {CONTACT_DATA.form.nameLabel}
+                    </label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className={cn(formErrors.name && "border-red-500 focus-visible:ring-red-500")}
+                    />
+                    {formErrors.name && (
+                      <p className="text-xs text-red-500">Please enter your name</p>
+                    )}
+                  </div>
 
-                <TextField
-                  fullWidth
-                  label={CONTACT_DATA.form.emailLabel}
-                  type="email"
-                  variant="outlined"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  error={formErrors.email}
-                  helperText={
-                    formErrors.email ? "Please enter a valid email address" : ""
-                  }
-                  InputProps={{
-                    sx: {
-                      borderRadius: "8px",
-                    },
-                  }}
-                />
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="text-sm font-medium">
+                      {CONTACT_DATA.form.emailLabel}
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className={cn(formErrors.email && "border-red-500 focus-visible:ring-red-500")}
+                    />
+                    {formErrors.email && (
+                      <p className="text-xs text-red-500">Please enter a valid email address</p>
+                    )}
+                  </div>
 
-                <TextField
-                  fullWidth
-                  label={CONTACT_DATA.form.messageLabel}
-                  multiline
-                  rows={5}
-                  variant="outlined"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                  error={formErrors.message}
-                  helperText={
-                    formErrors.message ? "Please enter your message" : ""
-                  }
-                  InputProps={{
-                    sx: {
-                      borderRadius: "8px",
-                    },
-                  }}
-                />
+                  <div className="space-y-2 flex-grow">
+                    <label htmlFor="message" className="text-sm font-medium">
+                      {CONTACT_DATA.form.messageLabel}
+                    </label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      rows={5}
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      className={cn("resize-none h-full min-h-[120px]", formErrors.message && "border-red-500 focus-visible:ring-red-500")}
+                    />
+                    {formErrors.message && (
+                      <p className="text-xs text-red-500">Please enter your message</p>
+                    )}
+                  </div>
 
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  disabled={isSubmitting}
-                  sx={{
-                    alignSelf: "flex-start",
-                    fontWeight: "bold",
-                    px: 4,
-                    py: 1.5,
-                    borderRadius: "8px",
-                    mt: 1,
-                    "&:hover": {
-                      transform: isSubmitting ? "none" : "translateY(-2px)",
-                      boxShadow: isSubmitting
-                        ? `0 4px 15px -5px ${theme.palette.primary.main}99`
-                        : `0 6px 15px ${theme.palette.primary.main}44`,
-                    },
-                    "&:disabled": {
-                      opacity: 0.7,
-                      transform: "none",
-                    },
-                  }}>
-                  {isSubmitting ? (
-                    <>
-                      <Icon
-                        icon="svg-spinners:3-dots-fade"
-                        style={{ marginRight: 8 }}
-                      />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Icon icon="mdi:send" style={{ marginRight: 8 }} />
-                      {CONTACT_DATA.form.submitText}
-                    </>
-                  )}
-                </Button>
-              </Paper>
+                  <Button
+                    type="submit"
+                    size="lg"
+                    disabled={isSubmitting}
+                    className="self-start mt-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Icon
+                          icon="svg-spinners:3-dots-fade"
+                          className="mr-2"
+                        />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Icon icon="mdi:send" className="mr-2" />
+                        {CONTACT_DATA.form.submitText}
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
             </Card>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

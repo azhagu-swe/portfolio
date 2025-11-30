@@ -1,15 +1,9 @@
 import React from "react";
-import { 
-  Box, 
-  Typography, 
-  Button, 
-  useTheme
-} from "@mui/material";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import { Button } from "@/components/ui/button";
 
 const CallToAction: React.FC = () => {
-  const theme = useTheme();
   const router = useRouter();
 
   const handleContact = () => {
@@ -17,107 +11,40 @@ const CallToAction: React.FC = () => {
   };
 
   return (
-    <Box 
-      sx={{ 
-        py: { xs: 6, sm: 8, md: 12 },
-        px: { xs: 2, sm: 3, lg: 4 },
-        textAlign: "center",
-        background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-        color: theme.palette.primary.contrastText,
-        position: "relative",
-        overflow: "hidden"
-      }}
-    >
+    <div className="py-12 sm:py-16 md:py-24 px-4 sm:px-6 lg:px-8 text-center bg-gradient-to-br from-primary to-secondary text-primary-foreground relative overflow-hidden">
       {/* Decorative elements */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: { xs: "-30px", sm: "-40px", md: "-50px" },
-          left: { xs: "-30px", sm: "-40px", md: "-50px" },
-          width: { xs: "100px", sm: "150px", md: "200px" },
-          height: { xs: "100px", sm: "150px", md: "200px" },
-          borderRadius: "50%",
-          background: "rgba(255, 255, 255, 0.1)",
-        }}
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: { xs: "-50px", sm: "-60px", md: "-80px" },
-          right: { xs: "-50px", sm: "-60px", md: "-80px" },
-          width: { xs: "150px", sm: "200px", md: "300px" },
-          height: { xs: "150px", sm: "200px", md: "300px" },
-          borderRadius: "50%",
-          background: "rgba(255, 255, 255, 0.1)",
-        }}
-      />
-      
-      <Box 
-        sx={{ 
-          maxWidth: "800px",
-          mx: "auto",
-          position: "relative",
-          zIndex: 1
-        }}
-        component={motion.div}
+      <div className="absolute -top-[30px] -left-[30px] sm:-top-[40px] sm:-left-[40px] md:-top-[50px] md:-left-[50px] w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px] rounded-full bg-white/10" />
+      <div className="absolute -bottom-[50px] -right-[50px] sm:-bottom-[60px] sm:-right-[60px] md:-bottom-[80px] md:-right-[80px] w-[150px] h-[150px] sm:w-[200px] sm:h-[200px] md:w-[300px] md:h-[300px] rounded-full bg-white/10" />
+
+      <motion.div
+        className="max-w-[800px] mx-auto relative z-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Typography
-          variant="h2"
-          sx={{
-            fontWeight: 800,
-            mb: { xs: 2, sm: 3 },
-            fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem", lg: "3rem" }
-          }}
-        >
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6">
           Ready to Bring Your Ideas to Life?
-        </Typography>
-        
-        <Typography
-          variant="h5"
-          sx={{
-            mb: { xs: 3, sm: 4, md: 5 },
-            maxWidth: "600px",
-            mx: "auto",
-            fontSize: { xs: "1rem", sm: "1.1rem", md: "1.25rem" },
-            opacity: 0.9
-          }}
-        >
+        </h2>
+
+        <h5 className="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 md:mb-10 max-w-[600px] mx-auto opacity-90">
           Let&#39;s collaborate to build something extraordinary that pushes boundaries and delivers results.
-        </Typography>
-        
+        </h5>
+
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           <Button
-            variant="contained"
-            size="large"
+            variant="secondary"
+            size="lg"
             onClick={handleContact}
-            sx={{
-              px: { xs: 3, sm: 4, md: 6, lg: 8 },
-              py: { xs: 1.2, sm: 1.5, md: 2 },
-              fontSize: { xs: "1rem", sm: "1.1rem", md: "1.25rem" },
-              fontWeight: 700,
-              borderRadius: "50px",
-              backgroundColor: theme.palette.background.paper,
-              color: theme.palette.primary.main,
-              boxShadow: `0 10px 30px rgba(0, 0, 0, 0.3)`,
-              "&:hover": {
-                backgroundColor: theme.palette.background.paper,
-                transform: "translateY(-3px)",
-                boxShadow: `0 15px 40px rgba(0, 0, 0, 0.4)`
-              },
-              transition: "all 0.3s ease"
-            }}
+            className="px-6 sm:px-8 md:px-12 py-3 sm:py-4 text-base sm:text-lg md:text-xl font-bold rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-background text-primary hover:bg-background"
           >
             Start a Project Together
           </Button>
         </motion.div>
-      </Box>
-    </Box>
+      </motion.div>
+    </div>
   );
 };
 

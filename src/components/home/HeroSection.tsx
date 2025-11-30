@@ -1,24 +1,16 @@
 import React, { useMemo } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import useTheme from "@mui/material/styles/useTheme";
-import Grid from "@mui/material/Grid";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
 import { Typewriter } from "react-simple-typewriter";
 import { useRouter } from "next/router";
 import { HERO_DATA } from "@/utils/heroData";
 import Image from "next/image";
-import { useTouchDevice } from "@/hooks/useTouchDevice";
-import { withTouchStyles, getTouchTargetSize } from "@/utils/touchUtils";
 import AnimatedComponent from "@/components/ui/AnimatedComponent";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const HeroSection: React.FC = () => {
-  const theme = useTheme();
   const router = useRouter();
   const { basePath } = router;
-  const isTouchDevice = useTouchDevice();
 
   // Memoize the image URL to prevent unnecessary re-renders
   const profileImageUrl = useMemo(() => {
@@ -33,333 +25,114 @@ const HeroSection: React.FC = () => {
     window.open(`${basePath}${HERO_DATA.images.resume}`, "_blank");
   };
 
-  // Touch-friendly button styles
-  const touchButtonStyles = withTouchStyles(
-    {
-      px: { xs: 3, sm: 4, md: 6 },
-      py: { xs: 1.5, sm: 2, md: 2.5 }, // Increased padding for touch targets
-      fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" }, // Larger font for touch
-      fontWeight: 600,
-      borderRadius: "50px",
-      boxShadow: `0 4px 20px ${theme.palette.primary.main}40`,
-      "&:hover": {
-        transform: "translateY(-3px)",
-        boxShadow: `0 6px 25px ${theme.palette.primary.main}60`,
-      },
-      transition: "all 0.3s ease",
-      width: { xs: "100%", sm: "auto" },
-      maxWidth: { xs: 320, sm: "none" }, // Max width for touch targets
-      minHeight: `${getTouchTargetSize("button")}px`, // Ensure minimum touch target size
-    },
-    isTouchDevice
-  );
-
   return (
-    <Box
-      sx={{
-        minHeight: { xs: "auto", sm: "auto", md: "90vh" },
-        display: "flex",
-        alignItems: "center",
-        py: { xs: 4, sm: 6, md: 8 },
-      }}>
 
-      <Grid
-        container
-        spacing={{ xs: 4, sm: 6, md: 8 }}
-        alignItems="center"
-        justifyContent="center"
-        sx={{
-          width: "100%",
-          mx: "auto",
-          px: { xs: 2, sm: 3, lg: 4 },
-        }}>
-        {/* Text Content */}
-        <Grid
-          item
-          xs={12}
-          md={7}
-          sx={{
-            textAlign: { xs: "center", md: "left" },
-            order: { xs: 2, md: 1 },
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}>
-          <AnimatedComponent animationType="fade-in" delay={100}>
-            <Typography
-              variant="h1"
-              gutterBottom
-              sx={{
-                fontSize: {
-                  xs: "2rem",
-                  sm: "2.5rem",
-                  md: "3rem",
-                  lg: "3.5rem",
-                },
-                fontWeight: 800,
-                lineHeight: 1.2,
-                mb: { xs: 1, sm: 2 },
-              }}>
-              Hi, I&apos;m{" "}
-              <span
-                style={{
-                  color: theme.palette.primary.main,
-                  position: "relative",
-                }}>
-                {HERO_DATA.name}
-                <Box
-                  component="span"
-                  sx={{
-                    position: "absolute",
-                    bottom: { xs: -4, sm: -6 },
-                    left: 0,
-                    width: "100%",
-                    height: { xs: "4px", sm: "6px" },
-                    background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                    borderRadius: "2px",
-                    opacity: 0.5,
-                  }}
+
+
+
+    <div className="min-h-[90vh] flex items-center py-16 sm:py-24 md:py-32">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          {/* Text Content */}
+          <div className="col-span-1 md:col-span-7 order-2 md:order-1 flex flex-col justify-center text-center md:text-left">
+            <AnimatedComponent animationType="fade-in" delay={100}>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4">
+                Hi, I&apos;m{" "}
+                <span className="relative text-primary inline-block">
+                  {HERO_DATA.name}
+                  <span className="absolute bottom-0 left-0 w-full h-1.5 sm:h-2 bg-gradient-to-r from-primary to-secondary opacity-50 rounded-sm" />
+                </span>
+              </h1>
+            </AnimatedComponent>
+
+            <AnimatedComponent animationType="fade-in" delay={200}>
+              <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground min-h-[60px] sm:min-h-[80px] mb-6 flex items-center justify-center md:justify-start">
+                <Typewriter
+                  words={HERO_DATA.roles}
+                  loop={Infinity}
+                  cursor
+                  cursorStyle="_"
+                  typeSpeed={70}
+                  deleteSpeed={50}
+                  delaySpeed={1500}
                 />
-              </span>
-            </Typography>
-          </AnimatedComponent>
+              </div>
+            </AnimatedComponent>
 
-          <AnimatedComponent animationType="fade-in" delay={200}>
-            <Typography
-              variant="h2"
-              gutterBottom
-              color="text.primary"
-              sx={{
-                fontSize: {
-                  xs: "1.2rem",
-                  sm: "1.5rem",
-                  md: "1.8rem",
-                  lg: "2.2rem",
-                },
-                fontWeight: 700,
-                minHeight: { xs: 60, sm: 70, md: 80 },
-                mb: { xs: 2, sm: 3 },
-                display: "flex",
-                alignItems: "center",
-                justifyContent: { xs: "center", md: "flex-start" },
-              }}>
-              <Typewriter
-                words={HERO_DATA.roles}
-                loop={Infinity}
-                cursor
-                cursorStyle="_"
-                typeSpeed={70}
-                deleteSpeed={50}
-                delaySpeed={1500}
-              />
-            </Typography>
-          </AnimatedComponent>
+            <AnimatedComponent animationType="fade-in" delay={300}>
+              <p className="text-muted-foreground mt-4 text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-[90%] mx-auto md:mx-0">
+                {HERO_DATA.description}
+              </p>
+            </AnimatedComponent>
 
-          <AnimatedComponent animationType="fade-in" delay={300}>
-            <Typography
-              variant="h6"
-              color="text.secondary"
-              sx={{
-                mt: { xs: 1, sm: 2 },
-                lineHeight: 1.6,
-                maxWidth: { md: "90%" },
-                fontSize: {
-                  xs: "0.9rem",
-                  sm: "1rem",
-                  md: "1.1rem",
-                  lg: "1.25rem",
-                },
-                textAlign: { xs: "center", md: "left" },
-              }}>
-              {HERO_DATA.description}
-            </Typography>
-          </AnimatedComponent>
+            {/* Skills/Tags */}
+            <AnimatedComponent animationType="fade-in" delay={400}>
+              <div className="flex flex-wrap gap-2 sm:gap-3 mt-8 mb-6 justify-center md:justify-start">
+                <Badge className="bg-primary text-primary-foreground hover:bg-primary/90 text-sm py-1 px-3">
+                  Java
+                </Badge>
+                <Badge variant="outline" className="border-primary text-primary text-sm py-1 px-3">
+                  Spring Boot
+                </Badge>
+                <Badge className="bg-secondary text-secondary-foreground hover:bg-secondary/80 text-sm py-1 px-3">
+                  React
+                </Badge>
+                <Badge variant="outline" className="border-secondary text-secondary text-sm py-1 px-3">
+                  Microservices
+                </Badge>
+              </div>
+            </AnimatedComponent>
 
-          {/* Skills/Tags */}
-          <AnimatedComponent animationType="fade-in" delay={400}>
-            <Stack
-              direction="row"
-              spacing={{ xs: 0.5, sm: 1 }}
-              useFlexGap
-              flexWrap="wrap"
-              sx={{
-                mt: { xs: 2, sm: 3, md: 4 },
-                mb: { xs: 2, sm: 3 },
-                justifyContent: { xs: "center", md: "flex-start" },
-              }}>
-              <Chip
-                label="Java"
-                size="small"
-                sx={{
-                  backgroundColor: theme.palette.primary.main,
-                  color: theme.palette.primary.contrastText,
-                  fontWeight: 600,
-                  fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                  height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
-                  minWidth: 60, // Minimum width for touch
-                }}
-              />
-              <Chip
-                label="Spring Boot"
-                variant="outlined"
-                size="small"
-                sx={{
-                  borderColor: theme.palette.primary.main,
-                  color: theme.palette.primary.main,
-                  fontWeight: 600,
-                  fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                  height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
-                  minWidth: 100, // Minimum width for touch
-                }}
-              />
-              <Chip
-                label="React"
-                size="small"
-                sx={{
-                  backgroundColor: theme.palette.secondary.main,
-                  color: theme.palette.secondary.contrastText,
-                  fontWeight: 600,
-                  fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                  height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
-                  minWidth: 60, // Minimum width for touch
-                }}
-              />
-              <Chip
-                label="Microservices"
-                variant="outlined"
-                size="small"
-                sx={{
-                  borderColor: theme.palette.secondary.main,
-                  color: theme.palette.secondary.main,
-                  fontWeight: 600,
-                  fontSize: { xs: "0.7rem", sm: "0.75rem", md: "0.8rem" },
-                  height: { xs: 28, sm: 32, md: 36 }, // Larger for touch
-                  minWidth: 110, // Minimum width for touch
-                }}
-              />
-            </Stack>
-          </AnimatedComponent>
+            {/* CTA Buttons */}
+            <AnimatedComponent animationType="fade-in" delay={500}>
+              <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center sm:items-start">
+                <Button
+                  size="lg"
+                  onClick={handleHireMe}
+                  className="w-full sm:w-auto rounded-full px-8 py-6 text-lg font-semibold shadow-lg hover:-translate-y-1 transition-transform duration-300"
+                >
+                  {HERO_DATA.buttons.hire}
+                </Button>
 
-          {/* CTA Buttons */}
-          <AnimatedComponent animationType="fade-in" delay={500}>
-            <Box
-              sx={{
-                mt: { xs: 2, sm: 3 },
-                display: "flex",
-                flexDirection: { xs: "column", sm: "row" },
-                gap: { xs: 1.5, sm: 2 },
-                justifyContent: { xs: "center", md: "flex-start" },
-                alignItems: { xs: "center", sm: "flex-start" },
-              }}>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={handleHireMe}
-                sx={touchButtonStyles}
-                role="button"
-                aria-label="Contact me for hiring opportunities"
-                tabIndex={0}>
-                {HERO_DATA.buttons.hire}
-              </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={handleDownloadResume}
+                  className="w-full sm:w-auto rounded-full px-8 py-6 text-lg font-semibold border-2 hover:-translate-y-1 transition-transform duration-300"
+                >
+                  {HERO_DATA.buttons.resume}
+                </Button>
+              </div>
+            </AnimatedComponent>
+          </div>
 
-              <Button
-                variant="outlined"
-                size="large"
-                onClick={handleDownloadResume}
-                sx={{
-                  ...touchButtonStyles,
-                  boxShadow: "none",
-                  borderWidth: "2px",
-                  "&:hover": {
-                    transform: "translateY(-3px)",
-                    borderWidth: "2px",
-                  },
-                }}
-                role="button"
-                aria-label="Download my resume"
-                tabIndex={0}>
-                {HERO_DATA.buttons.resume}
-              </Button>
-            </Box>
-          </AnimatedComponent>
-        </Grid>
+          {/* Profile Image */}
+          <div className="col-span-1 md:col-span-5 order-1 md:order-2 flex justify-center items-center mb-8 md:mb-0">
+            <AnimatedComponent animationType="slide-left" delay={200}>
+              <div className="relative w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px] lg:w-[350px] lg:h-[350px] rounded-full border-4 border-primary shadow-[0_0_30px_rgba(var(--primary),0.5)] flex items-center justify-center overflow-hidden">
+                {/* Rotating border effect */}
+                <div className="absolute w-[150%] h-[150%] bg-[conic-gradient(transparent,var(--primary),transparent)] animate-[spin_4s_linear_infinite]" />
 
-        {/* Profile Image */}
-        <Grid
-          item
-          xs={12}
-          md={5}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            order: { xs: 1, md: 2 },
-            mb: { xs: 2, sm: 3, md: 0 },
-          }}>
-          <AnimatedComponent animationType="slide-left" delay={200}>
-            <Box
-              sx={{
-                position: "relative",
-                width: { xs: 200, sm: 250, md: 300, lg: 350 },
-                height: { xs: 200, sm: 250, md: 300, lg: 350 },
-                borderRadius: "50%",
-                border: `4px solid ${theme.palette.primary.main}`,
-                boxShadow: `0 0 30px ${theme.palette.primary.light}`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                overflow: "hidden",
-                "&:before": {
-                  content: '""',
-                  position: "absolute",
-                  width: "150%",
-                  height: "150%",
-                  background: `conic-gradient(
-                    transparent,
-                    ${theme.palette.primary.main},
-                    transparent
-                  )`,
-                  animation: "rotate 4s linear infinite",
-                },
-                "&:after": {
-                  content: '""',
-                  position: "absolute",
-                  inset: "4px",
-                  borderRadius: "50%",
-                  background: theme.palette.background.paper,
-                },
-                "@keyframes rotate": {
-                  "0%": { transform: "rotate(0deg)" },
-                  "100%": { transform: "rotate(360deg)" },
-                },
-              }}>
-              <Box
-                sx={{
-                  position: "relative",
-                  width: "95%",
-                  height: "95%",
-                  borderRadius: "50%",
-                  overflow: "hidden",
-                  zIndex: 2,
-                }}>
-                <Image
-                  src={profileImageUrl}
-                  alt={HERO_DATA.name}
-                  fill
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center 10%",
-                    borderRadius: "50%",
-                  }}
-                  sizes="(max-width: 600px) 200px, (max-width: 768px) 250px, (max-width: 900px) 300px, (max-width: 1200px) 350px, 350px"
-                  priority
-                />
-              </Box>
-            </Box>
-          </AnimatedComponent>
-        </Grid>
-      </Grid>
-    </Box>
+                {/* Inner container to hide the rotating background center */}
+                <div className="absolute inset-1 rounded-full bg-background z-10" />
+
+                {/* Image container */}
+                <div className="relative w-[95%] h-[95%] rounded-full overflow-hidden z-20">
+                  <Image
+                    src={profileImageUrl}
+                    alt={HERO_DATA.name}
+                    fill
+                    className="object-cover object-[center_10%]"
+                    sizes="(max-width: 600px) 200px, (max-width: 768px) 250px, (max-width: 900px) 300px, (max-width: 1200px) 350px, 350px"
+                    priority
+                  />
+                </div>
+              </div>
+            </AnimatedComponent>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

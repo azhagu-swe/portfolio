@@ -8,17 +8,8 @@ import {
   getSortedPostsData,
   PostFrontmatter,
 } from "../../lib/blog";
-import {
-  Box,
-  Typography,
-  Paper,
-  Divider,
-  useTheme,
-  Grid,
-  Button,
-} from "@mui/material";
 import Link from "next/link";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowLeft } from "lucide-react";
 import { HERO_DATA } from "@/utils/heroData";
 import ReadingProgressBar from "@/components/blog-page/ReadingProgressBar";
 import PostHeader from "@/components/blog-page/PostHeader";
@@ -27,6 +18,8 @@ import RelatedPosts from "@/components/blog-page/RelatedPosts";
 import AudioPlayer from "@/components/blog-page/AudioPlayer";
 import CodeBlock from "@/components/mdx/CodeBlock";
 import ChartJSBlock from "@/components/mdx/ChartJSBlock";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 interface Heading {
   text: string;
@@ -76,7 +69,6 @@ const PostPage = ({
   slug,
   relatedPosts,
 }: PostPageProps) => {
-  const theme = useTheme();
   const postUrl = `https://azhagu-swe.github.io/portfolio/blog/${slug}`;
 
   const articleRef = useRef<HTMLElement>(null);
@@ -88,7 +80,7 @@ const PostPage = ({
     }
   }, [mdxSource]);
 
-  const handleAudioBoundary = (charIndex: number) => {};
+  const handleAudioBoundary = (charIndex: number) => { };
 
   const components = {
     h2: H2,
@@ -147,93 +139,49 @@ const PostPage = ({
 
       <ReadingProgressBar />
 
-      <Box sx={{ maxWidth: "1200px", mx: "auto", p: { xs: 2, sm: 4 } }}>
+      <div className="max-w-[1200px] mx-auto p-4 sm:p-8">
         <PostHeader frontmatter={frontmatter} />
 
-        <Grid container spacing={5}>
-          <Grid item xs={12} md={8}>
-            <Paper elevation={0} sx={{ backgroundColor: "transparent" }}>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mt-8">
+          <div className="col-span-1 md:col-span-8">
+            <div className="bg-transparent">
               <AudioPlayer
                 text={articleText}
                 onBoundary={handleAudioBoundary}
               />
-              <Divider sx={{ my: 3 }} />
-              <Box
+              <Separator className="my-6" />
+              <article
                 ref={articleRef}
-                component="article"
-                sx={{
-                  color: theme.palette.text.primary,
-                  fontSize: "1.1rem",
-                  "& h2, & h3": { scrollMarginTop: "80px" },
-                  "& h2": {
-                    ...theme.typography.h4,
-                    fontWeight: "bold",
-                    mt: 5,
-                    mb: 2,
-                    color: theme.palette.primary.main,
-                    borderLeft: `4px solid ${theme.palette.primary.light}`,
-                    paddingLeft: 2,
-                  },
-                  "& h3": {
-                    ...theme.typography.h5,
-                    fontWeight: "bold",
-                    mt: 4,
-                    mb: 1,
-                    color: theme.palette.primary.light,
-                  },
-                  "& p": { ...theme.typography.body1, lineHeight: 1.8, mb: 2 },
-                  "& a": {
-                    color: theme.palette.primary.main,
-                    textDecoration: "none",
-                    fontWeight: "bold",
-                    "&:hover": { textDecoration: "underline" },
-                  },
-                  "& ul, & ol": { pl: 3, mb: 2 },
-                  "& li": { mb: 1, lineHeight: 1.8 },
-                  "& code": {
-                    fontFamily: "monospace",
-                    backgroundColor: "rgba(135, 131, 120, 0.15)",
-                    px: "4px",
-                    py: "2px",
-                    borderRadius: "4px",
-                    color: theme.palette.text.primary,
-                  },
-                  "& pre > code": {
-                    backgroundColor: "transparent",
-                    p: 0,
-                    color: "inherit",
-                  },
-                }}>
+                className="markdown-content"
+              >
                 <MDXRemote {...mdxSource} components={components} />
-              </Box>
-            </Paper>
-          </Grid>
+              </article>
+            </div>
+          </div>
 
-          <Grid
-            item
-            xs={12}
-            md={4}
-            sx={{ display: { xs: "none", md: "block" } }}>
+          <div className="hidden md:block md:col-span-4">
             <PostSidebar
               headings={headings}
               postUrl={postUrl}
               title={frontmatter.title}
             />
-          </Grid>
-        </Grid>
+          </div>
+        </div>
 
         <RelatedPosts posts={relatedPosts} />
 
-        <Box sx={{ textAlign: "center", mt: 6 }}>
+        <div className="text-center mt-12">
           <Button
-            component={Link}
-            href="/blog"
-            variant="outlined"
-            startIcon={<ArrowBack />}>
-            Back to All Posts
+            variant="outline"
+            asChild
+          >
+            <Link href="/blog">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to All Posts
+            </Link>
           </Button>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </>
   );
 };

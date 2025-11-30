@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  Divider,
-  Avatar,
-  useTheme,
-  Card,
-  CardContent,
-} from "@mui/material";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import CustomizeCard from "@/components/about-page/CustomizeCard";
 import SkillCard from "@/components/about-page/SkillCard";
 import {
@@ -20,6 +11,9 @@ import {
   ACHIEVEMENTS_DATA,
   PARTICIPATIONS_DATA,
 } from "@/utils/aboutData";
+import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -43,345 +37,172 @@ const itemVariants = {
 };
 
 const AboutMe: React.FC = () => {
-  const theme = useTheme();
   const router = useRouter();
   const { basePath } = router;
   const profile = PROFILE(basePath);
 
   return (
-    <Box
-      component={motion.div}
+    <motion.div
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      sx={{
-        padding: { xs: 2, sm: 3, md: 4 },
-        borderRadius: "15px",
-        boxShadow: `0 8px 30px ${theme.palette.primary.light}33`,
-        maxWidth: "1200px",
-        margin: "0 auto",
-        backgroundColor: theme.palette.background.paper,
-        width: "100%",
-      }}>
-      <Grid
-        container
-        spacing={{ xs: 3, sm: 4, md: 5 }}
-        alignItems="center"
-        sx={{ mb: { xs: 3, sm: 4, md: 5 } }}>
-        <Grid
-          item
-          xs={12}
-          md={8}
-          sx={{ textAlign: { xs: "center", md: "left" } }}>
-          <Typography
-            variant="h4"
-            component={motion.h1}
+      className="p-4 sm:p-6 md:p-8 rounded-2xl shadow-[0_8px_30px_rgba(var(--primary),0.2)] max-w-[1200px] mx-auto bg-background w-full"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center mb-8 sm:mb-12">
+        <div className="md:col-span-8 text-center md:text-left">
+          <motion.h1
             variants={itemVariants}
-            sx={{
-              fontWeight: "bold",
-              color: theme.palette.primary.main,
-              fontSize: { xs: "1.8rem", sm: "2.2rem", md: "2.5rem" },
-            }}>
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-2"
+          >
             Hi, I&apos;m {profile.name}
-          </Typography>
-          <Typography
-            variant="h6"
-            component={motion.h2}
+          </motion.h1>
+          <motion.h2
             variants={itemVariants}
-            sx={{
-              fontStyle: "italic",
-              mt: 1,
-              color: "text.secondary",
-              fontSize: { xs: "1.1rem", sm: "1.25rem", md: "1.5rem" },
-            }}>
+            className="text-lg sm:text-xl md:text-2xl italic text-muted-foreground mb-4"
+          >
             {profile.role}
-          </Typography>
-          <Typography
-            variant="body1"
-            component={motion.p}
+          </motion.h2>
+          <motion.p
             variants={itemVariants}
-            sx={{
-              mt: 2,
-              textAlign: { xs: "justify", md: "justify" },
-              fontSize: { xs: "0.95rem", sm: "1rem", md: "1.1rem" },
-              lineHeight: 1.7,
-            }}>
+            className="text-base sm:text-lg leading-relaxed text-justify md:text-left"
+          >
             {profile.intro}
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={4}
-          component={motion.div}
+          </motion.p>
+        </div>
+        <motion.div
           variants={itemVariants}
-          sx={{ display: "flex", justifyContent: "center" }}>
-          <Avatar
-            src={profile.avatar}
-            alt={profile.name}
-            sx={{
-              width: { xs: 100, sm: 120, md: 180 },
-              height: { xs: 100, sm: 120, md: 180 },
-              border: `4px solid ${theme.palette.primary.main}`,
-              boxShadow: `0 0 20px ${theme.palette.primary.light}`,
-              "& img": {
-                objectFit: "cover",
-                objectPosition: "center 20%",
-              },
-            }}
-          />
-        </Grid>
-      </Grid>
+          className="md:col-span-4 flex justify-center"
+        >
+          <div className="relative w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] md:w-[180px] md:h-[180px] rounded-full border-4 border-primary shadow-[0_0_20px_rgba(var(--primary),0.5)] overflow-hidden">
+            <Image
+              src={profile.avatar}
+              alt={profile.name}
+              fill
+              className="object-cover object-[center_20%]"
+            />
+          </div>
+        </motion.div>
+      </div>
 
-      <Divider sx={{ my: { xs: 3, sm: 4, md: 5 } }} />
+      <Separator className="my-8 sm:my-12" />
 
-      <Box
-        sx={{ mb: { xs: 3, sm: 4, md: 5 } }}
-        component={motion.div}
-        variants={itemVariants}>
-        <Typography
-          variant="h4"
-          color="text.primary"
-          sx={{
-            fontWeight: "bold",
-            mb: { xs: 2, sm: 3 },
-            textAlign: "center",
-            fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.125rem" },
-          }}>
+      <motion.div variants={itemVariants} className="mb-8 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
           Technical Skills
-        </Typography>
-        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {SKILLS_DATA.map((skill, index) => (
-            <Grid item xs={12} sm={6} md={6} key={index}>
-              <SkillCard title={skill.title} skills={skill.skills} />
-            </Grid>
+            <SkillCard key={index} title={skill.title} skills={skill.skills} />
           ))}
-        </Grid>
-      </Box>
+        </div>
+      </motion.div>
 
-      <Divider sx={{ my: { xs: 3, sm: 4, md: 5 } }} />
+      <Separator className="my-8 sm:my-12" />
 
-      <Box
-        sx={{ mb: { xs: 3, sm: 4, md: 5 } }}
-        component={motion.div}
-        variants={itemVariants}>
-        <Typography
-          variant="h4"
-          color="text.primary"
-          sx={{
-            fontWeight: "bold",
-            mb: { xs: 2, sm: 3 },
-            textAlign: "center",
-            fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.125rem" },
-          }}>
+      <motion.div variants={itemVariants} className="mb-8 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
           Certifications
-        </Typography>
-        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {CERTIFICATIONS_DATA(basePath).map((cert, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <div key={index} className="h-full">
               <CustomizeCard {...cert} />
-            </Grid>
+            </div>
           ))}
-        </Grid>
-      </Box>
+        </div>
+      </motion.div>
 
-      <Divider sx={{ my: { xs: 3, sm: 4, md: 5 } }} />
+      <Separator className="my-8 sm:my-12" />
 
-      <Box
-        sx={{ mb: { xs: 3, sm: 4, md: 5 } }}
-        component={motion.div}
-        variants={itemVariants}>
-        <Typography
-          variant="h4"
-          color="text.primary"
-          sx={{
-            fontWeight: "bold",
-            mb: { xs: 2, sm: 3 },
-            textAlign: "center",
-            fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.125rem" },
-          }}>
+      <motion.div variants={itemVariants} className="mb-8 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
           Achievements
-        </Typography>
-        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {ACHIEVEMENTS_DATA(basePath).map((achievement, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <div key={index} className="h-full">
               <CustomizeCard {...achievement} />
-            </Grid>
+            </div>
           ))}
-        </Grid>
-      </Box>
+        </div>
+      </motion.div>
 
-      <Divider sx={{ my: { xs: 3, sm: 4, md: 5 } }} />
+      <Separator className="my-8 sm:my-12" />
 
-      <Box
-        component={motion.div}
-        variants={itemVariants}
-        sx={{ mb: { xs: 3, sm: 4, md: 5 } }}>
-        <Typography
-          variant="h4"
-          color="text.primary"
-          sx={{
-            fontWeight: "bold",
-            mb: { xs: 2, sm: 3 },
-            textAlign: "center",
-            fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.125rem" },
-          }}>
+      <motion.div variants={itemVariants} className="mb-8 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
           Participation
-        </Typography>
-        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {PARTICIPATIONS_DATA(basePath).map((participation, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
+            <div key={index} className="h-full">
               <CustomizeCard {...participation} />
-            </Grid>
+            </div>
           ))}
-        </Grid>
-      </Box>
+        </div>
+      </motion.div>
 
       {/* New Section: AI Development Tools */}
-      <Divider sx={{ my: { xs: 3, sm: 4, md: 5 } }} />
+      <Separator className="my-8 sm:my-12" />
 
-      <Box component={motion.div} variants={itemVariants}>
-        <Typography
-          variant="h4"
-          color="text.primary"
-          sx={{
-            fontWeight: "bold",
-            mb: { xs: 2, sm: 3 },
-            textAlign: "center",
-            fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.125rem" },
-          }}>
+      <motion.div variants={itemVariants}>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8">
           AI Development Tools
-        </Typography>
+        </h2>
 
-        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                borderRadius: "16px",
-                overflow: "hidden",
-                boxShadow: 3,
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                "&:hover": {
-                  transform: { xs: "none", sm: "translateY(-8px)" },
-                  boxShadow: `0 15px 30px ${theme.palette.primary.main}55`,
-                },
-              }}>
-              <CardContent sx={{ flexGrow: 1, p: { xs: 2, sm: 3, md: 4 } }}>
-                <Typography
-                  variant="h5"
-                  component="h2"
-                  sx={{
-                    fontWeight: "bold",
-                    mb: 2,
-                    color: theme.palette.primary.main,
-                    fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                  }}>
-                  Qwen CLI
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  sx={{
-                    mb: 2,
-                    fontSize: { xs: "0.9rem", sm: "1rem" },
-                  }}>
-                  Leveraging Alibaba Cloud&#39;s Qwen CLI for AI-powered code
-                  generation, optimization, and development assistance.
-                  Enhancing productivity through intelligent code suggestions
-                  and automated refactoring.
-                </Typography>
-                <Box component="ul" sx={{ pl: 2 }}>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: { xs: "0.85rem", sm: "0.95rem" } }}>
-                    Code generation and refactoring assistance
-                  </Typography>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: { xs: "0.85rem", sm: "0.95rem" } }}>
-                    Automated documentation generation
-                  </Typography>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ fontSize: { xs: "0.85rem", sm: "0.95rem" } }}>
-                    Intelligent debugging and error resolution
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          <Card className="h-full flex flex-col rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+            <CardContent className="flex-grow p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-primary">
+                Qwen CLI
+              </h3>
+              <p className="text-muted-foreground mb-4 text-sm sm:text-base">
+                Leveraging Alibaba Cloud&apos;s Qwen CLI for AI-powered code
+                generation, optimization, and development assistance. Enhancing
+                productivity through intelligent code suggestions and automated
+                refactoring.
+              </p>
+              <ul className="pl-4 space-y-2">
+                <li className="text-sm sm:text-base list-disc">
+                  Code generation and refactoring assistance
+                </li>
+                <li className="text-sm sm:text-base list-disc">
+                  Automated documentation generation
+                </li>
+                <li className="text-sm sm:text-base list-disc">
+                  Intelligent debugging and error resolution
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
 
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                borderRadius: "16px",
-                overflow: "hidden",
-                boxShadow: 3,
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                "&:hover": {
-                  transform: { xs: "none", sm: "translateY(-8px)" },
-                  boxShadow: `0 15px 30px ${theme.palette.secondary.main}55`,
-                },
-              }}>
-              <CardContent sx={{ flexGrow: 1, p: { xs: 2, sm: 3, md: 4 } }}>
-                <Typography
-                  variant="h5"
-                  component="h2"
-                  sx={{
-                    fontWeight: "bold",
-                    mb: 2,
-                    color: theme.palette.secondary.main,
-                    fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                  }}>
-                  Google Gemini CLI
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  sx={{
-                    mb: 2,
-                    fontSize: { xs: "0.9rem", sm: "1rem" },
-                  }}>
-                  Utilizing Google&#39;s Gemini CLI for advanced AI-assisted
-                  development workflows. Integrating cutting-edge AI
-                  capabilities into the development process for enhanced
-                  problem-solving and innovation.
-                </Typography>
-                <Box component="ul" sx={{ pl: 2 }}>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: { xs: "0.85rem", sm: "0.95rem" } }}>
-                    Natural language to code conversion
-                  </Typography>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ mb: 1, fontSize: { xs: "0.85rem", sm: "0.95rem" } }}>
-                    Complex problem-solving with AI guidance
-                  </Typography>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ fontSize: { xs: "0.85rem", sm: "0.95rem" } }}>
-                    Multi-modal development assistance
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Box>
-    </Box>
+          <Card className="h-full flex flex-col rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+            <CardContent className="flex-grow p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl font-bold mb-4 text-secondary">
+                Google Gemini CLI
+              </h3>
+              <p className="text-muted-foreground mb-4 text-sm sm:text-base">
+                Utilizing Google&apos;s Gemini CLI for advanced AI-assisted
+                development workflows. Integrating cutting-edge AI capabilities
+                into the development process for enhanced problem-solving and
+                innovation.
+              </p>
+              <ul className="pl-4 space-y-2">
+                <li className="text-sm sm:text-base list-disc">
+                  Natural language to code conversion
+                </li>
+                <li className="text-sm sm:text-base list-disc">
+                  Complex problem-solving with AI guidance
+                </li>
+                <li className="text-sm sm:text-base list-disc">
+                  Multi-modal development assistance
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
