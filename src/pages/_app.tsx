@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Head from "next/head";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import { ThemeProvider, useThemeContext } from "@/context/ThemeContext";
@@ -20,15 +21,20 @@ function MyAppContent({ Component, pageProps }: AppProps) {
   const { theme, toggleTheme, isDarkMode } = useThemeContext();
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <AnimatedBackground enabled={true} />
-      <Layout toggleTheme={toggleTheme} isDarkMode={isDarkMode}>
-        <PageTransition>
-          <Component {...pageProps} />
-        </PageTransition>
-      </Layout>
-    </MuiThemeProvider>
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <AnimatedBackground enabled={true} />
+        <Layout toggleTheme={toggleTheme} isDarkMode={isDarkMode}>
+          <PageTransition>
+            <Component {...pageProps} />
+          </PageTransition>
+        </Layout>
+      </MuiThemeProvider>
+    </>
   );
 }
 
