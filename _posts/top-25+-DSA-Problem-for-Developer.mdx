@@ -1,0 +1,442 @@
+---
+title: "25+ Essential DSA Problems Every Developer Should Know"
+date: "2025-12-01"
+excerpt: "A comprehensive guide to the most common Data Structure and Algorithm problems used in technical interviews. Master these patterns to level up your coding skills."
+coverImage: "https://placehold.co/600x400/1E1E1E/32CD32?text=DSA+Mastery"
+category: ["Programming", "Interview Prep"]
+tags: ["DSA", "Java", "Algorithms", "Web Dev"]
+readTime: "15 min"
+---
+
+## Introduction
+
+Whether you are preparing for a technical interview or just looking to sharpen your problem-solving skills, mastering Data Structures and Algorithms (DSA) is crucial. While the syntax may change between languages like Java, Python, or JavaScript, the underlying logic remains the same.
+
+Here is a curated list of top DSA problems ranging from modern Stream API manipulations to classic algorithmic challenges.
+
+---
+
+## Part 1: Basic Stream API & String Manipulation
+
+### 1. Find First String Starting with 'A' and Length > 3
+
+**Problem:** Given a list of strings, find the first string that starts with 'A' and has length greater than 3. Return "Not Found" if no such string exists.
+
+**Complexity:** O(n)
+
+```java
+List<String> fruits = Arrays.asList("apple", "banana", "avocado", "ant", "apricot");
+
+String result = fruits.stream()
+    .filter(f -> f.toLowerCase().startsWith("a") && f.length() > 3)
+    .findFirst()
+    .orElse("Not Found");
+
+System.out.println(result);
+```
+
+### 2. Print All Elements using Lambda
+
+**Complexity:** O(n)
+
+```java
+Arrays.stream(fruits).forEach(System.out::println);
+```
+
+### 3. Filter Specific Element (e.g., "apple")
+
+**Complexity:** O(n)
+
+```java
+Optional<String> fruitFilter = fruits.stream()
+    .filter(s -> s.equals("apple"))
+    .findFirst();
+
+System.out.println(fruitFilter.orElse("Not Found"));
+```
+
+### 4. Sort Strings Alphabetically
+
+**Complexity:** O(n log n)
+
+```java
+fruits.sort((a, b) -> a.compareTo(b));
+System.out.println(fruits);
+```
+
+### 5. Filter Strings Starting with 'A' or 'B'
+
+**Complexity:** O(n)
+
+```java
+List<String> startingAandB = fruits.stream()
+    .filter(f -> f.toLowerCase().startsWith("a") || f.toLowerCase().startsWith("b"))
+    .toList();
+
+startingAandB.forEach(System.out::println);
+```
+
+---
+
+## Part 2: Advanced Stream Operations
+
+### 6. Square Even Numbers (Map & Filter)
+
+**Problem:** Transform data by filtering evens and mapping them to their squares.
+
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
+List<Integer> squares = numbers.stream()
+    .filter(n -> n % 2 == 0)
+    .map(n -> n * n)
+    .collect(Collectors.toList());
+System.out.println(squares); // Output: [4, 16, 36]
+```
+
+### 7. Flatten a List of Lists (FlatMap)
+
+**Problem:** Flatten a multidimensional list into a single stream.
+
+```java
+List<List<Integer>> listOfLists = Arrays.asList(
+    Arrays.asList(1, 2),
+    Arrays.asList(3, 4),
+    Arrays.asList(5, 6)
+);
+List<Integer> flatList = listOfLists.stream()
+    .flatMap(List::stream)
+    .collect(Collectors.toList());
+System.out.println(flatList); // Output: [1, 2, 3, 4, 5, 6]
+```
+
+### 8. Group Strings by Length
+
+**Problem:** Group a list of words based on their length.
+
+```java
+List<String> words = Arrays.asList("apple", "bat", "cat", "banana");
+Map<Integer, List<String>> groupedByLength = words.stream()
+    .collect(Collectors.groupingBy(String::length));
+System.out.println(groupedByLength);
+// Output: {3=[bat, cat], 5=[apple], 6=[banana]}
+```
+
+### 9. Partition Numbers (Even vs Odd)
+
+**Problem:** Separate a list into two lists based on a condition (true/false).
+
+```java
+List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 6);
+Map<Boolean, List<Integer>> partitioned = nums.stream()
+    .collect(Collectors.partitioningBy(n -> n % 2 == 0));
+System.out.println("Evens: " + partitioned.get(true));
+System.out.println("Odds: " + partitioned.get(false));
+```
+
+### 10. Employee Statistics (Average Salary by Dept)
+
+**Problem:** Calculate average salary per department.
+
+```java
+// Assuming Employee class exists with getDept() and getSalary()
+Map<String, Double> avgSalaryByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::getDept,
+        Collectors.averagingDouble(Employee::getSalary)
+    ));
+```
+
+### 11. Character Frequency (Stream Approach)
+
+**Problem:** Count occurrences of each character using Streams.
+
+```java
+String input = "banana";
+Map<Character, Long> charCount = input.chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+System.out.println(charCount); // Output: {a=3, b=1, n=2}
+```
+
+---
+
+## Part 3: Iterative String & Array Logic
+
+### 12. Largest Number from Array
+
+**Problem:** Form the largest number possible from an array of digits.
+
+**Complexity:** O(n log n)
+
+```java
+int[] numbers = {0,1,2,3,4,5,6,7,8,9};
+Arrays.sort(numbers);
+StringBuilder sb = new StringBuilder();
+for (int i = numbers.length - 1; i >= 0; i--) {
+    sb.append(numbers[i]);
+}
+System.out.println(sb.toString());
+```
+
+### 13. Most Frequent Word in Sentence
+
+**Complexity:** O(n)
+
+```java
+String sentence = "I am a good boy but not as good";
+String[] words = sentence.toLowerCase().split("\\s+");
+HashMap<String, Integer> frequent = new HashMap<>();
+for (String word : words) {
+    frequent.put(word, frequent.getOrDefault(word, 0) + 1);
+}
+String mostFrequentWord = null;
+int maxCount = 0;
+for (Map.Entry<String, Integer> entry : frequent.entrySet()) {
+    if (entry.getValue() > maxCount) {
+        mostFrequentWord = entry.getKey();
+        maxCount = entry.getValue();
+    }
+}
+System.out.println("Most Frequent word :" + mostFrequentWord);
+```
+
+### 14. Reverse a String (StringBuilder)
+
+**Complexity:** O(n)
+
+```java
+String word = "hello";
+System.out.println(new StringBuilder(word).reverse());
+```
+
+### 15. First Non-Repeating Character
+
+**Complexity:** O(n)
+
+```java
+String word = "hello world";
+Map<Character, Integer> freq = new LinkedHashMap<>();
+for (char c : word.toCharArray()) {
+    freq.put(c, freq.getOrDefault(c, 0) + 1);
+}
+for (char c : word.toCharArray()) {
+    if (freq.get(c) == 1) {
+        System.out.println(c);
+        break;
+    }
+}
+```
+
+### 16. Pair Sum Problem
+
+**Problem:** Find a pair of numbers with a given sum.
+
+**Complexity:** O(n)
+
+```java
+int[] arr = {1,2,3,4,5,6,7,8,9};
+int sum = 8;
+Set<Integer> seen = new HashSet<>();
+for (int num : arr) {
+    int complement = sum - num;
+    if (seen.contains(complement)) {
+        System.out.println("Pair: " + num + ", " + complement);
+    }
+    seen.add(num);
+}
+```
+
+---
+
+## Part 4: Classic Algorithms
+
+### 17. FizzBuzz Problem
+
+**Problem:** Print numbers 1 to 100 with specific replacement rules for multiples of 3 and 5.
+
+```java
+public class FizzBuzz {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 100; i++) {
+            if (i % 3 == 0 && i % 5 == 0) {
+                System.out.println("FizzBuzz");
+            } else if (i % 3 == 0) {
+                System.out.println("Fizz");
+            } else if (i % 5 == 0) {
+                System.out.println("Buzz");
+            } else {
+                System.out.println(i);
+            }
+        }
+    }
+}
+```
+
+### 18. Reverse a String (Two Pointers)
+
+**Problem:** Reverse a given string without using built-in functions.
+
+```java
+public class ReverseString {
+    public static String reverseString(String str) {
+        char[] chars = str.toCharArray();
+        int left = 0;
+        int right = chars.length - 1;
+        while (left < right) {
+            char temp = chars[left];
+            chars[left] = chars[right];
+            chars[right] = temp;
+            left++;
+            right--;
+        }
+        return new String(chars);
+    }
+}
+```
+
+### 19. Find the Missing Number
+
+**Problem:** Find the missing number in an array containing distinct numbers from 0 to n.
+
+```java
+public class MissingNumber {
+    public static int findMissingNumber(int[] nums) {
+        int n = nums.length;
+        int expectedSum = n * (n + 1) / 2;
+        int actualSum = 0;
+        for (int num : nums) {
+            actualSum += num;
+        }
+        return expectedSum - actualSum;
+    }
+}
+```
+
+### 20. Check if a String is Palindrome
+
+**Problem:** Check if a given string is a palindrome using two pointers.
+
+```java
+public class PalindromeCheck {
+    public static boolean checkPalindrome(String str) {
+        int left = 0;
+        int right = str.length() - 1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+```
+
+### 21. Detect Duplicate Elements (HashSet)
+
+**Problem:** Find duplicate elements efficiently using a Set.
+
+```java
+public class DuplicateElements {
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3, 4, 5, 2, 6, 7, 8, 3};
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            if (!set.add(num)) {
+                System.out.println("Duplicate found: " + num);
+                break;
+            }
+        }
+    }
+}
+```
+
+### 22. Implement a Stack Using Arrays
+
+**Problem:** Create a Stack class with push, pop, and isEmpty.
+
+```java
+public class ArrayStack {
+    private int maxSize;
+    private int[] stackArray;
+    private int top;
+
+    public ArrayStack(int maxSize) {
+        this.maxSize = maxSize;
+        this.stackArray = new int[maxSize];
+        this.top = -1;
+    }
+    // ... implementation of push and pop
+}
+```
+
+### 23. Find the Longest Common Prefix
+
+**Problem:** Find the longest common prefix amongst an array of strings.
+
+```java
+public class LongestCommonPrefix {
+    public static String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) return "";
+        String prefix = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            while (strs[i].indexOf(prefix) != 0) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+                if (prefix.isEmpty()) return "";
+            }
+        }
+        return prefix;
+    }
+}
+```
+
+### 24. Count Words in a Sentence
+
+**Problem:** Robustly count words handling whitespace.
+
+```java
+public class WordCount {
+    public static int countWords(String sentence) {
+        if (sentence == null || sentence.isEmpty()) return 0;
+        String[] words = sentence.trim().split("\\s+");
+        return words.length;
+    }
+}
+```
+
+### 25. Maximum Subarray Sum (Kadane's Algorithm)
+
+**Problem:** Find the contiguous subarray with the largest sum.
+
+```java
+public class MaximumSubarraySum {
+    public static int maxSubarraySum(int[] nums) {
+        int maxEndingHere = nums[0];
+        int maxSoFar = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            maxEndingHere = Math.max(nums[i], maxEndingHere + nums[i]);
+            maxSoFar = Math.max(maxSoFar, maxEndingHere);
+        }
+        return maxSoFar;
+    }
+}
+```
+
+### 26. Check if a Number is Prime
+
+**Problem:** Efficiently check for prime numbers.
+
+```java
+public class PrimeCheck {
+    public static boolean isPrime(int num) {
+        if (num <= 1) return false;
+        if (num <= 3) return true;
+        if (num % 2 == 0 || num % 3 == 0) return false;
+
+        for (int i = 5; i * i <= num; i += 6) {
+            if (num % i == 0 || num % (i + 2) == 0) return false;
+        }
+        return true;
+    }
+}
