@@ -8,6 +8,8 @@ import GlobalErrorBoundary from "@/components/common/GlobalErrorBoundary";
 import PageTransition from "@/components/ui/PageTransition";
 import SplashScreen from "@/components/ui/SplashScreen";
 import AnimatedBackground from "@/components/ui/AnimatedBackground";
+import PWAInstallPrompt from "@/components/common/PWAInstallPrompt";
+import PWAStatus from "@/components/common/PWAStatus";
 import type { AppProps } from "next/app";
 import { VisitorProvider } from "@/context/VisitorContext";
 import "@/styles/globals.css";
@@ -28,6 +30,8 @@ function MyAppContent({ Component, pageProps }: AppProps) {
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <AnimatedBackground enabled={true} />
+        <PWAStatus />
+        <PWAInstallPrompt />
         <Layout toggleTheme={toggleTheme} isDarkMode={isDarkMode}>
           <PageTransition>
             <Component {...pageProps} />
